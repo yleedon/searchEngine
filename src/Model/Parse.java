@@ -84,6 +84,7 @@ public class Parse {
     /**
      * this takes a word and does the first word processing:
      * deletes delimiters
+     * numbers
      * Capitalizes
      * stop words
      * stemming
@@ -231,9 +232,10 @@ public class Parse {
             tokens[tNum +1] = null; tokens[tNum + 2] = null;
             return num;
         }
+        tokens[tNum+1] = null;
+        return num+" "+secondToken;
 
-        //not a fraction
-        return num;
+
 
     }
 
@@ -250,7 +252,7 @@ public class Parse {
                 tokens[tNum + 1] = null; tokens[tNum+2] = null; tokens[tNum + 3] = null;
                 return Integer.valueOf(num)*moneyMap.get(secondWord).getKey() + " M Dollars";
             }
-            return "num";
+            return num;
 
     }
 
@@ -271,9 +273,13 @@ public class Parse {
             }
         }
         catch (Exception e){
+            System.out.println("number date term exception ");
+            System.out.println(e.getMessage());
+        }
+        finally {
             return num;
         }
-        return num;
+
     }
 
     /**
