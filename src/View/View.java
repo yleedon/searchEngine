@@ -19,6 +19,7 @@ public class View {
         Parse parser = new Parse(fld_text.getText());
         try {
             parser.parse();
+            parser.printIndex();
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
