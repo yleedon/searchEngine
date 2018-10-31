@@ -1,11 +1,12 @@
-package sample;
+package View;
 
 
+import Model.Parse;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-public class Controller {
+public class View {
     public TextField fld_text;
     public Button btn_testParse;
 

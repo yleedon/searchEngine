@@ -1,4 +1,4 @@
-package sample;
+package Model;
 
 import javafx.util.Pair;
 
@@ -143,6 +143,7 @@ public class Parse {
             }
         }
         catch(Exception e){
+            //git test
             return originalWord ; // the number contains a char that is not a number - rules do not apply - f
             /// to do? 100bn, 100m
         }
