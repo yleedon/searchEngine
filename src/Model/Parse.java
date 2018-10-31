@@ -13,6 +13,7 @@ public class Parse {
     private Map<String, Pair<Integer,String>> moneyMap;
     private String ans;
     private String[] tokens;
+    private Map<String,Integer> indexMap;
 
     /**
      * Constructer - recieves a string to work on
@@ -22,6 +23,7 @@ public class Parse {
         this.txt = text;
         monthMap = new HashMap<>();
         moneyMap = new HashMap<>();
+        indexMap = new HashMap<>();
         initializeMaps();
 
 
@@ -71,11 +73,24 @@ public class Parse {
                 System.out.println(e.getMessage());
             }
 
-            if(word!=null && !word.equals(""))
-                ans = ans+" {"+word+"}";
+            if(word!=null && !word.equals("")) {
+                if(indexMap.containsKey(word))
+                    indexMap.replace(word,indexMap.get(word)+1);
+                else indexMap.put(word,1);
+
+
+
+                ans = ans + " {" + word + "}";
+
+            }
         }
     }
 
+    public void printIndex(){
+        for (String term:indexMap.keySet()) {
+            System.out.println("{"+term + " , "+ indexMap.get(term)+"}");
+        }
+    }
 
     public String toString(){
         return ans;
@@ -275,10 +290,9 @@ public class Parse {
         catch (Exception e){
             System.out.println("number date term exception ");
             System.out.println(e.getMessage());
-        }
-        finally {
             return num;
         }
+        return num;
 
     }
 
