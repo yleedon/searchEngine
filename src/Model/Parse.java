@@ -9,11 +9,12 @@ public class Parse {
     private String txt;
     private Map<String,String> monthMap;
     private char[] delimeters = {'.',',','?','!','"','\'',':',';','(',')','{','}','[',']','/','\\','<','>','\n'};
-    private String [] moneyWords = {"million","billian","trillan"};
     private Map<String, Pair<Integer,String>> moneyMap;
+    private Map<String,Pair<Integer,String>> numberMap;
     private String ans;
     private String[] tokens;
     private Map<String,Integer> indexMap;
+    int maxFreq;
 
     /**
      * Constructer - recieves a string to work on
@@ -21,15 +22,12 @@ public class Parse {
      */
     public Parse(String text) {
         this.txt = text;
+        maxFreq = 0;
         monthMap = new HashMap<>();
         moneyMap = new HashMap<>();
         indexMap = new HashMap<>();
+        numberMap = new HashMap<>();
         initializeMaps();
-
-
-
-
-
         ans ="";
     }
 
@@ -47,7 +45,10 @@ public class Parse {
         moneyMap.put("billion",new Pair<>(1000,"M"));
         moneyMap.put("trillion",new Pair<>(1000000,"M"));
 
-
+        numberMap.put("Trillion", new Pair(1000,"B"));
+        numberMap.put("Million", new Pair(1,"M"));
+        numberMap.put("Billion",new Pair(1,"B"));
+        numberMap.put("Thousand",new Pair(1,"K"));
     }
 
     /**
@@ -73,22 +74,27 @@ public class Parse {
                 System.out.println(e.getMessage());
             }
 
-            if(word!=null && !word.equals("")) {
-                if(indexMap.containsKey(word))
-                    indexMap.replace(word,indexMap.get(word)+1);
-                else indexMap.put(word,1);
-
-
-
-                ans = ans + " {" + word + "}";
-
-            }
+            addTerm(word);
         }
     }
 
-    public void printIndex(){
-        for (String term:indexMap.keySet()) {
-            System.out.println("{"+term + " , "+ indexMap.get(term)+"}");
+    /**
+     * adds the term to the table
+     * @param word
+     */
+    private void addTerm(String word) {
+        if(word!=null && !word.equals("")) {
+            if(indexMap.containsKey(word)) {
+                indexMap.replace(word, indexMap.get(word) + 1);
+                if (maxFreq<indexMap.get(word)+1)
+                    maxFreq = indexMap.get(word);
+            }
+            else {
+                indexMap.put(word, 1);
+                if (maxFreq<1)
+                    maxFreq = 1;
+            }
+            ans = ans + "{" + word + "}";
         }
     }
 
@@ -126,50 +132,131 @@ public class Parse {
      */
     private String numberEvaluation(String word, int tNum) {
         String originalWord = word;
-        boolean hasDollar = false;
         word = word.replaceAll(",","");
+        boolean startsWithDoller = false;
 
         if(word.length() > 0 && word.charAt(0) == '$') {
+            startsWithDoller = true;
             word = word.substring(1);
-            hasDollar = true;
         }
-        // checks if it a number also returns the original word
         try {
-
             double numValue = Double.parseDouble(word);
-            ///////////////// passed!!!!///////////
 
-            if (hasDollar) {
-                String secondWord;
-                if (tNum+1 < tokens.length && tokens[tNum+1]!=null) {
-                    secondWord = deleteDelimeter(tokens[tNum + 1]);
-                    if (moneyMap.containsKey(secondWord)) {
-                        tokens[tNum+1] = null;
-                        int number = (int)numValue*moneyMap.get(secondWord).getKey();
-                        return number + " M Dollars";
-                    }
-                }
-                if (numValue < 1000000)
-                    return originalWord.substring(1) + " Dollars";
+            if (startsWithDoller)
+                return DealWithDollerSign(tNum,numValue,originalWord);
+        }
+        catch(Exception e){
+            if(tNum+1 < tokens.length && tokens[tNum+1].equals("Dollars"))  // takes care of 123bn and 123m
+                return checknumberAndSize(word,tNum,originalWord);
 
-                else {
-                    int num = (int) numValue / 1000000;
-                    return Integer.toString(num) + " M" + " Dollars";
+            return originalWord ; // the number contains a char that is not a number - rules do not apply - f
+        }
+        ////////////////////////it is a number!!//////////////////////////
+        word = checkAfterNumber(word,tNum);
+        if((tNum+1 < tokens.length && tokens[tNum+1]!=null) || tNum+1 >=tokens.length) {// has not been changed
+            return dealWithSimpleNumber(word,tNum);
+        }
+        return word;
+    }
+
+    /**
+     * this function check if the number format is "123m Dollars" or "123bn Dollars" and changes the format
+     * @param word - the number
+     * @param tNum - the token index
+     * @param originalWord - the word before delimiters were deleted
+     * @return the final term
+     */
+    private String checknumberAndSize(String word, int tNum, String originalWord) {
+        String type="";
+        int multyplyer = 0;
+        if (word.charAt(word.length() - 1) == 'm') {
+            multyplyer = 1;
+            word = word.substring(0, word.length() - 1);
+        }
+        if (word.length() - 2 > 0 && word.charAt(word.length() - 1) == 'n' && word.charAt(word.length() - 2) == 'b') {
+            multyplyer = 1000;
+            word = word.substring(0, word.length() - 2);
+        }
+            try {
+                double numValue = Double.parseDouble(word);
+                tokens[tNum + 1] = null;
+                if (word.contains("."))
+                    return numValue * multyplyer + " M Dollars";
+                else return (int) numValue * multyplyer + " M Dollars";
+            } catch (Exception e2) {
+                return originalWord;
+            }
+    }
+
+    /**
+     * recievs a token that begins with '$' and is a number
+     * @param tNum - token index
+     * @param numValue - the number
+     * @param originalWord - the token befor deleted delimiters.
+     * @return - a doller term
+     */
+    private String DealWithDollerSign(int tNum, double numValue, String originalWord) {
+        String secondWord;
+        if (tNum+1 < tokens.length && tokens[tNum+1]!=null) {
+            secondWord = deleteDelimeter(tokens[tNum + 1]);
+            if (moneyMap.containsKey(secondWord)) {
+                tokens[tNum+1] = null;
+                int number = (int)numValue*moneyMap.get(secondWord).getKey();
+                return number + " M Dollars";
+            }
+        }
+        if (numValue < 1000000)
+            return originalWord.substring(1) + " Dollars";
+
+        else {
+            int num = (int) numValue / 1000000;
+            return Integer.toString(num) + " M" + " Dollars";
+        }
+    }
+
+    /**
+     * deals with a simple number and formats acording to its size
+     * @param word - the number
+     * @return - the formated number
+     */
+    private String dealWithSimpleNumber(String word,int tNum) {
+        try {
+            double number = Double.valueOf(word);
+
+            if(number >= 1000 && number < 1000000){
+                if(isInteger(number/1000)) {
+                    return (int) (number / 1000) + "K";
                 }
+                return number/1000 + "K";
+            }
+
+            if (number>=1000000 && number < 1000000000){
+                if(isInteger(number/1000000))
+                    return (int)(number/1000000) + "M";
+                return number/1000000 + "M";
+            }
+            if (number >= 1000000000){
+                if (isInteger(number/1000000000))
+                    return (int)(number/1000000000) + "B";
+                return number/1000000000 + "B";
             }
         }
         catch(Exception e){
-            //git test
-            return originalWord ; // the number contains a char that is not a number - rules do not apply - f
-            /// to do? 100bn, 100m
+            return word; // not a number
         }
-
-        ////////////////////////it is a number!!//////////////////////////
-
-        word = checkAfterNumber(word,tNum);
-        if((tNum+1 < tokens.length && tokens[tNum+1]!=null) || tNum+1 >=tokens.length)// has not been changed
-            System.out.println(" not changed");
         return word;
+    }
+
+    /**
+     * checks if a double is a Natural Number
+     * @param v - the double
+     * @return true if the number i a Natural Number
+     */
+    private boolean isInteger(double v) {
+
+        if(v/(int)v==1)
+            return true;
+        return false;
     }
 
     /**
@@ -193,6 +280,15 @@ public class Parse {
             return num + "%";
         }
 
+        //checks for numberSizeword
+        if (numberMap.containsKey(secondWord)){
+            double number = Double.valueOf(num);
+            tokens[tNum+1] = null;
+            if(!isInteger(number))
+                return number*numberMap.get(secondWord).getKey() + "" +numberMap.get(secondWord).getValue();
+            else return (int)number*numberMap.get(secondWord).getKey() + "" +numberMap.get(secondWord).getValue();
+        }
+
         //checks for "Dollars"
         if(secondWord.equals("Dollars")){
             tokens[tNum+1] = null;
@@ -205,7 +301,6 @@ public class Parse {
                 if(Double.valueOf(num)>=1000000)
                     return Double.valueOf(num)/1000000 + " M Dollars";
                 return num +" Dollars";
-
             }
         }
 
@@ -213,8 +308,6 @@ public class Parse {
         if(moneyMap.containsKey(secondWord)){
             return dealWithSizeAfterNumber(num,tNum);
         }
-
-
 
         if(secondWord.contains("/") && containsNumber(secondWord))
             return dealWithFractionAfterNumber(num,tNum,secondWord);
@@ -227,7 +320,7 @@ public class Parse {
      * @param num - the first number
      * @param tNum - the second tokens index
      * @param secondToken - the suspected fraction
-     * @return
+     * @return the term
      */
     private String dealWithFractionAfterNumber(String num, int tNum, String secondToken) {
         String[] fraction = secondToken.split("/");
@@ -249,9 +342,6 @@ public class Parse {
         }
         tokens[tNum+1] = null;
         return num+" "+secondToken;
-
-
-
     }
 
     /**
@@ -267,8 +357,7 @@ public class Parse {
                 tokens[tNum + 1] = null; tokens[tNum+2] = null; tokens[tNum + 3] = null;
                 return Integer.valueOf(num)*moneyMap.get(secondWord).getKey() + " M Dollars";
             }
-            return num;
-
+        return num;
     }
 
     /**
@@ -293,7 +382,6 @@ public class Parse {
             return num;
         }
         return num;
-
     }
 
     /**
@@ -350,4 +438,14 @@ public class Parse {
         return word;
     }
 
+
+
+    public void printIndex(){
+        System.out.println("IndexTable:");
+        for (String term:indexMap.keySet()) {
+            System.out.println("{"+term + " , "+ indexMap.get(term)+"}");
+        }
+        System.out.println("Max frequency: " + maxFreq);
+        System.out.println("end.");
+    }
 }
