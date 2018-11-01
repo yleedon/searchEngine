@@ -29,8 +29,11 @@ public class View {
         a.showAndWait();
 
     }
+
+
+    //for the test button
     public void runTests(){
-        String[][] test = {
+        String[][] tests = {
                 {"10,123","10.123K"}, {"123 Thousand","123K"}, {"1010.56","1.01056K"},
                 {"10,123,000","10.123M"}, {"55 Million","55M"}, {"1010.56","1.01056K"},
                 {"10,123,000,000","10.123B"}, {"55 Billion","55B"}, {"7 Trillion","7000B"},
@@ -40,33 +43,30 @@ public class View {
                 {"$100 million","100 M Dollars"},{"20.6m Dollars","20.6 M Dollars"},{"$100 billion","100000 M Dollars"},
                 {"100bn Dollars","100000 M Dollars"},{"100 billion U.S. dollars","100000 M Dollars"},{"320 million U.S. dollars","320 M Dollars"},
                 {"1 trillion U.S. dollars","1000000 M Dollars"},{"14 MAY","05-14"},
+                {"26 May","05-26"},{"33 MAY","33 MAY"}
+//                ,{"AAA","BBB"},{"AAA","BBB"},
 //                {"AAA","BBB"},{"AAA","BBB"},{"AAA","BBB"},
 //                {"AAA","BBB"},{"AAA","BBB"},{"AAA","BBB"},
 //                {"AAA","BBB"},{"AAA","BBB"},{"AAA","BBB"},
 //                {"AAA","BBB"},{"AAA","BBB"},{"AAA","BBB"},
 //                {"AAA","BBB"},{"AAA","BBB"},{"AAA","BBB"},
-//                {"AAA","BBB"},{"AAA","BBB"},{"AAA","BBB"},
-
-
         };
 
 
         try {
-
-
             String yaniv;
             String ans = "Results:\n";
-            for(int i = 0; i<test.length;i++) {
-                Parse parser = new Parse(test[i][0]);
+            Parse parser = new Parse("");
+            for(int i = 0; i<tests.length;i++) {
+                parser.setTxt(tests[i][0]);
                 parser.parse();
-                yaniv = removBraces(parser.toString());
-                if(yaniv.equals(test[i][1])) {
+                yaniv = removBraces(parser.toString().substring(0,parser.toString().length()-1));
+                if(yaniv.equals(tests[i][1])) {
 
-                    ans += "PASSED - Test(" + i + "): [" + test[i][0] + "] = [" + test[i][1]+"]\n";
+                    ans += "PASSED - Test(" + i + "): [" + tests[i][0] + "] = [" + tests[i][1]+"]\n";
                 }
                 else {
-                    ans +=  "FAILED!!! - Test(" + i + "): [" + test[i][0] + "] != [" + test[i][1]+"]\n";
-
+                    ans +=  "FAILED!!! - Test(" + i + "): [" + tests[i][0] + "] != [" + tests[i][1]+"] --> " + yaniv+"\n";
                 }
             }
             Alert a = new Alert(Alert.AlertType.INFORMATION);
@@ -75,15 +75,11 @@ public class View {
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
-
-
-
-
     }
+
     private String removBraces(String s){
         s = s.replace("{","");
         s = s.replace("}","");
-
         return s;
     }
 
