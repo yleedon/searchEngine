@@ -1,7 +1,6 @@
 package Model;
 
 import javafx.util.Pair;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +14,7 @@ public class Parse {
     private String[] tokens;
     private Map<String,Integer> indexMap;
     int maxFreq;
+
 
     /**
      * Constructer - recieves a string to work on
@@ -56,6 +56,7 @@ public class Parse {
      * @throws Exception
      */
     public void parse() throws Exception{
+        ans = "";
         if(txt==null)
             throw new Exception("error: text was empty");
         tokens = txt.split(" ");
@@ -78,51 +79,55 @@ public class Parse {
         }
     }
 
-    /**
-     * adds the term to the table
-     * @param word
-     */
-    private void addTerm(String word) {
-        if(word!=null && !word.equals("")) {
-            if(indexMap.containsKey(word)) {
-                indexMap.replace(word, indexMap.get(word) + 1);
-                if (maxFreq<indexMap.get(word)+1)
-                    maxFreq = indexMap.get(word);
-            }
-            else {
-                indexMap.put(word, 1);
-                if (maxFreq<1)
-                    maxFreq = 1;
-            }
-            ans = ans + "{" + word + "}";
-        }
-    }
-
     public String toString(){
         return ans;
     }
 
+    //<editor-fold desc="Private Functions">
+
+    //<editor-fold desc="Classifying Types Related">
     /**
-     * this takes a word and does the first word processing:
-     * deletes delimiters
-     * numbers
-     * Capitalizes
-     * stop words
-     * stemming
-     * @param word -the word to process
-     * @param worNum - this index of the current word
-     * @return - the processed word
+     * checks if the string contains a number
+     * @param word - string
+     * @return - true if a number is in the word
      */
-    private String tokenToTerm(String word, int worNum) {
-        word = deleteDelimeter(word);
-        if(containsNumber(word))
-            return numberEvaluation(word,worNum);
-        word = Capitelize(word);
-        // remove stop word
-        /// stemming(boolian)?
-        return word;
+    private boolean containsNumber(String word) {
+        char c = '0';
+        for(int i = 0; i< word.length();i++) {
+            c = '0';
+            for (int j = 0; j < 10; j++) {
+                if (word.charAt(i) == c){
+                    return true;
+                }
+                c++;
+            }
+        }
+        return false;
     }
 
+    /**
+     * this deletes the delimiters
+     * @param word - the word to free from delimiters
+     * @return  a word without delimeters (can return "")
+     */
+    private String deleteDelimeter(String word) {
+        char t;
+        for(int i = 0; i < delimeters.length;i++) {
+            t=delimeters[i];
+            while (word.length()> 0 && word.charAt(word.length() - 1) == delimeters[i]) {
+                word = word.substring(0, word.length() - 1);
+                i=0;
+            }
+            while (word.length()> 0 &&word.charAt(0) == delimeters[i]) {
+                word = word.substring(1);
+                i=0;
+            }
+        }
+        return word;
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="NUMBER Parsing Related">
     /**
      * this function evaluates the type of number and fixes to a tamplet form.
      * (numbers and dates)
@@ -177,15 +182,15 @@ public class Parse {
             multyplyer = 1000;
             word = word.substring(0, word.length() - 2);
         }
-            try {
-                double numValue = Double.parseDouble(word);
-                tokens[tNum + 1] = null;
-                if (word.contains("."))
-                    return numValue * multyplyer + " M Dollars";
-                else return (int) numValue * multyplyer + " M Dollars";
-            } catch (Exception e2) {
-                return originalWord;
-            }
+        try {
+            double numValue = Double.parseDouble(word);
+            tokens[tNum + 1] = null;
+            if (word.contains("."))
+                return numValue * multyplyer + " M Dollars";
+            else return (int) numValue * multyplyer + " M Dollars";
+        } catch (Exception e2) {
+            return originalWord;
+        }
     }
 
     /**
@@ -383,6 +388,55 @@ public class Parse {
         }
         return num;
     }
+    //</editor-fold>
+
+    //<editor-fold desc="Parser Actions">
+    /**
+     * adds the term to the table
+     * @param word
+     */
+    private void addTerm(String word) {
+        if(word!=null && !word.equals("")) {
+            if(indexMap.containsKey(word)) {
+                indexMap.replace(word, indexMap.get(word) + 1);
+                if (maxFreq<indexMap.get(word)+1)
+                    maxFreq = indexMap.get(word);
+            }
+            else {
+                indexMap.put(word, 1);
+                if (maxFreq<1)
+                    maxFreq = 1;
+            }
+            ans = ans + "{" + word + "} ";
+        }
+    }
+
+    /**
+     * this takes a word and does the first word processing:
+     * deletes delimiters
+     * numbers
+     * Capitalizes
+     * stop words
+     * stemming
+     * @param word -the word to process
+     * @param worNum - this index of the current word
+     * @return - the processed word
+     */
+    private String tokenToTerm(String word, int worNum) {
+        word = deleteDelimeter(word);
+        if(containsNumber(word))
+            return numberEvaluation(word,worNum);
+        word = Capitelize(word);
+        // remove stop word
+        /// stemming(boolian)?
+        return word;
+    }
+    //</editor-fold>
+
+
+
+
+
 
     /**
      * this checks if the word Starts with a capitol letter and if so makes the whole
@@ -397,48 +451,16 @@ public class Parse {
             return word.toUpperCase();
         return word;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="test functions">
     /**
-     * checks if the string contains a number
-     * @param word - string
-     * @return - true if a number is in the word
+     * sets the text to work on
+     * @param text - the String to parse
      */
-    private boolean containsNumber(String word) {
-        char c = '0';
-        for(int i = 0; i< word.length();i++) {
-            c = '0';
-            for (int j = 0; j < 10; j++) {
-                if (word.charAt(i) == c){
-                    return true;
-                }
-                c++;
-            }
-        }
-        return false;
+    public void setTxt(String text){
+        txt = text;
     }
-
-    /**
-     * this deletes the delimiters
-     * @param word - the word to free from delimiters
-     * @return  a word without delimeters (can return "")
-     */
-    private String deleteDelimeter(String word) {
-        char t;
-        for(int i = 0; i < delimeters.length;i++) {
-            t=delimeters[i];
-            while (word.length()> 0 && word.charAt(word.length() - 1) == delimeters[i]) {
-                word = word.substring(0, word.length() - 1);
-                i=0;
-            }
-            while (word.length()> 0 &&word.charAt(0) == delimeters[i]) {
-                word = word.substring(1);
-                i=0;
-            }
-        }
-        return word;
-    }
-
-
 
     public void printIndex(){
         System.out.println("IndexTable:");
@@ -448,4 +470,5 @@ public class Parse {
         System.out.println("Max frequency: " + maxFreq);
         System.out.println("end.");
     }
+    //</editor-fold>
 }
