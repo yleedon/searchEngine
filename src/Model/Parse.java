@@ -68,7 +68,7 @@ public class Parse {
      */
     private void initializeStopWords() {
 
-       try{
+        try{
             ClassLoader classLoader = getClass().getClassLoader();
             File file = new File(classLoader.getResource("StopWords").getFile());
             BufferedReader br = new BufferedReader(new FileReader(file));
@@ -187,7 +187,8 @@ public class Parse {
                 return DealWithDollerSign(tNum,numValue,originalWord);
         }
         catch(Exception e){
-            if(tNum+1 < tokens.length && tokens[tNum+1].equals("Dollars"))  // takes care of 123bn and 123m
+
+            if(tNum+1 < tokens.length && tokens[tNum+1]!=null && tokens[tNum+1].equals("Dollars"))  // takes care of 123bn and 123m
                 return checknumberAndSize(word,tNum,originalWord);
 
             return originalWord ; // the number contains a char that is not a number - rules do not apply - f
@@ -195,7 +196,7 @@ public class Parse {
         ////////////////////////it is a number!!//////////////////////////
         word = checkAfterNumber(word,tNum);
 //        if((tNum+1 < tokens.length && tokens[tNum+1]!=null) || tNum+1 >=tokens.length) {// has not been changed
-            return dealWithSimpleNumber(word,tNum);
+        return dealWithSimpleNumber(word,tNum);
 //        }
 //        return word;
     }
@@ -491,8 +492,8 @@ public class Parse {
     private String tokenToTerm(String word, int tNum) {
         String originalWord = word;
         word = deleteDelimeter(word); // deletes delimiters
-        if (stopWords.contains(word))
-            return "";
+
+
 
         if(containsNumber(word)) { // deals with numbers in String
             word = numberEvaluation(word, tNum);
@@ -508,6 +509,11 @@ public class Parse {
 
         if(checkmultiTerm(word,tNum))
             return "";
+
+        if (stopWords.contains(word.toLowerCase())) {
+            if(!word.toUpperCase().equals(word))
+                return "";
+        }
 
 
 
@@ -526,8 +532,29 @@ public class Parse {
      * @return - true if "Between Number and Number"
      */
     private boolean checkmultiTerm(String word, int tNum) {
-        if(word.contains("-")) { /// did not deal wi '-6'
+        boolean negetiveFirst = false;
+        boolean negetiveSecond = false;
+        if(word.charAt(0) == '-'){
+            word=word.substring(1);
+            negetiveFirst = true;
+        }
+        if(word.contains("-")) {
+
+            if(word.indexOf('-') + 1 < word.length())
+                if (word.charAt(word.indexOf('-') + 1) == '-') {
+                    negetiveSecond = true;
+                    char test = word.charAt(word.indexOf("-"));
+                    word = word.substring(0,word.indexOf('-') + 1) +word.substring(word.indexOf('-') + 2);
+                }
+
             String[] tempTokens = word.split("-");
+                if(tempTokens.length >= 2) {
+                    if (negetiveFirst) {
+                        tempTokens[0] = "-"+ tempTokens[0];
+                    }
+                    if (negetiveSecond)
+                        tempTokens[1] = "-" + tempTokens[1];
+                }
             tokens[tNum]=null;
             for(int i = 0; i < tempTokens.length;i++){
                 if(tempTokens[i] != null && !tempTokens[i].equals(""))
