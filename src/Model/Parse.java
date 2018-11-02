@@ -1,8 +1,14 @@
 package Model;
 
 import javafx.util.Pair;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Parse {
     private String txt;
@@ -11,6 +17,7 @@ public class Parse {
     private Map<String, Pair<Integer,String>> moneyMap;
     private Map<String,Pair<Integer,String>> numberMap;
     private String ans;
+    private Set<String> stopWords;
     private String[] tokens;
     private Map<String,Integer> indexMap;
     int maxFreq;
@@ -27,6 +34,7 @@ public class Parse {
         moneyMap = new HashMap<>();
         indexMap = new HashMap<>();
         numberMap = new HashMap<>();
+        stopWords = new HashSet<>();
         initializeMaps();
         ans ="";
     }
@@ -40,6 +48,9 @@ public class Parse {
         monthMap.put("November","11");monthMap.put("December","12");monthMap.put("JANUARY","01");monthMap.put("FEBRUARY","02");monthMap.put("MARCH","03");
         monthMap.put("APRIL","04");monthMap.put("MAY","05");monthMap.put("JUNE","06");monthMap.put("JULY","07");monthMap.put("AUGUST","08");
         monthMap.put("SEPTEMBER","09");monthMap.put("OCTOBER","10");monthMap.put("NOVEMBER","11");monthMap.put("DECEMBER","12");
+        monthMap.put("Jan","01");monthMap.put("Feb","02");monthMap.put("Mar","03");monthMap.put("Apr","04");monthMap.put("May","05");
+        monthMap.put("Jun","06");monthMap.put("Jul","07");monthMap.put("Aug","08");monthMap.put("Sep","09");monthMap.put("Oct","10");
+        monthMap.put("Nov","11");monthMap.put("Dec","12");
 
         moneyMap.put("million",new Pair<>(1,"M"));
         moneyMap.put("billion",new Pair<>(1000,"M"));
@@ -49,6 +60,26 @@ public class Parse {
         numberMap.put("Million", new Pair(1,"M"));
         numberMap.put("Billion",new Pair(1,"B"));
         numberMap.put("Thousand",new Pair(1,"K"));
+        initializeStopWords();
+    }
+
+    /**
+     * initializes stop words from a file
+     */
+    private void initializeStopWords() {
+
+       try{
+            ClassLoader classLoader = getClass().getClassLoader();
+            File file = new File(classLoader.getResource("StopWords").getFile());
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String st;
+            while ((st = br.readLine()) != null)
+                stopWords.add(st);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            System.out.println("stop words were not used!!");
+        }
     }
 
     /**
@@ -77,8 +108,13 @@ public class Parse {
 
             addTerm(word);
         }
+
     }
 
+    /**
+     * return the string of the parser (for tests)
+     * @return the parsed text.
+     */
     public String toString(){
         return ans;
     }
@@ -158,10 +194,10 @@ public class Parse {
         }
         ////////////////////////it is a number!!//////////////////////////
         word = checkAfterNumber(word,tNum);
-        if((tNum+1 < tokens.length && tokens[tNum+1]!=null) || tNum+1 >=tokens.length) {// has not been changed
+//        if((tNum+1 < tokens.length && tokens[tNum+1]!=null) || tNum+1 >=tokens.length) {// has not been changed
             return dealWithSimpleNumber(word,tNum);
-        }
-        return word;
+//        }
+//        return word;
     }
 
     /**
@@ -367,26 +403,26 @@ public class Parse {
 
     /**
      * turns two tokens: "04" and "May" int0 "05-04
-     * @param num - the day
+     * @param day - the day
      * @param tNum - the index od the day
      * @param secondWord - the month
      * @return - a Date term or the number if not a date term
      */
-    private String createDateTerm(String num, int tNum, String secondWord) {
+    private String createDateTerm(String day, int tNum, String secondWord) {
         try {
-            if (Integer.valueOf(num) <= 31 && Integer.valueOf(num) >= 1 && num.length()<3) {
-                if (num.length()==1)
-                    num = "0"+num;
+            if (Integer.valueOf(day) <= 31 && Integer.valueOf(day) >= 1 && day.length()<3) {
+                if (day.length()==1)
+                    day = "0"+day;
                 tokens[tNum+1]=null;
-                return monthMap.get(secondWord) + "-" + num;
+                return monthMap.get(secondWord) + "-" + day;
             }
         }
         catch (Exception e){
             System.out.println("number date term exception ");
             System.out.println(e.getMessage());
-            return num;
+            return day;
         }
-        return num;
+        return day;
     }
     //</editor-fold>
 
@@ -397,6 +433,8 @@ public class Parse {
      */
     private void addTerm(String word) {
         if(word!=null && !word.equals("")) {
+            word = tradeUppercase(word);
+
             if(indexMap.containsKey(word)) {
                 indexMap.replace(word, indexMap.get(word) + 1);
                 if (maxFreq<indexMap.get(word)+1)
@@ -412,6 +450,34 @@ public class Parse {
     }
 
     /**
+     * if a upperCase term arrives - checks if a lower exists.. if so changes it to lower case
+     * if a lowerCase term arrives, checks if an Upper case exists, if so deletes the upper case
+     * from the index map and ads its counter to the lowerCase index.
+     * @param word a term
+     * @return - the term
+     */
+    private String tradeUppercase(String word) {
+        if(word.charAt(0) >= 'A' && word.charAt(0) <= 'Z'){
+            if(indexMap.containsKey(word.toLowerCase())){
+                return word.toLowerCase();
+            }
+        }
+
+        if(word.charAt(0) >= 'a' && word.charAt(0) <= 'z'){
+            if(indexMap.containsKey(word.toUpperCase())){
+                String upperCase = word.toUpperCase();
+                int bigLetterCount = indexMap.get(upperCase);
+                indexMap.remove(upperCase);
+                if(indexMap.containsKey(word)){
+                    indexMap.replace(word,indexMap.get(word)+bigLetterCount);
+                }
+                else indexMap.put(word,bigLetterCount);////////////////////////////////////////problem
+            }
+        }
+        return word;
+    }
+
+    /**
      * this takes a word and does the first word processing:
      * deletes delimiters
      * numbers
@@ -419,22 +485,112 @@ public class Parse {
      * stop words
      * stemming
      * @param word -the word to process
-     * @param worNum - this index of the current word
+     * @param tNum - this index of the current word
      * @return - the processed word
      */
-    private String tokenToTerm(String word, int worNum) {
-        word = deleteDelimeter(word);
-        if(containsNumber(word))
-            return numberEvaluation(word,worNum);
-        word = Capitelize(word);
+    private String tokenToTerm(String word, int tNum) {
+        String originalWord = word;
+        word = deleteDelimeter(word); // deletes delimiters
+        if (stopWords.contains(word))
+            return "";
+
+        if(containsNumber(word)) { // deals with numbers in String
+            word = numberEvaluation(word, tNum);
+            if(!word.equals(originalWord))
+                return word;
+        }
+
+        if(monthMap.containsKey(word)) { //checks for dates
+            String date = checkWordForDate(word, tNum);
+            if (!date.equals(word))
+                return date;
+        }
+
+        if(checkmultiTerm(word,tNum))
+            return "";
+
+
+
+        word = Capitelize(word); // capitalizes all letters if start with upperCase
+
+        //term-term-term
         // remove stop word
         /// stemming(boolian)?
         return word;
     }
+
+    /**
+     * checks if is term has AA-BB-CC.. or "Between Number and Number" and changes the format
+     * @param word - the token
+     * @param tNum - token index
+     * @return - true if "Between Number and Number"
+     */
+    private boolean checkmultiTerm(String word, int tNum) {
+        if(word.contains("-")) { /// did not deal wi '-6'
+            String[] tempTokens = word.split("-");
+            tokens[tNum]=null;
+            for(int i = 0; i < tempTokens.length;i++){
+                if(tempTokens[i] != null && !tempTokens[i].equals(""))
+                    addTerm(tokenToTerm(tempTokens[i],tNum-1)); // (-1 so that it thinks the next token is num
+            }
+            return false;
+        }
+
+        try {
+            if (word.equals("Between") && tokens[tNum+2].equals("and")) {
+                String num1 = tokens[tNum+1];
+                String num2 = tokens[tNum+3];
+
+                Double.valueOf(deleteDelimeter(tokens[tNum+1]).replaceAll(",",""));
+                Double.valueOf(deleteDelimeter(tokens[tNum+3]).replaceAll(",","")); //are numbers
+                tokens[tNum] = null;  tokens[tNum+1] = null;  tokens[tNum+2] = null;  tokens[tNum+3] = null;
+                num1 = tokenToTerm(num1,tNum-1);
+                num2 = tokenToTerm(num2,tNum-1);
+                addTerm(num1);
+                addTerm(num2);
+                addTerm(num1+"-"+num2);
+                return true;
+            }
+        }
+        catch (Exception e){
+            return false;
+        }
+        return false;
+
+    }
+
+
+    /**
+     * gets a month wotd and check if a day or year is the next token
+     * and creates a date term.
+     * @param word - the month
+     * @param tNum - the token index of the motnth
+     * @return Date term of the word if not a DateTerm
+     */
+    private String checkWordForDate(String word, int tNum) {
+        if(tNum + 1 < tokens.length && tokens[tNum + 1] != null){
+            String sNum = deleteDelimeter(tokens[tNum+1]);
+            try{
+                int number = Integer.valueOf(sNum);
+                if(number <= 31 && number >= 1 && sNum.length()<3 ){
+                    if(sNum.length() == 1)
+                        sNum = "0" + sNum;
+                    tokens[tNum+1]=null;
+                    return monthMap.get(word) + "-" + sNum;
+                }
+                if (number >= 0 && sNum.length()>2){
+                    tokens[tNum+1]=null;
+                    return number +"-"+monthMap.get(word);
+                }
+            }
+            catch (Exception e){
+                return word;
+            }
+        }
+        return word;
+
+    }
     //</editor-fold>
-
-
-
 
 
 
@@ -468,7 +624,7 @@ public class Parse {
             System.out.println("{"+term + " , "+ indexMap.get(term)+"}");
         }
         System.out.println("Max frequency: " + maxFreq);
-        System.out.println("end.");
+        System.out.println("end.\n\n\n");
     }
     //</editor-fold>
 }
