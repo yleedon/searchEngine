@@ -13,7 +13,7 @@ public class Main extends Application {
         primaryStage.setTitle("Search Engine");
         FXMLLoader fxmlLoader = new FXMLLoader();
         Parent root = fxmlLoader.load(getClass().getResource("View.fxml").openStream());
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 600*1.5, 400*1.5);
 
         scene.getStylesheets().clear();
         scene.getStylesheets().add(getClass().getResource("View.css").toExternalForm());
