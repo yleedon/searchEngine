@@ -97,9 +97,11 @@ public class View {
                 a.setContentText(ans);
                 a.setHeaderText("The following tests have failed:");
                 a.setTitle("FAIL!!!");
+                a.setAlertType(Alert.AlertType.ERROR);
 
             }
             else {
+                a.setAlertType(Alert.AlertType.NONE);
                 a.getDialogPane().setMinWidth(300);
                 a.setTitle("SUCCESS!");
                 a.setContentText("YEY!!");

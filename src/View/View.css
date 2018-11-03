@@ -1,0 +1,13 @@
+.root {
+    -fx-background-image: url("../Resources/google2.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover, auto;
+}
+
+.button{
+
+}
+.text-field{
+
+
+}
