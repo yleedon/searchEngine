@@ -4,10 +4,16 @@
     -fx-background-size: cover, auto;
 }
 
+
+
+
 .button{
 
 }
 .text-field{
+    -fx-border-width: 2;
+    -fx-border-color: #cccccc;
+
 
 
 }

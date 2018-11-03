@@ -3,6 +3,7 @@ package View;
 
 import Model.Parse;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -20,6 +21,7 @@ public class View {
 
 
     public void testParse() {
+        fld_text.setOpacity(0.3);
         if ((fld_text.getText().equals("")))
             return;
 
@@ -119,5 +121,16 @@ public class View {
         s = s.replace("}","");
         return s;
     }
+
+
+    public void textPress(){
+        fld_text.setOpacity(1);
+    }
+
+    public void onSearchPressed(KeyEvent event){
+        fld_text.setOpacity(1);
+        if(event!=null && event.getCode().getName().equals("Enter"))
+            testParse();
+        }
 
 }
