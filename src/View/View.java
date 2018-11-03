@@ -2,9 +2,15 @@ package View;
 
 
 import Model.Parse;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.HashMap;
+import java.util.Map;
 
 public class View {
     public TextField fld_text;
@@ -25,6 +31,9 @@ public class View {
             System.out.println(e.getMessage());
         }
         Alert a = new Alert(Alert.AlertType.INFORMATION);
+        DialogPane dialogPane = a.getDialogPane();
+        dialogPane.getStylesheets().add(getClass().getResource("Alert.css").toExternalForm());
+        dialogPane.getStyleClass().add("myDialog");
         a.setContentText(parser.toString());
         a.showAndWait();
 
@@ -33,44 +42,70 @@ public class View {
 
     //for the test button
     public void runTests(){
-        String[][] tests = {
-                {"10,123","10.123K"}, {"123 Thousand","123K"}, {"1010.56","1.01056K"},
-                {"10,123,000","10.123M"}, {"55 Million","55M"}, {"1010.56","1.01056K"},
-                {"10,123,000,000","10.123B"}, {"55 Billion","55B"}, {"7 Trillion","7000B"},
-                {"6%","6%"}, {"10.6 percent","10.6%"}, {"10.6 percentage","10.6%"},
-                {"1.7320 Dollars","1.7320 Dollars"},{"22 3/4 Dollars","22 3/4 Dollars"},{"22 3/4","22 3/4"},
-                {"$450,000","450,000 Dollars"},{"1,000,000 Dollars","1 M Dollars"},{"$450,000,000","450 M Dollars"},
-                {"$100 million","100 M Dollars"},{"20.6m Dollars","20.6 M Dollars"},{"$100 billion","100000 M Dollars"},
-                {"100bn Dollars","100000 M Dollars"},{"100 billion U.S. dollars","100000 M Dollars"},{"320 million U.S. dollars","320 M Dollars"},
-                {"1 trillion U.S. dollars","1000000 M Dollars"},{"14 MAY","05-14"},
-                {"26 May","05-26"},{"33 MAY","33 MAY"}
-//                ,{"AAA","BBB"},{"AAA","BBB"},
-//                {"AAA","BBB"},{"AAA","BBB"},{"AAA","BBB"},
-//                {"AAA","BBB"},{"AAA","BBB"},{"AAA","BBB"},
-//                {"AAA","BBB"},{"AAA","BBB"},{"AAA","BBB"},
-//                {"AAA","BBB"},{"AAA","BBB"},{"AAA","BBB"},
-//                {"AAA","BBB"},{"AAA","BBB"},{"AAA","BBB"},
-        };
+
+        Map<String,String> tests = new HashMap<>();
+        try {
+            ClassLoader classLoader = getClass().getClassLoader();
+            File file = new File(classLoader.getResource("parseTests.txt").getFile());
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            String[] cut;
+            while ((line = br.readLine()) != null) {
+                if(line.contains("=") && line.charAt(0) != '#') {
+                    if (line.contains("#"))
+                        line = line.substring(0,line.indexOf("#")-1);
+                    cut = line.split("=");
+                    tests.put(cut[0], cut[1]);
+                }
+            }
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            System.out.println("idiot! the test file is bad!!");
+        }
+
+
 
 
         try {
-            String yaniv;
-            String ans = "Results:\n";
+            String outPut;
+            boolean failed = false;
+            String ans = "Format: [input] != [wantedOutput] --> [actualOutput]\n\nResults:\n";
             Parse parser = new Parse("");
-            for(int i = 0; i<tests.length;i++) {
-                parser.setTxt(tests[i][0]);
+            int i = 0;
+            for (String input:tests.keySet()) {
+                i++;
+                parser.setTxt(input);
                 parser.parse();
-                yaniv = removBraces(parser.toString().substring(0,parser.toString().length()-1));
-                if(yaniv.equals(tests[i][1])) {
+                outPut = removBraces(parser.toString().substring(0,parser.toString().length()-1));
+                if(!outPut.equals(tests.get(input))) {
+                    failed = true;
+                    ans +=  "Test(" + i + "): [" + input + "] != [" + tests.get(input)+"] --> [" + outPut+"]\n";
+                }
 
-                    ans += "PASSED - Test(" + i + "): [" + tests[i][0] + "] = [" + tests[i][1]+"]\n";
-                }
-                else {
-                    ans +=  "FAILED!!! - Test(" + i + "): [" + tests[i][0] + "] != [" + tests[i][1]+"] --> " + yaniv+"\n";
-                }
             }
+
+
+
             Alert a = new Alert(Alert.AlertType.INFORMATION);
-            a.setContentText(ans);
+            DialogPane dialogPane = a.getDialogPane();
+            dialogPane.getStylesheets().add(getClass().getResource("Alert.css").toExternalForm());
+            dialogPane.getStyleClass().add("myDialog");
+
+            if (failed) {
+                a.getDialogPane().setMinWidth(800);
+                a.setContentText(ans);
+                a.setHeaderText("The following tests have failed:");
+                a.setTitle("FAIL!!!");
+
+            }
+            else {
+                a.getDialogPane().setMinWidth(300);
+                a.setTitle("SUCCESS!");
+                a.setContentText("YEY!!");
+                a.setHeaderText("All tests passed!!");
+
+            }
             a.showAndWait();
         } catch (Exception e){
             System.out.println(e.getMessage());

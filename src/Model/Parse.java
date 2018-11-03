@@ -266,19 +266,28 @@ public class Parse {
             double number = Double.valueOf(word);
 
             if(number >= 1000 && number < 1000000){
-                if(isInteger(number/1000)) {
-                    return (int) (number / 1000) + "K";
-                }
-                return number/1000 + "K";
+//                number = (int)number;
+                number=number/1000;
+                if(number % 1 == 0)
+                    return (int)number + "K";
+//
+                return number + "K";
             }
 
             if (number>=1000000 && number < 1000000000){
-                if(isInteger(number/1000000))
-                    return (int)(number/1000000) + "M";
-                return number/1000000 + "M";
+
+                double fraction;
+                if(number%1 != 0){
+                    fraction = number % 1000000;
+                }
+
+                number=number/1000000;
+                if(number % 1 == 0)
+                    return (int)number + "M";
+                return number + "M";
             }
             if (number >= 1000000000){
-                if (isInteger(number/1000000000))
+                if ((number/1000000000) % 1 == 0)
                     return (int)(number/1000000000) + "B";
                 return number/1000000000 + "B";
             }
@@ -548,13 +557,13 @@ public class Parse {
                 }
 
             String[] tempTokens = word.split("-");
-                if(tempTokens.length >= 2) {
-                    if (negetiveFirst) {
-                        tempTokens[0] = "-"+ tempTokens[0];
-                    }
-                    if (negetiveSecond)
-                        tempTokens[1] = "-" + tempTokens[1];
+            if(tempTokens.length >= 2) {
+                if (negetiveFirst) {
+                    tempTokens[0] = "-"+ tempTokens[0];
                 }
+                if (negetiveSecond)
+                    tempTokens[1] = "-" + tempTokens[1];
+            }
             tokens[tNum]=null;
             for(int i = 0; i < tempTokens.length;i++){
                 if(tempTokens[i] != null && !tempTokens[i].equals(""))
