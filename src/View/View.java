@@ -2,9 +2,9 @@ package View;
 
 
 import Model.Parse;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,6 +31,9 @@ public class View {
             System.out.println(e.getMessage());
         }
         Alert a = new Alert(Alert.AlertType.INFORMATION);
+        DialogPane dialogPane = a.getDialogPane();
+        dialogPane.getStylesheets().add(getClass().getResource("Alert.css").toExternalForm());
+        dialogPane.getStyleClass().add("myDialog");
         a.setContentText(parser.toString());
         a.showAndWait();
 
@@ -48,8 +51,12 @@ public class View {
             String line;
             String[] cut;
             while ((line = br.readLine()) != null) {
-                cut = line.split("=");
-                tests.put(cut[0],cut[1]);
+                if(line.contains("=") && line.charAt(0) != '#') {
+                    if (line.contains("#"))
+                        line = line.substring(0,line.indexOf("#")-1);
+                    cut = line.split("=");
+                    tests.put(cut[0], cut[1]);
+                }
             }
         }
         catch (Exception e){
@@ -62,7 +69,8 @@ public class View {
 
         try {
             String outPut;
-            String ans = "Results:\n";
+            boolean failed = false;
+            String ans = "Format: [input] != [wantedOutput] --> [actualOutput]\n\nResults:\n";
             Parse parser = new Parse("");
             int i = 0;
             for (String input:tests.keySet()) {
@@ -70,19 +78,32 @@ public class View {
                 parser.setTxt(input);
                 parser.parse();
                 outPut = removBraces(parser.toString().substring(0,parser.toString().length()-1));
-                if(outPut.equals(tests.get(input))) {
-
-                    ans += "PASSED - Test(" + i + "): [" + input + "] = [" + tests.get(input)+"]\n";
-                }
-                else {
-                    ans +=  "FAILED!!! - Test(" + i + "): [" + input + "] != [" + tests.get(input)+"] --> " + outPut+"\n";
+                if(!outPut.equals(tests.get(input))) {
+                    failed = true;
+                    ans +=  "Test(" + i + "): [" + input + "] != [" + tests.get(input)+"] --> [" + outPut+"]\n";
                 }
 
             }
-                
-            
+
+
+
             Alert a = new Alert(Alert.AlertType.INFORMATION);
-            a.setContentText(ans);
+            DialogPane dialogPane = a.getDialogPane();
+            dialogPane.getStylesheets().add(getClass().getResource("Alert.css").toExternalForm());
+            dialogPane.getStyleClass().add("myDialog");
+            a.getDialogPane().setMinWidth(500);
+            if (failed) {
+                a.setContentText(ans);
+                a.setHeaderText("The following tests have failed:");
+                a.setTitle("FAIL!!!");
+
+            }
+            else {
+                a.setTitle("SUCCESS!");
+                a.setContentText("YEY!!");
+                a.setHeaderText("All tests passed!!");
+
+            }
             a.showAndWait();
         } catch (Exception e){
             System.out.println(e.getMessage());
