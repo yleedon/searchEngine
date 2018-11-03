@@ -91,14 +91,16 @@ public class View {
             DialogPane dialogPane = a.getDialogPane();
             dialogPane.getStylesheets().add(getClass().getResource("Alert.css").toExternalForm());
             dialogPane.getStyleClass().add("myDialog");
-            a.getDialogPane().setMinWidth(500);
+
             if (failed) {
+                a.getDialogPane().setMinWidth(800);
                 a.setContentText(ans);
                 a.setHeaderText("The following tests have failed:");
                 a.setTitle("FAIL!!!");
 
             }
             else {
+                a.getDialogPane().setMinWidth(300);
                 a.setTitle("SUCCESS!");
                 a.setContentText("YEY!!");
                 a.setHeaderText("All tests passed!!");
