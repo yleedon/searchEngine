@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class Parse {
+    private int yaniv;
     private String txt;
     private Map<String,String> monthMap;
     private char[] delimeters = {'.',',','?','!','"','\'',':',';','(',')','{','}','[',']','/','\\','<','>','\n'};
@@ -28,6 +29,7 @@ public class Parse {
      * @param text - the string to work on
      */
     public Parse(String text) {
+        yaniv=0;
         this.txt = text;
         maxFreq = 0;
         monthMap = new HashMap<>();
@@ -442,7 +444,11 @@ public class Parse {
      * @param word
      */
     private void addTerm(String word) {
-        if(word!=null && !word.equals("")) {
+        System.out.println(yaniv);
+        if(yaniv==36)
+            System.out.println("stoppp");
+        yaniv++;
+        if(word!=null && !word.equals("") && !word.equals("-") ) {
             word = tradeUppercase(word);
 
             if(indexMap.containsKey(word)) {
@@ -501,7 +507,13 @@ public class Parse {
     private String tokenToTerm(String word, int tNum) {
         String originalWord = word;
         word = deleteDelimeter(word); // deletes delimiters
-
+        if (!word.contains("-")) {
+            Stemmer stemmer = new Stemmer();
+            for (int i = 0; i < word.length(); i++)
+                stemmer.add(word.charAt(i));
+            stemmer.stem();
+            word = stemmer.toString();
+        }
 
 
         if(containsNumber(word)) { // deals with numbers in String
@@ -538,7 +550,7 @@ public class Parse {
      * checks if is term has AA-BB-CC.. or "Between Number and Number" and changes the format
      * @param word - the token
      * @param tNum - token index
-     * @return - true if "Between Number and Number"
+     * @return - true if finished and original word needs to be deleted (not continye the parsing)
      */
     private boolean checkmultiTerm(String word, int tNum) {
         boolean negetiveFirst = false;
@@ -557,6 +569,7 @@ public class Parse {
                 }
 
             String[] tempTokens = word.split("-");
+            String[] orginalTokens = word.split("-");
             if(tempTokens.length >= 2) {
                 if (negetiveFirst) {
                     tempTokens[0] = "-"+ tempTokens[0];
@@ -565,11 +578,22 @@ public class Parse {
                     tempTokens[1] = "-" + tempTokens[1];
             }
             tokens[tNum]=null;
+            String temp = "";
+            String totalTerm = "";
+
             for(int i = 0; i < tempTokens.length;i++){
+
                 if(tempTokens[i] != null && !tempTokens[i].equals(""))
-                    addTerm(tokenToTerm(tempTokens[i],tNum-1)); // (-1 so that it thinks the next token is num
+                    temp= tokenToTerm(tempTokens[i],tNum-1);
+                if(temp.equals("")) // stemming (the-the => "" "" the-the
+                    temp = orginalTokens[i];
+                if(i!=0)
+                    totalTerm = totalTerm + "-" + temp;
+                else totalTerm = totalTerm + temp;
+                addTerm(tokenToTerm(tempTokens[i],tNum-1)); // (-1 so that it thinks the next token is num
             }
-            return false;
+            addTerm(totalTerm);
+            return true;
         }
 
         try {

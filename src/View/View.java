@@ -79,7 +79,10 @@ public class View {
                 i++;
                 parser.setTxt(input);
                 parser.parse();
-                outPut = removBraces(parser.toString().substring(0,parser.toString().length()-1));
+
+                if (!parser.toString().equals(""))
+                    outPut = removBraces(parser.toString().substring(0,parser.toString().length()-1));
+                else outPut = "";
                 if(!outPut.equals(tests.get(input))) {
                     failed = true;
                     ans +=  "Test(" + i + "): [" + input + "] != [" + tests.get(input)+"] --> [" + outPut+"]\n";
@@ -131,6 +134,6 @@ public class View {
         fld_text.setOpacity(1);
         if(event!=null && event.getCode().getName().equals("Enter"))
             testParse();
-        }
+    }
 
 }
