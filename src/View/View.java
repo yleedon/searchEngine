@@ -1,7 +1,9 @@
 package View;
 
 
+import Model.MyDocument;
 import Model.Parse;
+import Model.ReadFile;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
@@ -15,6 +17,7 @@ import java.util.Map;
 
 public class View {
     public TextField fld_text;
+    public TextField fld_path;
     public Button btn_testParse;
     public Button btn_runTests;
     public CheckBox btn_stemmingBox;
@@ -124,6 +127,18 @@ public class View {
         s = s.replace("{","");
         s = s.replace("}","");
         return s;
+    }
+
+    public void testReadFile(){
+        ReadFile rf = new ReadFile("C:\\Dan\\UNI\\Jarta.Projects\\searchEngine\\src\\Resources\\corpus");
+//        rf.readDirectory();
+        try {
+            MyDocument document= rf.getDocument("tst4");
+            System.out.println(document.getTxt());
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
 

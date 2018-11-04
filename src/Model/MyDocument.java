@@ -1,9 +1,9 @@
 package Model;
 
-public class Dodument {
+public class MyDocument {
     String doc, txt;
 
-    public Dodument(String doc) {
+    public MyDocument(String doc) {
         this.doc = doc;
         createTxt();
     }
@@ -16,8 +16,10 @@ public class Dodument {
         try {
             String[] splittedDoc = doc.split("<Text>");
             txt = (splittedDoc[1].split("</Text>"))[0];
+            txt = txt.substring(1, txt.length()-1);
         }
         catch (Exception e){
+            System.out.println(e.getMessage());
             txt = null;
         }
     }
