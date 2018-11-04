@@ -1,5 +1,5 @@
 package Model;
-
+//DAN
 import javafx.util.Pair;
 
 import java.io.BufferedReader;
@@ -266,7 +266,7 @@ public class Parse {
         try {
             double number = Double.valueOf(word);
 
-            if(number >= 1000 && number < 1000000){
+            if((number >= 1000 && number < 1000000) || (number*-1 >= 1000 && number*-1 < 1000000)){
 //                number = (int)number;
                 number=number/1000;
                 if(number % 1 == 0)
@@ -275,7 +275,7 @@ public class Parse {
                 return number + "K";
             }
 
-            if (number>=1000000 && number < 1000000000){
+            if ((number>=1000000 && number < 1000000000) || (number*-1>=1000000 && number*-1 < 1000000000)){
 
                 double fraction;
                 if(number%1 != 0){
@@ -288,7 +288,7 @@ public class Parse {
                     return (int)number + "M";
                 return number + "M";
             }
-            if (number >= 1000000000){
+            if (number >= 1000000000 || number*-1 >= 1000000000 ){
                 if ((number/1000000000) % 1 == 0)
                     return (int)(number/1000000000) + "B";
                 return number/1000000000 + "B";
@@ -530,7 +530,7 @@ public class Parse {
 
         checkIfWeb(word); // check if website
 
-        word = Capitelize(word); // capitalizes all letters if starts with upperCase
+        word = Capitalize(word); // capitalizes all letters if starts with upperCase
 
         return word;
     }
@@ -685,7 +685,7 @@ public class Parse {
      * @param word - the word to capitalize
      * @return - the word
      */
-    private String Capitelize(String word) {
+    private String Capitalize(String word) {
         if(word==null || word.equals(""))
             return word;
         if(word.charAt(0) >=65 && word.charAt(0) <=90)
