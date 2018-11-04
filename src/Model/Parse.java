@@ -13,6 +13,7 @@ import java.util.Set;
 public class Parse {
 
     private String txt;
+    private boolean useStemming;
     private Map<String,String> monthMap;
     private char[] delimeters = {'.',',','?','!','"','\'',':',';','(',')','{','}','[',']','/','\\','<','>','\n'};
     private Map<String, Pair<Integer,String>> moneyMap;
@@ -28,15 +29,10 @@ public class Parse {
      * Constructer - recieves a string to work on
      * @param text - the string to work on
      */
-    public Parse(String text) {
-
+    public Parse(String text,boolean stemmerStatus) {
         this.txt = text;
+        this.useStemming = stemmerStatus;
         maxFreq = 0;
-        monthMap = new HashMap<>();
-        moneyMap = new HashMap<>();
-        indexMap = new HashMap<>();
-        numberMap = new HashMap<>();
-        stopWords = new HashSet<>();
         initializeMaps();
         ans ="";
     }
@@ -45,6 +41,11 @@ public class Parse {
      * initializes the Hash Maps
      */
     private void initializeMaps() {
+        monthMap = new HashMap<>();
+        moneyMap = new HashMap<>();
+        indexMap = new HashMap<>();
+        numberMap = new HashMap<>();
+        stopWords = new HashSet<>();
         monthMap.put("January","01");monthMap.put("February","02");monthMap.put("March","03");monthMap.put("April","04");monthMap.put("May","05");
         monthMap.put("June","06");monthMap.put("July","07");monthMap.put("August","08");monthMap.put("September","09");monthMap.put("October","10");
         monthMap.put("November","11");monthMap.put("December","12");monthMap.put("JANUARY","01");monthMap.put("FEBRUARY","02");monthMap.put("MARCH","03");
@@ -91,10 +92,10 @@ public class Parse {
     public void parse() throws Exception{
         ans = "";
         if(txt==null)
-            throw new Exception("error: text was empty");
+            throw new Exception("error: text was empty (PARSE: parse()");
         tokens = txt.split(" ");
         if (tokens==null || tokens.length==0)
-            throw new Exception("error: split didnt work");
+            throw new Exception("error: split didnt work (PARSE: parse()");
 
         String word = "";
         for (int tNum = 0;tNum < tokens.length;tNum++ ) {
@@ -104,13 +105,11 @@ public class Parse {
                 word = tokenToTerm(tokens[tNum], tNum);
             }
             catch (Exception e){
-                System.out.println("something went terribly wrong - this should never happen ):");
+                System.out.println("something went terribly wrong - this should never happen ) (PARSE: parse():");
                 System.out.println(e.getMessage());
             }
-
             addTerm(word);
         }
-
     }
 
     /**
@@ -505,14 +504,9 @@ public class Parse {
     private String tokenToTerm(String word, int tNum) {
         String originalWord = word;
         word = deleteDelimeter(word); // deletes delimiters
-        if (!word.contains("-")) {
-            Stemmer stemmer = new Stemmer();
-            for (int i = 0; i < word.length(); i++)
-                stemmer.add(word.charAt(i));
-            stemmer.stem();
-            word = stemmer.toString();
-        }
 
+        if(useStemming) // stemming
+            word = stem(word);
 
         if(containsNumber(word)) { // deals with numbers in String
             word = numberEvaluation(word, tNum);
@@ -526,26 +520,63 @@ public class Parse {
                 return date;
         }
 
-        if(checkmultiTerm(word,tNum))
+        if(checkmultiTerm(word,tNum)) // check multi term
             return "";
 
-        if (stopWords.contains(word.toLowerCase())) {
+        if (stopWords.contains(word.toLowerCase())) { //remove wanted stop word
             if(!word.toUpperCase().equals(word))
                 return "";
         }
 
+        checkIfWeb(word); // check if website
 
+        word = Capitelize(word); // capitalizes all letters if starts with upperCase
 
-        word = Capitelize(word); // capitalizes all letters if start with upperCase
-
-        //term-term-term
-        // remove stop word
-        /// stemming(boolian)?
         return word;
     }
 
     /**
+     * this function recieves a token and stems it
+     * @param word - the token
+     * @return - the token after stemming
+     */
+    private String stem(String word) {
+        if (!word.contains("-")) {
+            Stemmer stemmer = new Stemmer();
+            for (int i = 0; i < word.length(); i++)
+                stemmer.add(word.charAt(i));
+            stemmer.stem();
+            return stemmer.toString();
+        }
+        return word;
+    }
+
+    /**
+     * checks if the token is a webSite, if so creates two terms:
+     * 1. the website
+     * 2. the name of the webSite ([www.google.com],[google])
+     * @param word - the token
+     */
+    private void checkIfWeb(String word) {
+
+        try {
+            if (word.startsWith("www.") || word.startsWith("WWW.") || word.startsWith("https://")) {
+                if (word.startsWith("https://"))
+                    word = word.substring(8);
+                else word = word.substring(4);
+                if (word.contains("."))
+                    word=word.substring(0,word.indexOf('.'));
+                    addTerm(word);
+
+            }
+        }catch (Exception e){
+            return;
+        }
+    }
+
+    /**
      * checks if is term has AA-BB-CC.. or "Between Number and Number" and changes the format
+     * first it dicovers if the tokens are negetive numbers
      * @param word - the token
      * @param tNum - token index
      * @return - true if finished and original word needs to be deleted (not continye the parsing)
@@ -598,7 +629,7 @@ public class Parse {
             if (word.equals("Between") && tokens[tNum+2].equals("and")) {
                 String num1 = tokens[tNum+1];
                 String num2 = tokens[tNum+3];
-
+                //test its numbers
                 Double.valueOf(deleteDelimeter(tokens[tNum+1]).replaceAll(",",""));
                 Double.valueOf(deleteDelimeter(tokens[tNum+3]).replaceAll(",","")); //are numbers
                 tokens[tNum] = null;  tokens[tNum+1] = null;  tokens[tNum+2] = null;  tokens[tNum+3] = null;
@@ -614,9 +645,7 @@ public class Parse {
             return false;
         }
         return false;
-
     }
-
 
     /**
      * gets a month wotd and check if a day or year is the next token
@@ -650,8 +679,6 @@ public class Parse {
     }
     //</editor-fold>
 
-
-
     /**
      * this checks if the word Starts with a capitol letter and if so makes the whole
      * word upper case
@@ -674,6 +701,14 @@ public class Parse {
      */
     public void setTxt(String text){
         txt = text;
+    }
+
+    /**
+     * avtivates and de activates stemming
+     * @param use - true if stemming wnated, else false
+     */
+    public void setStemming(boolean use){
+        useStemming = use;
     }
 
     public void printIndex(){
