@@ -1,91 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="" />
-    <ignored path="JavaFxApplication.iws" />
-    <ignored path=".idea/workspace.xml" />
-    <ignored path="$PROJECT_DIR$/out/" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <list default="true" id="fc1a8f90-406e-4e06-a415-4f9b1b33be6a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="CreatePatchCommitExecutor">
-    <option name="PATCH_PATH" value="" />
-  </component>
-  <component name="DebuggerManager">
-    <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true" converted="true">
-      <breakpoint>
-        <option name="NOTIFY_CAUGHT" value="true" />
-        <option name="NOTIFY_UNCAUGHT" value="true" />
-        <option name="ENABLED" value="false" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint>
-        <option name="NOTIFY_CAUGHT" value="true" />
-        <option name="NOTIFY_UNCAUGHT" value="true" />
-        <option name="ENABLED" value="false" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-    </breakpoint_any>
-    <ui_properties converted="true" />
-    <breakpoint_rules converted="true" />
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/SearchEngine$Main.ic" NAME="Main Coverage Results" MODIFIED="1541075223575" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>Model.*</FILTER>
+    </SUITE>
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="-1754674636">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="7" />
-          <entry key="project.open.time.1" value="2" />
-          <entry key="project.open.time.15" value="3" />
-          <entry key="project.open.time.16" value="1" />
+          <entry key="project.closed" value="16" />
+          <entry key="project.open.time.1" value="3" />
+          <entry key="project.open.time.15" value="5" />
+          <entry key="project.open.time.16" value="2" />
+          <entry key="project.open.time.17" value="1" />
+          <entry key="project.open.time.20" value="2" />
+          <entry key="project.open.time.22" value="1" />
+          <entry key="project.open.time.3" value="1" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="7" />
+          <entry key="project.opened" value="16" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="3" />
+          <entry key="JPG" value="1" />
+          <entry key="StopWords" value="1" />
+          <entry key="css" value="2" />
+          <entry key="fxml" value="1" />
+          <entry key="java" value="9" />
+          <entry key="jpg" value="1" />
+          <entry key="txt" value="1" />
+          <entry key="xml" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="3" />
+          <entry key="CSS" value="2" />
+          <entry key="Image" value="2" />
+          <entry key="JAVA" value="9" />
+          <entry key="PLAIN_TEXT" value="2" />
+          <entry key="XML" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="dummy" value="2" />
-          <entry key="fxml" value="9" />
-          <entry key="java" value="8086" />
+          <entry key="css" value="617" />
+          <entry key="dummy" value="7" />
+          <entry key="fxml" value="71" />
+          <entry key="java" value="18876" />
+          <entry key="txt" value="1784" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="8086" />
-          <entry key="PLAIN_TEXT" value="2" />
-          <entry key="XML" value="9" />
+          <entry key="CSS" value="617" />
+          <entry key="JAVA" value="18875" />
+          <entry key="PLAIN_TEXT" value="1791" />
+          <entry key="RegExp" value="1" />
+          <entry key="XML" value="71" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.vcs.git.usages">
+        <counts>
+          <entry key="git.branch.create.new" value="1" />
         </counts>
       </usages-collector>
     </session>
@@ -96,112 +82,166 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
+        <entry file="file://$PROJECT_DIR$/src/View/View.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="153">
-              <caret line="13" column="45" selection-start-line="13" selection-start-column="45" selection-end-line="13" selection-end-column="45" />
+              <caret line="19" column="16" selection-start-line="19" selection-start-column="16" selection-end-line="19" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Resources/parseTests.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="782">
+              <caret line="46" column="18" selection-start-line="46" selection-end-line="46" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Model/Stemmer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1649">
+              <caret line="98" selection-start-line="98" selection-end-line="98" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#2628#2629#0" expanded="true" />
+                <element signature="e#2755#2756#0" expanded="true" />
+                <element signature="e#2783#2784#0" expanded="true" />
+                <element signature="e#3032#3033#0" expanded="true" />
+                <element signature="e#3056#3057#0" expanded="true" />
+                <element signature="e#5903#5904#0" expanded="true" />
+                <element signature="e#5940#5941#0" expanded="true" />
+                <element signature="e#7275#7276#0" expanded="true" />
+                <element signature="e#7333#7334#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/Controller.java">
+        <entry file="file://$PROJECT_DIR$/src/View/View.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="25" selection-start-line="25" selection-end-line="25" />
+            <state relative-caret-position="102">
+              <caret line="6" selection-start-line="6" selection-end-line="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/View/Alert.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="13" column="4" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/View/View.fxml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+            </state>
+          </provider>
+          <provider editor-type-id="JavaFX-Scene-Builder" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Model/Parse.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="392">
+              <caret line="122" column="4" selection-start-line="122" selection-start-column="4" selection-end-line="122" selection-end-column="4" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#717#821#0" />
+                <element signature="e#717#1012#0" />
+                <element signature="e#1018#1062#0" />
+                <element signature="e#1018#2737#0" />
+                <element signature="e#2743#2796#0" />
+                <element signature="e#2743#3346#0" />
+                <element signature="e#3352#3449#0" />
+                <element signature="e#3352#4251#0" />
+                <element signature="e#4257#4351#0" />
+                <element signature="e#4413#4453#0" />
+                <element signature="e#4459#4507#0" />
+                <element signature="e#4512#4646#0" />
+                <element signature="e#4512#4995#0" />
+                <element signature="e#5001#5159#0" />
+                <element signature="e#5001#5679#0" />
+                <element signature="e#5706#5751#0" />
+                <element signature="e#5756#5993#0" />
+                <element signature="e#5756#7172#0" />
+                <element signature="e#7132#7143#0" />
+                <element signature="e#7178#7465#0" />
+                <element signature="e#7178#8320#0" />
+                <element signature="e#8326#8562#0" />
+                <element signature="e#8326#9271#0" />
+                <element signature="e#9277#9424#0" />
+                <element signature="e#9277#10674#0" />
+                <element signature="e#10680#10819#0" />
+                <element signature="e#10680#10939#0" />
+                <element signature="e#10945#11019#0" />
+                <element signature="e#10945#12845#0" />
+                <element signature="e#12851#13067#0" />
+                <element signature="e#12851#13803#0" />
+                <element signature="e#13809#13936#0" />
+                <element signature="e#13809#14448#0" />
+                <element signature="e#14454#14686#0" />
+                <element signature="e#14454#15264#0" />
+                <element signature="e#15291#15328#0" />
+                <element signature="e#15333#15397#0" />
+                <element signature="e#15333#15965#0" />
+                <element signature="e#15971#16296#0" />
+                <element signature="e#15971#17108#0" />
+                <element signature="e#17114#17408#0" />
+                <element signature="e#17114#18429#0" />
+                <element signature="e#18435#18570#0" />
+                <element signature="e#18435#18890#0" />
+                <element signature="e#18896#19088#0" />
+                <element signature="e#18896#19607#0" />
+                <element signature="e#19613#19941#0" />
+                <element signature="e#19613#22522#0" />
+                <element signature="e#22528#22778#0" />
+                <element signature="e#22528#23606#0" />
+                <element signature="e#23633#23823#0" />
+                <element signature="e#23633#24056#0" />
+                <element signature="e#24083#24120#0" />
+                <element signature="e#24125#24209#0" />
+                <element signature="e#24278#24388#0" />
+                <element signature="e#24469#24772#0" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_171/javafx-src.zip!/javafx/fxml/FXMLLoader.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="28084">
-              <caret line="1772" selection-start-line="1772" selection-end-line="1772" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ReadFile.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="21" selection-start-column="21" selection-end-column="21" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/sample/Parse.java">
+        <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Model/ReadFile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="310">
-              <caret line="153" column="47" lean-forward="true" selection-start-line="153" selection-start-column="47" selection-end-line="153" selection-end-column="47" />
-              <folding>
-                <element signature="docComment;method#Parse#0;class#Parse#0" />
-                <element signature="method#Parse#0;class#Parse#0" />
-                <element signature="method#initializeMaps#0;class#Parse#0" />
-                <element signature="docComment;method#parse#0;class#Parse#0" />
-                <element signature="e#2472#2473#0" expanded="true" />
-                <element signature="e#2498#2499#0" expanded="true" />
-                <element signature="docComment;method#cleanWord#0;class#Parse#0" />
-                <element signature="docComment;method#numberEvaluation#0;class#Parse#0" />
-                <element signature="docComment;method#checkAfterNumber#0;class#Parse#0" />
-                <element signature="method#dealWithFractionAfterNumber#0;class#Parse#0" />
-                <element signature="docComment;method#dealWithSizeAfterNumber#0;class#Parse#0" />
-                <element signature="method#dealWithSizeAfterNumber#0;class#Parse#0" />
-                <element signature="docComment;method#createDateTerm#0;class#Parse#0" />
-                <element signature="method#createDateTerm#0;class#Parse#0" />
-                <element signature="docComment;method#Capitelize#0;class#Parse#0" />
-                <element signature="method#Capitelize#0;class#Parse#0" />
-                <element signature="docComment;method#containsNumber#0;class#Parse#0" />
-                <element signature="method#containsNumber#0;class#Parse#0" />
-                <element signature="docComment;method#deleteDelimeter#0;class#Parse#0" />
-                <element signature="method#deleteDelimeter#0;class#Parse#0" />
-              </folding>
+            <state relative-caret-position="68">
+              <caret line="4" selection-start-line="4" selection-end-line="4" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/sample.fxml">
-          <provider editor-type-id="JavaFX-Scene-Builder" />
+        <entry file="file://$PROJECT_DIR$/src/Resources/StopWords">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="243" selection-start-line="9" selection-start-column="243" selection-end-line="9" selection-end-column="243" />
+            <state relative-caret-position="1224">
+              <caret line="72" column="7" selection-start-line="72" selection-start-column="7" selection-end-line="72" selection-end-column="7" />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>Tnum</find>
-    </findStrings>
-    <replaceStrings>
-      <replace>tNum</replace>
-    </replaceStrings>
-    <dirStrings>
-      <dir>C:\Users\Yaniv\IdeaProjects\SearchEngine\src</dir>
-    </dirStrings>
-  </component>
-  <component name="FindManager">
-    <FindUsagesManager>
-      <setting name="OPEN_NEW_TAB" value="false" />
-    </FindUsagesManager>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -211,6 +251,16 @@
         <option value="$PROJECT_DIR$/src/sample/Main.java" />
         <option value="$PROJECT_DIR$/src/sample/Controller.java" />
         <option value="$PROJECT_DIR$/src/sample/Parse.java" />
+        <option value="$PROJECT_DIR$/src/View/Parse.java" />
+        <option value="$PROJECT_DIR$/src/Resources/StopWords" />
+        <option value="$PROJECT_DIR$/src/View/Alert.css" />
+        <option value="$PROJECT_DIR$/src/View/View.css" />
+        <option value="$PROJECT_DIR$/src/View/Main.java" />
+        <option value="$PROJECT_DIR$/src/Model/Stemmer.java" />
+        <option value="$PROJECT_DIR$/src/Resources/parseTests.txt" />
+        <option value="$PROJECT_DIR$/src/View/View.java" />
+        <option value="$PROJECT_DIR$/src/View/View.fxml" />
+        <option value="$PROJECT_DIR$/src/Model/Parse.java" />
       </list>
     </option>
   </component>
@@ -220,21 +270,21 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-9" />
-    <option name="y" value="-9" />
+    <option name="x" value="135" />
+    <option name="y" value="201" />
     <option name="width" value="1614" />
     <option name="height" value="876" />
   </component>
-  <component name="ProjectReloadState">
-    <option name="STATE" value="0" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -245,39 +295,43 @@
             <path>
               <item name="SearchEngine" type="b2602c69:ProjectViewProjectNode" />
               <item name="SearchEngine" type="462c0819:PsiDirectoryNode" />
+              <item name=".idea" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SearchEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SearchEngine" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="SearchEngine" type="b2602c69:ProjectViewProjectNode" />
               <item name="SearchEngine" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="sample" type="462c0819:PsiDirectoryNode" />
+              <item name="Model" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SearchEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SearchEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SearchEngine" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SearchEngine" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="View" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="GoToClass.includeLibraries" value="false" />
-    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
-    <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="MemberChooser.copyJavadoc" value="false" />
-    <property name="MemberChooser.showClasses" value="true" />
-    <property name="MemberChooser.sorted" value="false" />
-    <property name="OverrideImplement.combined" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1541004050639" />
-    <property name="dynamic.classpath" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/הנדסת מערכות מידע/אחזור/SearchEngine/SearchEngine" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
-    <property name="recentsLimit" value="5" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1541342097969" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -292,71 +346,9 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
-      <option name="VMOptions" />
-      <option name="arguments" />
-      <option name="filePath" />
-      <option name="scope" value="ALL" />
-      <option name="testName" />
-      <method />
-    </configuration>
-    <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
-      <Host>localhost</Host>
-      <Port>5050</Port>
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Main" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="sample.Main" />
+    <configuration name="Unnamed" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="View.Main" />
       <module name="SearchEngine" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="sample.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="Application" factoryName="Application">
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="JUnit" factoryName="JUnit">
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="TestNG" factoryName="TestNG">
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
-      <module name="" />
-      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m" />
-      <option name="PROGRAM_PARAMETERS" />
-      <predefined_log_file id="idea.log" enabled="true" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -380,16 +372,158 @@
       <workItem from="1540929532679" duration="163000" />
       <workItem from="1540969224841" duration="8801000" />
       <workItem from="1540990672415" duration="9664000" />
+      <workItem from="1541006240415" duration="3722000" />
+      <workItem from="1541013435325" duration="1652000" />
+      <workItem from="1541068100258" duration="18403000" />
+      <workItem from="1541088059281" duration="4855000" />
+      <workItem from="1541145230537" duration="41650000" />
+      <workItem from="1541282801812" duration="6177000" />
+      <workItem from="1541289737132" duration="6315000" />
+      <workItem from="1541322241942" duration="1644000" />
+      <workItem from="1541340963082" duration="362000" />
+    </task>
+    <task id="LOCAL-00001" summary="first change">
+      <created>1541006549310</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1541006549310</updated>
+    </task>
+    <task id="LOCAL-00002" summary="second change">
+      <created>1541009740736</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1541009740736</updated>
+    </task>
+    <task id="LOCAL-00003" summary="fixes date (finaly is not good!!)">
+      <created>1541014887808</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1541014887808</updated>
+    </task>
+    <task id="LOCAL-00004" summary="1. all number parsing works!!&#10;2. code is nicer now and broken up to more functions&#10;3. added automatic tests&#10;4. added hash table (term,counter) + added max frequancy">
+      <created>1541087344503</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1541087344515</updated>
+    </task>
+    <task id="LOCAL-00005" summary="automatic check view updated&#10;foldings added to parsing">
+      <created>1541090264162</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1541090264162</updated>
+    </task>
+    <task id="LOCAL-00006" summary="parser finished (withought stemming)!!&#10;&#10;1. date terms complete&#10;2. multiterm copmlete(&quot;r2-d2&quot;, &quot;6-5&quot;, &quot;Between 3 and 5&quot; etc...) (has a few bugs - to do)&#10;3. stop words filter commlete&#10;4. bugs fixed&#10;5. added Resources folder and synced to project (make sure dan is synked.">
+      <created>1541169296346</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1541169296347</updated>
+    </task>
+    <task id="LOCAL-00007" summary="bugs fix">
+      <created>1541175236450</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1541175236450</updated>
+    </task>
+    <task id="LOCAL-00008" summary="chnged the test input to a text sheet (&quot;parseTests.txt&quot;)">
+      <created>1541235321650</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1541235321650</updated>
+    </task>
+    <task id="LOCAL-00009" summary="first change">
+      <created>1541247267378</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1541247267378</updated>
+    </task>
+    <task id="LOCAL-00010" summary="1. bugs fixed - have a wierd error to fix&#10;2. tests are now taken from a test file&#10;3. changed background picture&#10;4. changed alert css">
+      <created>1541247381327</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1541247381327</updated>
+    </task>
+    <task id="LOCAL-00011" summary="appearance change">
+      <created>1541247805163</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1541247805163</updated>
+    </task>
+    <task id="LOCAL-00012" summary="background change">
+      <created>1541251440254</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1541251440254</updated>
+    </task>
+    <task id="LOCAL-00013" summary="first change">
+      <created>1541252045556</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1541252045556</updated>
+    </task>
+    <task id="LOCAL-00014" summary="user interface now RULES!!!">
+      <created>1541256858813</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1541256858813</updated>
+    </task>
+    <task id="LOCAL-00015" summary="parser complete - one known bug&#10;1. stemming completed&#10;2.bugs fixed">
+      <created>1541288057050</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1541288057050</updated>
+    </task>
+    <task id="LOCAL-00016" summary="bugs fixed&#10;fxml update">
+      <created>1541290035059</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1541290035059</updated>
+    </task>
+    <task id="LOCAL-00017" summary="test...">
+      <created>1541290277366</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1541290277366</updated>
+    </task>
+    <task id="LOCAL-00018" summary="stemming check box added&#10;changed pars constructer for stemming boolian">
+      <created>1541321324245</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1541321324245</updated>
+    </task>
+    <task id="LOCAL-00019" summary="-1000000 fix">
+      <created>1541341861392</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1541341861392</updated>
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39595000" />
+    <option name="totallyTimeSpent" value="124375000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1380" height="743" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.21439394" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.13636364" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" />
       <window_info id="Designer" order="3" />
@@ -398,13 +532,13 @@
       <window_info id="Capture Tool" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3295082" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3295082" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3327869" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39344263" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Application Servers" order="7" />
-      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.3295082" />
       <window_info anchor="bottom" id="Problems" order="9" />
       <window_info anchor="bottom" id="Changes" order="10" />
       <window_info anchor="bottom" id="Profiler" order="11" />
@@ -422,214 +556,77 @@
       <window_info anchor="right" id="Capture Analysis" order="7" />
       <window_info anchor="right" id="Palette&#9;" order="8" />
       <window_info anchor="right" id="Theme Preview" order="9" />
+      <window_info anchor="right" id="Coverage" order="10" side_tool="true" weight="0.32954547" />
     </layout>
   </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
-  </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
-    <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/sample/Parse.java</url>
-          <line>245</line>
-          <properties />
-          <option name="timeStamp" value="16" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/sample/Parse.java</url>
-          <line>215</line>
-          <properties />
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/sample/Parse.java</url>
-          <line>179</line>
-          <properties />
-          <option name="timeStamp" value="20" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/sample/Parse.java</url>
-          <line>264</line>
-          <properties />
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/sample/Parse.java</url>
-          <line>112</line>
-          <properties />
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
-  <component name="antWorkspaceConfiguration">
-    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
-    <option name="FILTER_TARGETS" value="false" />
-  </component>
-  <component name="debuggerHistoryManager">
-    <expressions id="breakpointCondition">
-      <expression>
-        <expression-string>i=15</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-    </expressions>
-  </component>
   <component name="editorHistoryManager">
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_171/javafx-src.zip!/javafx/fxml/FXMLLoader.java">
+    <entry file="file://$PROJECT_DIR$/src/Model/Parse.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="28084">
-          <caret line="1772" selection-start-line="1772" selection-end-line="1772" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ReadFile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="21" selection-start-column="21" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/sample.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="243" selection-start-line="9" selection-start-column="243" selection-end-line="9" selection-end-column="243" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Controller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
+        <state relative-caret-position="392">
+          <caret line="122" column="4" selection-start-line="122" selection-start-column="4" selection-end-line="122" selection-end-column="4" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#717#821#0" />
+            <element signature="e#717#1012#0" />
+            <element signature="e#1018#1062#0" />
+            <element signature="e#1018#2737#0" />
+            <element signature="e#2743#2796#0" />
+            <element signature="e#2743#3346#0" />
+            <element signature="e#3352#3449#0" />
+            <element signature="e#3352#4251#0" />
+            <element signature="e#4257#4351#0" />
+            <element signature="e#4413#4453#0" />
+            <element signature="e#4459#4507#0" />
+            <element signature="e#4512#4646#0" />
+            <element signature="e#4512#4995#0" />
+            <element signature="e#5001#5159#0" />
+            <element signature="e#5001#5679#0" />
+            <element signature="e#5706#5751#0" />
+            <element signature="e#5756#5993#0" />
+            <element signature="e#5756#7172#0" />
+            <element signature="e#7132#7143#0" />
+            <element signature="e#7178#7465#0" />
+            <element signature="e#7178#8320#0" />
+            <element signature="e#8326#8562#0" />
+            <element signature="e#8326#9271#0" />
+            <element signature="e#9277#9424#0" />
+            <element signature="e#9277#10674#0" />
+            <element signature="e#10680#10819#0" />
+            <element signature="e#10680#10939#0" />
+            <element signature="e#10945#11019#0" />
+            <element signature="e#10945#12845#0" />
+            <element signature="e#12851#13067#0" />
+            <element signature="e#12851#13803#0" />
+            <element signature="e#13809#13936#0" />
+            <element signature="e#13809#14448#0" />
+            <element signature="e#14454#14686#0" />
+            <element signature="e#14454#15264#0" />
+            <element signature="e#15291#15328#0" />
+            <element signature="e#15333#15397#0" />
+            <element signature="e#15333#15965#0" />
+            <element signature="e#15971#16296#0" />
+            <element signature="e#15971#17108#0" />
+            <element signature="e#17114#17408#0" />
+            <element signature="e#17114#18429#0" />
+            <element signature="e#18435#18570#0" />
+            <element signature="e#18435#18890#0" />
+            <element signature="e#18896#19088#0" />
+            <element signature="e#18896#19607#0" />
+            <element signature="e#19613#19941#0" />
+            <element signature="e#19613#22522#0" />
+            <element signature="e#22528#22778#0" />
+            <element signature="e#22528#23606#0" />
+            <element signature="e#23633#23823#0" />
+            <element signature="e#23633#24056#0" />
+            <element signature="e#24083#24120#0" />
+            <element signature="e#24125#24209#0" />
+            <element signature="e#24278#24388#0" />
+            <element signature="e#24469#24772#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="13" column="45" selection-start-line="13" selection-start-column="45" selection-end-line="13" selection-end-column="45" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Parse.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="153" column="47" lean-forward="true" selection-start-line="153" selection-start-column="47" selection-end-line="153" selection-end-column="47" />
-          <folding>
-            <element signature="docComment;method#Parse#0;class#Parse#0" />
-            <element signature="method#Parse#0;class#Parse#0" />
-            <element signature="method#initializeMaps#0;class#Parse#0" />
-            <element signature="docComment;method#parse#0;class#Parse#0" />
-            <element signature="e#2472#2473#0" expanded="true" />
-            <element signature="e#2498#2499#0" expanded="true" />
-            <element signature="docComment;method#cleanWord#0;class#Parse#0" />
-            <element signature="docComment;method#numberEvaluation#0;class#Parse#0" />
-            <element signature="docComment;method#checkAfterNumber#0;class#Parse#0" />
-            <element signature="method#dealWithFractionAfterNumber#0;class#Parse#0" />
-            <element signature="docComment;method#dealWithSizeAfterNumber#0;class#Parse#0" />
-            <element signature="method#dealWithSizeAfterNumber#0;class#Parse#0" />
-            <element signature="docComment;method#createDateTerm#0;class#Parse#0" />
-            <element signature="method#createDateTerm#0;class#Parse#0" />
-            <element signature="docComment;method#Capitelize#0;class#Parse#0" />
-            <element signature="method#Capitelize#0;class#Parse#0" />
-            <element signature="docComment;method#containsNumber#0;class#Parse#0" />
-            <element signature="method#containsNumber#0;class#Parse#0" />
-            <element signature="docComment;method#deleteDelimeter#0;class#Parse#0" />
-            <element signature="method#deleteDelimeter#0;class#Parse#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ArtifactsStructureConfigurable.UI">
-        <settings>
-          <artifact-editor />
-          <last-edited>JavaFXApp</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="FacetStructureConfigurable.UI">
-        <settings>
-          <last-edited>No facets are configured</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="GlobalLibrariesConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="JdkListConfigurable.UI">
-        <settings>
-          <last-edited>1.8</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ModuleStructureConfigurable.UI">
-        <settings>
-          <last-edited>SearchEngine</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-                <option value="0.6" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ProjectLibrariesConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
   </component>
 </project>
