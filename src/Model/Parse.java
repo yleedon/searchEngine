@@ -1,5 +1,5 @@
 package Model;
-//DAN
+
 import javafx.util.Pair;
 
 import java.io.BufferedReader;
@@ -248,7 +248,7 @@ public class Parse {
                 return number + " M Dollars";
             }
         }
-        if (numValue < 1000000)
+        if (Math.abs(numValue) < 1000000 )
             return originalWord.substring(1) + " Dollars";
 
         else {
@@ -266,7 +266,7 @@ public class Parse {
         try {
             double number = Double.valueOf(word);
 
-            if((number >= 1000 && number < 1000000) || (number*-1 >= 1000 && number*-1 < 1000000)){
+            if((Math.abs(number) >= 1000 && Math.abs(number) < 1000000)){
 //                number = (int)number;
                 number=number/1000;
                 if(number % 1 == 0)
@@ -275,7 +275,7 @@ public class Parse {
                 return number + "K";
             }
 
-            if ((number>=1000000 && number < 1000000000) || (number*-1>=1000000 && number*-1 < 1000000000)){
+            if ((Math.abs(number) >= 1000000 && Math.abs(number) < 1000000000) ){
 
                 double fraction;
                 if(number%1 != 0){
@@ -288,7 +288,7 @@ public class Parse {
                     return (int)number + "M";
                 return number + "M";
             }
-            if (number >= 1000000000 || number*-1 >= 1000000000 ){
+            if (Math.abs(number) >= 1000000000){
                 if ((number/1000000000) % 1 == 0)
                     return (int)(number/1000000000) + "B";
                 return number/1000000000 + "B";
@@ -346,12 +346,12 @@ public class Parse {
         if(secondWord.equals("Dollars")){
             tokens[tNum+1] = null;
             try{
-                if(Integer.valueOf(num)>=1000000)
+                if(Math.abs(Integer.valueOf(num))>=1000000)
                     return Integer.valueOf(num)/1000000 + " M Dollars";
                 return num +" Dollars";
             }
             catch (Exception e){
-                if(Double.valueOf(num)>=1000000)
+                if(Math.abs(Double.valueOf(num))>=1000000)
                     return Double.valueOf(num)/1000000 + " M Dollars";
                 return num +" Dollars";
             }
@@ -505,9 +505,6 @@ public class Parse {
         String originalWord = word;
         word = deleteDelimeter(word); // deletes delimiters
 
-        if(useStemming) // stemming
-            word = stem(word);
-
         if(containsNumber(word)) { // deals with numbers in String
             word = numberEvaluation(word, tNum);
             if(!word.equals(originalWord))
@@ -527,6 +524,9 @@ public class Parse {
             if(!word.toUpperCase().equals(word))
                 return "";
         }
+
+        if(useStemming) // stemming
+            word = stem(word);
 
         checkIfWeb(word); // check if website
 
@@ -558,16 +558,16 @@ public class Parse {
      * @param word - the token
      */
     private void checkIfWeb(String word) {
-
         try {
-            if (word.startsWith("www.") || word.startsWith("WWW.") || word.startsWith("https://")) {
+            if (word.startsWith("www.") || word.startsWith("WWW.") || word.startsWith("https://") || word.startsWith("http://")) {
                 if (word.startsWith("https://"))
                     word = word.substring(8);
+                else if(word.startsWith("http://"))
+                    word = word.substring(7);
                 else word = word.substring(4);
                 if (word.contains("."))
                     word=word.substring(0,word.indexOf('.'));
                     addTerm(word);
-
             }
         }catch (Exception e){
             return;
@@ -626,7 +626,7 @@ public class Parse {
         }
 
         try {
-            if (word.equals("Between") && tokens[tNum+2].equals("and")) {
+            if (tokens[tNum+2].equals("and") &&(word.equals("Between")) || word.equals("between")) {
                 String num1 = tokens[tNum+1];
                 String num2 = tokens[tNum+3];
                 //test its numbers
