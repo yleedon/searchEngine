@@ -17,6 +17,7 @@ public class View {
     public TextField fld_text;
     public Button btn_testParse;
     public Button btn_runTests;
+    public CheckBox btn_stemmingBox;
 
 
 
@@ -25,7 +26,7 @@ public class View {
         if ((fld_text.getText().equals("")))
             return;
 
-        Parse parser = new Parse(fld_text.getText());
+        Parse parser = new Parse(fld_text.getText(),btn_stemmingBox.isSelected());
         try {
             parser.parse();
             parser.printIndex();
@@ -73,7 +74,7 @@ public class View {
             String outPut;
             boolean failed = false;
             String ans = "Format: [input] != [wantedOutput] --> [actualOutput]\n\nResults:\n";
-            Parse parser = new Parse("");
+            Parse parser = new Parse("",btn_stemmingBox.isSelected());
             int i = 0;
             for (String input:tests.keySet()) {
                 i++;
