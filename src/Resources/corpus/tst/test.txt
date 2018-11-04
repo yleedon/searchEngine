@@ -1,0 +1,18 @@
+<Doc>
+<DocNo>tst3</DocNo>
+<Text>
+dan dan dan
+yay yay yay
+yanivush ah
+yakar meod
+</Text>
+</Doc>
+
+<Doc>
+<Head> Test </Head>
+<DocNo>tst4</DocNo>
+<Text>
+gam et tamir ani ohev
+kef haim
+</Text>
+</Doc>
