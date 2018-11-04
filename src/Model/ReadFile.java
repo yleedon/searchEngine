@@ -17,18 +17,18 @@ public class ReadFile {
      */
     public ReadFile(String path) {
 
-            this.path = path;
-            docIdxFile = new File("C:\\Dan\\UNI\\Jarta.Projects\\searchEngine\\src\\Resources\\documentIdx.txt");
-            ClassLoader classLoader = getClass().getClassLoader();
-            try {
-                FileWriter fileWriter = new FileWriter(docIdxFile, true);
-                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-                writer = new PrintWriter(bufferedWriter);
-            }
-            catch (IOException e){
-                System.out.println(e.getMessage());
-                writer = null;
-            }
+        this.path = path;
+        ClassLoader classLoader = getClass().getClassLoader();
+        docIdxFile = new File(classLoader.getResource("documentIdx.txt").getFile());
+        try {
+            FileWriter fileWriter = new FileWriter(docIdxFile, true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            writer = new PrintWriter(bufferedWriter);
+        }
+        catch (IOException e){
+            System.out.println(e.getMessage());
+            writer = null;
+        }
 
     }
     //</editor-fold>

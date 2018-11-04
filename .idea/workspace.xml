@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="Merge branch 'master' of https://github.com/yleedon/searchEngine into Dan&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml">
-      <change afterPath="$PROJECT_DIR$/src/Resources/corpus/tst/test.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Resources/corpus/tst2/test2.txt" afterDir="false" />
+    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="Dan&amp;Yaniv">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/MyDocument.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/MyDocument.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Parse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Parse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/ReadFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/ReadFile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Resources/documentIdx.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Resources/documentIdx.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Resources/parseTests.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Resources/parseTests.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/View.java" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -118,29 +115,29 @@
           <entry key="StopWords" value="1" />
           <entry key="css" value="1" />
           <entry key="fxml" value="1" />
-          <entry key="java" value="24" />
-          <entry key="txt" value="52" />
+          <entry key="java" value="25" />
+          <entry key="txt" value="54" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CSS" value="1" />
-          <entry key="JAVA" value="24" />
-          <entry key="PLAIN_TEXT" value="53" />
+          <entry key="JAVA" value="25" />
+          <entry key="PLAIN_TEXT" value="55" />
           <entry key="XML" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="3" />
-          <entry key="java" value="2302" />
-          <entry key="txt" value="465" />
+          <entry key="java" value="2397" />
+          <entry key="txt" value="476" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="2302" />
-          <entry key="PLAIN_TEXT" value="468" />
+          <entry key="JAVA" value="2397" />
+          <entry key="PLAIN_TEXT" value="479" />
         </counts>
       </usages-collector>
     </session>
@@ -150,13 +147,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Model/ReadFile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="567">
-              <caret line="93" column="25" selection-start-line="93" selection-start-column="25" selection-end-line="93" selection-end-column="25" />
+            <state relative-caret-position="74">
+              <caret line="21" column="82" selection-start-line="21" selection-start-column="82" selection-end-line="21" selection-end-column="82" />
               <folding>
-                <element signature="method#ReadFile#0;class#ReadFile#0" />
                 <element signature="docComment;method#setPath#0;class#ReadFile#0" />
               </folding>
             </state>
@@ -172,11 +168,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/View.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2176">
-              <caret line="140" selection-start-line="140" selection-end-line="140" />
+            <state relative-caret-position="222">
+              <caret line="133" column="78" selection-start-line="133" selection-start-column="78" selection-end-line="133" selection-end-column="78" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Resources/documentIdx.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
             </state>
           </provider>
         </entry>
@@ -226,12 +231,12 @@
         <option value="$PROJECT_DIR$/src/Resources/yaniv.txt" />
         <option value="$PROJECT_DIR$/src/Resources/danTestOutput.txt" />
         <option value="$PROJECT_DIR$/src/Model/Dodument.java" />
-        <option value="$PROJECT_DIR$/src/Resources/documentIdx.txt" />
-        <option value="$PROJECT_DIR$/src/View/View.java" />
         <option value="$PROJECT_DIR$/src/Resources/corpus/tst/test.txt" />
         <option value="$PROJECT_DIR$/src/Resources/corpus/tst2/test2.txt" />
-        <option value="$PROJECT_DIR$/src/Model/ReadFile.java" />
         <option value="$PROJECT_DIR$/src/Model/MyDocument.java" />
+        <option value="$PROJECT_DIR$/src/Resources/documentIdx.txt" />
+        <option value="$PROJECT_DIR$/src/Model/ReadFile.java" />
+        <option value="$PROJECT_DIR$/src/View/View.java" />
       </list>
     </option>
   </component>
@@ -327,7 +332,7 @@
     <property name="OverrideImplement.combined" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1541360862678" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1541362689413" />
     <property name="dynamic.classpath" value="false" />
     <property name="last_opened_file_path" value="$USER_HOME$/AppData/Local/SceneBuilder/SceneBuilder.exe" />
     <property name="project.structure.last.edited" value="Project" />
@@ -438,7 +443,7 @@
       <workItem from="1541341558190" duration="125000" />
       <workItem from="1541342772805" duration="15370000" />
       <workItem from="1541360102893" duration="369000" />
-      <workItem from="1541360641986" duration="105000" />
+      <workItem from="1541360641986" duration="2023000" />
     </task>
     <task id="LOCAL-00001" summary="ReaFile and MyDocument is Done - write to documentIdx.txt and read from&#10;&#10;ReadFile - checking about the path how to do it not absolute&#10;ReadFile - check about PrintWriter (1 field or writer for each write)">
       <created>1541357913565</created>
@@ -447,16 +452,31 @@
       <option name="project" value="LOCAL" />
       <updated>1541357913565</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Dan&amp;Yaniv">
+      <created>1541360779713</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1541360779713</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Dan&amp;Yaniv">
+      <created>1541360888002</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1541360888002</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="55564000" />
+    <option name="totallyTimeSpent" value="57482000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.22751679" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.22751679" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" />
       <window_info id="Designer" order="3" />
@@ -501,7 +521,8 @@
     <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
     <MESSAGE value="ReadFile + Document - Does Index &amp; Create Document class&#10;need to fix path in ReadFile&#10;need to see about PrintWriter(1 field or new every write)" />
     <MESSAGE value="ReaFile and MyDocument is Done - write to documentIdx.txt and read from&#10;&#10;ReadFile - checking about the path how to do it not absolute&#10;ReadFile - check about PrintWriter (1 field or writer for each write)" />
-    <option name="LAST_COMMIT_MESSAGE" value="ReaFile and MyDocument is Done - write to documentIdx.txt and read from&#10;&#10;ReadFile - checking about the path how to do it not absolute&#10;ReadFile - check about PrintWriter (1 field or writer for each write)" />
+    <MESSAGE value="Dan&amp;Yaniv" />
+    <option name="LAST_COMMIT_MESSAGE" value="Dan&amp;Yaniv" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -538,7 +559,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/View/View.java</url>
-          <line>136</line>
+          <line>137</line>
           <properties />
           <option name="timeStamp" value="37" />
         </line-breakpoint>
@@ -594,34 +615,10 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Resources/yaniv.txt" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/javafx-src.zip!/javafx/fxml/FXMLLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="1770" selection-start-line="1770" selection-end-line="1770" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Resources/corpus/tst2/test2.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="347">
           <caret line="21" column="4" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Resources/corpus/tst/test.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="11" lean-forward="true" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Resources/documentIdx.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/View.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2176">
-          <caret line="140" selection-start-line="140" selection-end-line="140" />
         </state>
       </provider>
     </entry>
@@ -643,14 +640,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/javafx-src.zip!/javafx/fxml/FXMLLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="1772" selection-start-line="1772" selection-end-line="1772" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Resources/corpus/tst/test.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="11" lean-forward="true" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Resources/documentIdx.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Model/ReadFile.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="567">
-          <caret line="93" column="25" selection-start-line="93" selection-start-column="25" selection-end-line="93" selection-end-column="25" />
+        <state relative-caret-position="74">
+          <caret line="21" column="82" selection-start-line="21" selection-start-column="82" selection-end-line="21" selection-end-column="82" />
           <folding>
-            <element signature="method#ReadFile#0;class#ReadFile#0" />
             <element signature="docComment;method#setPath#0;class#ReadFile#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/View.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="222">
+          <caret line="133" column="78" selection-start-line="133" selection-start-column="78" selection-end-line="133" selection-end-column="78" />
         </state>
       </provider>
     </entry>
