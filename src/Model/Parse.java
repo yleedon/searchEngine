@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class Parse {
-    private int yaniv;
+
     private String txt;
     private Map<String,String> monthMap;
     private char[] delimeters = {'.',',','?','!','"','\'',':',';','(',')','{','}','[',']','/','\\','<','>','\n'};
@@ -29,7 +29,7 @@ public class Parse {
      * @param text - the string to work on
      */
     public Parse(String text) {
-        yaniv=0;
+
         this.txt = text;
         maxFreq = 0;
         monthMap = new HashMap<>();
@@ -283,6 +283,7 @@ public class Parse {
                     fraction = number % 1000000;
                 }
 
+                number=(int)number;
                 number=number/1000000;
                 if(number % 1 == 0)
                     return (int)number + "M";
@@ -444,10 +445,7 @@ public class Parse {
      * @param word
      */
     private void addTerm(String word) {
-        System.out.println(yaniv);
-        if(yaniv==36)
-            System.out.println("stoppp");
-        yaniv++;
+
         if(word!=null && !word.equals("") && !word.equals("-") ) {
             word = tradeUppercase(word);
 
