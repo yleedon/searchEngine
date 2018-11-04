@@ -1,1 +1,4 @@
-DocId,StartIdx,EndIdx,Path
+tst3,1,9,C:\Dan\UNI\Jarta.Projects\searchEngine\src\Resources\corpus\tst\test.txt
+tst4,11,18,C:\Dan\UNI\Jarta.Projects\searchEngine\src\Resources\corpus\tst\test.txt
+tst1,1,12,C:\Dan\UNI\Jarta.Projects\searchEngine\src\Resources\corpus\tst2\test2.txt
+tst2,14,23,C:\Dan\UNI\Jarta.Projects\searchEngine\src\Resources\corpus\tst2\test2.txt
