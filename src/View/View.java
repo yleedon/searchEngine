@@ -130,8 +130,9 @@ public class View {
     }
 
     public void testReadFile(){
-        ReadFile rf = new ReadFile("C:\\Dan\\UNI\\Jarta.Projects\\searchEngine\\src\\Resources\\corpus");
-//        rf.readDirectory();
+        ClassLoader classLoader = getClass().getClassLoader();
+        ReadFile rf = new ReadFile(classLoader.getResource("corpus").getFile());
+        rf.readDirectory();
         try {
             MyDocument document= rf.getDocument("tst4");
             System.out.println(document.getTxt());
