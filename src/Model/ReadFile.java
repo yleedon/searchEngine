@@ -9,6 +9,8 @@ public class ReadFile {
     String path;
     PrintWriter writer;
 
+
+    //<editor-fold desc="Constructor">
     public ReadFile(String path) {
         this.path = path;
         ClassLoader classLoader = getClass().getClassLoader();
@@ -21,15 +23,21 @@ public class ReadFile {
             writer = null;
         }
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Setters">
     public void setPath(String path) {
         this.path = path;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Getters">
     public String getPath() {
         return path;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Read Files">
     public void readDirectory(){
         File mainDir = new File(path);
         for(File directory: mainDir.listFiles()){
@@ -44,6 +52,12 @@ public class ReadFile {
     }
 
     private void dismember2Docs(File file) {
+        try{
+            Scanner scanner = new Scanner(file);
+        }
+        catch (IOException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     public void dismember2Docs(){
@@ -80,4 +94,5 @@ public class ReadFile {
         }
 
     }
+    //</editor-fold>
 }
