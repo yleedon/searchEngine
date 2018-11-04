@@ -1,5 +1,4 @@
 package Model;
-//DAN
 import javafx.util.Pair;
 
 import java.io.BufferedReader;
@@ -505,8 +504,7 @@ public class Parse {
         String originalWord = word;
         word = deleteDelimeter(word); // deletes delimiters
 
-        if(useStemming) // stemming
-            word = stem(word);
+
 
         if(containsNumber(word)) { // deals with numbers in String
             word = numberEvaluation(word, tNum);
@@ -527,6 +525,9 @@ public class Parse {
             if(!word.toUpperCase().equals(word))
                 return "";
         }
+
+        if(useStemming) // stemming
+            word = stem(word);
 
         checkIfWeb(word); // check if website
 
@@ -558,16 +559,16 @@ public class Parse {
      * @param word - the token
      */
     private void checkIfWeb(String word) {
-
         try {
-            if (word.startsWith("www.") || word.startsWith("WWW.") || word.startsWith("https://")) {
+            if (word.startsWith("www.") || word.startsWith("WWW.") || word.startsWith("https://") || word.startsWith("http://")) {
                 if (word.startsWith("https://"))
                     word = word.substring(8);
+                else if(word.startsWith("http://"))
+                    word = word.substring(7);
                 else word = word.substring(4);
                 if (word.contains("."))
                     word=word.substring(0,word.indexOf('.'));
                     addTerm(word);
-
             }
         }catch (Exception e){
             return;
