@@ -23,6 +23,8 @@ public class Parse {
     private String[] tokens;
     private Map<String,Integer> indexMap;
     int maxFreq;
+    private String quote;
+    private boolean quoteInProgress;
 
 
     /**
@@ -34,6 +36,8 @@ public class Parse {
         this.useStemming = stemmerStatus;
         maxFreq = 0;
         initializeMaps();
+        quote="\"";
+        quoteInProgress = false;
         ans ="";
     }
 
@@ -503,7 +507,24 @@ public class Parse {
      */
     private String tokenToTerm(String word, int tNum) {
         String originalWord = word;
+
+        if (word.startsWith("\"") && !quoteInProgress){
+            quoteInProgress = true;
+        }
+
+
         word = deleteDelimeter(word); // deletes delimiters
+
+        if (originalWord.endsWith("\"") && quoteInProgress){
+            quoteInProgress = false;
+            quote += " " + word+"\"";
+            addTerm(quote);
+            quote = "\"";
+        }
+
+
+        if(quoteInProgress)
+            quote += " " + word;
 
         if(containsNumber(word)) { // deals with numbers in String
             word = numberEvaluation(word, tNum);
@@ -521,8 +542,8 @@ public class Parse {
             return "";
 
         if (stopWords.contains(word.toLowerCase())) { //remove wanted stop word
-            if(!word.toUpperCase().equals(word))
-                return "";
+            return "";
+
         }
 
         if(useStemming) // stemming
