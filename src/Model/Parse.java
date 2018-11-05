@@ -59,10 +59,13 @@ public class Parse {
         moneyMap.put("billion",new Pair<>(1000,"M"));
         moneyMap.put("trillion",new Pair<>(1000000,"M"));
 
+
         numberMap.put("Trillion", new Pair(1000,"B"));
         numberMap.put("Million", new Pair(1,"M"));
         numberMap.put("Billion",new Pair(1,"B"));
         numberMap.put("Thousand",new Pair(1,"K"));
+
+
         initializeStopWords();
     }
 
@@ -313,9 +316,9 @@ public class Parse {
     }
 
     /**
-     * num
-     * @param num
-     * @param tNum
+     * check if after the number there is something that is needed for the term
+     * @param num the token that is a number
+     * @param tNum the index of the token
      * @return
      */
     private String checkAfterNumber(String num, int tNum) {
@@ -362,10 +365,31 @@ public class Parse {
             return dealWithSizeAfterNumber(num,tNum);
         }
 
+        //checks for fraction
         if(secondWord.contains("/") && containsNumber(secondWord))
             return dealWithFractionAfterNumber(num,tNum,secondWord);
 
+
+        //checks for bn/m Dollars
+        try {
+            if(tokens[tNum+2].equals("Dollars"))
+            if(secondWord.equals("bn") ||  secondWord.equals("m")) {
+                tokens[tNum + 1] = null;
+                tokens[tNum + 2] = null;
+                if (secondWord.equals("m"))
+                    return num + " M Dollars";
+                double d = Double.valueOf(num)*1000;
+                int i = (int)d;
+
+                return (int)d + " M Dollars";
+            }
+
+        }
+        catch (Exception e){
+            return num;
+        }
         return num;
+
     }
 
     /**
@@ -428,6 +452,7 @@ public class Parse {
                 tokens[tNum+1]=null;
                 return monthMap.get(secondWord) + "-" + day;
             }
+
         }
         catch (Exception e){
             System.out.println("number date term exception ");
@@ -459,6 +484,7 @@ public class Parse {
                     maxFreq = 1;
             }
             ans = ans + "{" + word + "} ";
+            return;
         }
     }
 
@@ -567,7 +593,7 @@ public class Parse {
                 else word = word.substring(4);
                 if (word.contains("."))
                     word=word.substring(0,word.indexOf('.'));
-                    addTerm(word);
+                addTerm(word);
             }
         }catch (Exception e){
             return;
