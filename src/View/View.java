@@ -132,9 +132,9 @@ public class View {
     public void testReadFile(){
         ClassLoader classLoader = getClass().getClassLoader();
         ReadFile rf = new ReadFile(classLoader.getResource("corpus").getFile());
-        rf.readDirectory();
+//        rf.readDirectory();
         try {
-            MyDocument document= rf.getDocument("tst4");
+            MyDocument document= rf.getDocument("tst2");
             System.out.println(document.getTxt());
         }
         catch (Exception e){
