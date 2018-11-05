@@ -1,10 +1,12 @@
 <Doc>
 <DocNo>tst3</DocNo>
 <Text>
-dan dan dan
-yay yay yay
-yanivush ah
-yakar meod
+test 3 document
+aaaaaaaaa
+bbbbbbbbb
+ccccccccc
+ddddddddd
+eeeeeeeee
 </Text>
 </Doc>
 
@@ -12,7 +14,9 @@ yakar meod
 <Head> Test </Head>
 <DocNo>tst4</DocNo>
 <Text>
-gam et tamir ani ohev
-kef haim
+test 4 doc:
+bla bla bla
+works
+you
 </Text>
 </Doc>

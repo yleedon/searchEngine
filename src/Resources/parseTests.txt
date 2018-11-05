@@ -43,6 +43,7 @@ Between -4 and 7=-4 7 -4-7
 Between -5 and 6=-5 6 -5-6
 NATION nation=NATION nation
 THE DOLLER the=THE DOLLER
-100 bn=100B #from the forum
 https://github.com=github https://github.com
 www.github.com=github www.github.com
+2.3 bn Dollars=2300 M Dollars
+

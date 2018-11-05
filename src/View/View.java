@@ -22,8 +22,6 @@ public class View {
     public Button btn_runTests;
     public CheckBox btn_stemmingBox;
 
-
-
     public void testParse() {
         fld_text.setOpacity(0.3);
         if ((fld_text.getText().equals("")))
@@ -44,7 +42,6 @@ public class View {
         a.showAndWait();
 
     }
-
 
     //for the test button
     public void runTests(){
@@ -68,11 +65,8 @@ public class View {
         catch (Exception e){
             System.out.println(e.getMessage());
             System.out.println("idiot! the test file is bad!!");
+            return;
         }
-
-
-
-
         try {
             String outPut;
             boolean failed = false;
@@ -110,7 +104,7 @@ public class View {
 
             }
             else {
-                a.setAlertType(Alert.AlertType.NONE);
+                a.setAlertType(Alert.AlertType.INFORMATION);
                 a.getDialogPane().setMinWidth(300);
                 a.setTitle("SUCCESS!");
                 a.setContentText("YEY!!");
@@ -141,7 +135,6 @@ public class View {
             System.out.println(e.getMessage());
         }
     }
-
 
     public void textPress(){
         fld_text.setOpacity(1);
