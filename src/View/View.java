@@ -124,16 +124,26 @@ public class View {
     }
 
     public void testReadFile(){
-        ClassLoader classLoader = getClass().getClassLoader();
-        ReadFile rf = new ReadFile(classLoader.getResource("corpus").getFile());
+//        ClassLoader classLoader = getClass().getClassLoader();
+//        ReadFile rf = new ReadFile(classLoader.getResource("corpus").getFile());
+        ReadFile rf = new ReadFile("C:\\Users\\Dan\\Desktop\\corpus");
 //        rf.readDirectory();
         try {
-            MyDocument document= rf.getDocument("tst2");
-            System.out.println(document.getTxt());
+            int iDoc = Integer.valueOf(fld_path.getText());
+            MyDocument document= rf.getDocument("tst"+iDoc);
+            testReadFileAlert(document.getDocId(), document.getTxt());
         }
         catch (Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    private void testReadFileAlert(String docId, String txt){
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        a.setTitle("The Text is:");
+        a.setHeaderText(docId);
+        a.setContentText(txt);
+        a.show();
     }
 
     public void textPress(){
