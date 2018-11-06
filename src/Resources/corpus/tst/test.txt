@@ -14,9 +14,8 @@ eeeeeeeee
 <Head> Test </Head>
 <DocNo>tst4</DocNo>
 <Text>
-test 4 doc:
-bla bla bla
-works
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+i love eggs and ham
 you
 </Text>
 </Doc>
