@@ -131,18 +131,22 @@ public class ReadFile {
             while(reader.ready()){
                 line = reader.readLine();
                 currentLine++;
-                if (line.contains("<Doc>")){
+                if (line.toLowerCase().contains("<doc>")){
                     line = reader.readLine();
                     startIdx = currentLine++;
 //                    currentLine++;
-                    while(!line.contains("</Doc>")){
-                        if(line.contains("<DocNo>"))
-                            entry = (line.split("<DocNo>")[1]).split("</DocNo>")[0];
+                    while(!line.toLowerCase().contains("</doc>")){
+                        if(line.toLowerCase().contains("<docno>")){
+                            String tag = getTag(line);
+                            entry = (line.split(tag)[1]).split(tag.replace("<", "</"))[0];
+                            entry = cleanEdges(entry);
+                        }
                         line = reader.readLine();
                         currentLine++;
                     }
                     endIdx = currentLine;
-                    entry = entry + "," + startIdx + "," + endIdx + "," +file.getPath() + "\n";
+//                    entry = entry + "," + startIdx + "," + endIdx + "," +file.getPath() + "\n";
+                    entry = new StringBuilder().append(entry).append(",").append(startIdx).append(",").append(endIdx).append(",").append(file.getPath()).append("\n").toString();
 //                    writer.println(entry);
                     writer.append(entry);
                     writer.flush();
@@ -152,6 +156,35 @@ public class ReadFile {
         catch (IOException e){
             System.out.println(e.getMessage());
         }
+    }
+
+    /**
+     * Cleans the spaces in the beginning and the end of the string
+     * @param s - String to clean
+     * @return - the same String s without spaces in the beginning or the end
+     */
+    private String cleanEdges(String s) {
+        String ans = s;
+        if (ans == null)
+            return null;
+        while(ans.startsWith(" ")){
+            ans = ans.substring(1);
+        }
+        while (ans.endsWith(" ")){
+            ans = ans.substring(0, ans.length()-1);
+        }
+        return ans;
+    }
+
+    /**
+     * gets the inside of the tag if exists
+     * @param line
+     * @return the tag for example: <Text>
+     */
+    private String getTag(String line) {
+        String tag = line.split("<")[1];
+        tag = tag.split(">")[0];
+        return "<" + tag + ">";
     }
     //</editor-fold>
 }

@@ -130,9 +130,10 @@ public class View {
 //        ReadFile rf = new ReadFile("C:\\Users\\Dan\\Desktop\\corpus");
         rf.readDirectory();
         try {
-            int iDoc = Integer.valueOf(fld_path.getText());
-            MyDocument document= rf.getDocument("tst"+iDoc);
-            testReadFileAlert(document.getDocId(), document.getTxt());
+//            int iDoc = Integer.valueOf(fld_path.getText());
+            MyDocument document= rf.getDocument("LA122790-0222");
+            System.out.println(document.getTxt());
+//            testReadFileAlert(document.getDocId(), document.getTxt());
         }
         catch (Exception e){
             System.out.println(e.getMessage());

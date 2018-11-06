@@ -54,8 +54,8 @@ public class MyDocument {
      * @param doc - the String of all the document
      */
     public void setDoc(String doc) {
-        doc = cleanEndges(doc);
-        if(doc != null && doc.startsWith("<Doc>") && doc.endsWith("</Doc>")) {
+        doc = cleanEdges(doc);
+        if(doc != null && ((doc.startsWith("<Doc>") && doc.endsWith("</Doc>")) || (doc.startsWith("<DOC>") && doc.endsWith("</DOC>")))) {
             this.doc = doc;
             this.docNo = create("<DocNo>");
             this.txt = create("<Text>");
@@ -75,10 +75,11 @@ public class MyDocument {
     private String create(String tag){
         String ans;
         try{
+            if (!(doc.contains(tag))) {tag = tag.toUpperCase();}
             if (!(doc.contains(tag))) {return null;}
             String[] splittedDoc = doc.split(tag);
             ans = (splittedDoc[1].split(tag.replace("<", "</")))[0];
-            ans = cleanEndges(ans);
+            ans = cleanEdges(ans);
             return ans;
         }
         catch (Exception e){
@@ -91,7 +92,7 @@ public class MyDocument {
      * @param s - the string to clean
      * @return - the same given string without '\n' in the beginning and in the end.
      */
-    private String cleanEndges(String s) {
+    private String cleanEdges(String s) {
         String ans = s;
         if (ans == null)
             return null;
