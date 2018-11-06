@@ -21,6 +21,7 @@ public class View {
     public Button btn_testParse;
     public Button btn_runTests;
     public CheckBox btn_stemmingBox;
+    public ReadFile rf;
 
     public void testParse() {
         fld_text.setOpacity(0.3);
@@ -124,14 +125,19 @@ public class View {
     }
 
     //<editor-fold desc="ReadFile testing">
-    public void testReadFile(){
+    public void testReadFile() {
         ClassLoader classLoader = getClass().getClassLoader();
-        ReadFile rf = new ReadFile(classLoader.getResource("corpus").getFile());
+
+        rf = new ReadFile(classLoader.getResource("corpus").getFile());
 //        ReadFile rf = new ReadFile("C:\\Users\\Dan\\Desktop\\corpus");
         rf.readDirectory();
+        if(!fld_path.getText().equals(""))
+        testGetDoc(fld_path.getText());
+    }
+    public void testGetDoc(String docName){
         try {
 //            int iDoc = Integer.valueOf(fld_path.getText());
-            MyDocument document= rf.getDocument("LA122790-0222");
+            MyDocument document= rf.getDocument(docName);// ("LA122790-0222");
             System.out.println(document.getTxt());
 //            testReadFileAlert(document.getDocId(), document.getTxt());
         }
