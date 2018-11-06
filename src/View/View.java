@@ -124,10 +124,9 @@ public class View {
     }
 
     public void testReadFile(){
-//        ClassLoader classLoader = getClass().getClassLoader();
-//        ReadFile rf = new ReadFile(classLoader.getResource("corpus").getFile());
-        ReadFile rf = new ReadFile("C:\\Users\\Dan\\Desktop\\corpus");
-//        rf.readDirectory();
+        ClassLoader classLoader = getClass().getClassLoader();
+        ReadFile rf = new ReadFile(classLoader.getResource("corpus").getFile());
+        rf.readDirectory();
         try {
             int iDoc = Integer.valueOf(fld_path.getText());
             MyDocument document= rf.getDocument("tst"+iDoc);
