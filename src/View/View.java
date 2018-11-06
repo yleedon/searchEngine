@@ -1,13 +1,13 @@
 package View;
 
 
+import Model.Indexer;
 import Model.MyDocument;
 import Model.Parse;
 import Model.ReadFile;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,6 +22,7 @@ public class View {
     public Button btn_runTests;
     public CheckBox btn_stemmingBox;
     public ReadFile rf;
+    public Button btn_testIndexer;
 
     public void testParse() {
         fld_text.setOpacity(0.3);
@@ -165,4 +166,9 @@ public class View {
             testParse();
     }
 
+    public void testIndexer(){
+        Indexer indexer = new Indexer(rf);
+        indexer.parse();
+
+    }
 }

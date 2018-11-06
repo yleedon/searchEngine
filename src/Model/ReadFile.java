@@ -103,6 +103,7 @@ public class ReadFile {
         for(File directory: list){
             readDirectory(directory);
         }
+        System.out.println("document indexing complete");
         writer.close();
     }
 
@@ -115,6 +116,7 @@ public class ReadFile {
         for (File file: list) {
             dismember2Docs(file);
         }
+
     }
 
     /**
@@ -157,6 +159,7 @@ public class ReadFile {
         catch (IOException e){
             System.out.println(e.getMessage());
         }
+
     }
 
     /**

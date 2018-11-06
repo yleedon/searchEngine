@@ -35,7 +35,7 @@ public class MyDocument {
      * @return - the whole doc String. if doesn't start with the tag <Doc> and ends with the tag </Doc> returns null
      */
     public String getDoc() {
-        return doc;
+        return doc.replace("\n","\n ");
     }
 
     /**

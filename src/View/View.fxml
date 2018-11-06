@@ -36,5 +36,6 @@
     </GridPane>
     <CheckBox fx:id="btn_stemmingBox" layoutX="123.0" layoutY="537.0" mnemonicParsing="false" selected="true" text="use stemmer" />
     <Button fx:id="Btn_ReadFile" layoutX="547.0" layoutY="388.0" mnemonicParsing="false" onAction="#testReadFile" prefHeight="31.0" prefWidth="105.0" text="ReadFile" />
+      <Button fx:id="btn_testIndexer" layoutX="675.0" layoutY="56.0" mnemonicParsing="false" onAction="#testIndexer" text="test indexer" />
   </children>
 </AnchorPane>
