@@ -369,6 +369,26 @@ public class Parse {
         if(secondWord.contains("/") && containsNumber(secondWord))
             return dealWithFractionAfterNumber(num,tNum,secondWord);
 
+
+        //checks for bn/m Dollars
+        try {
+            if(tokens[tNum+2].equals("Dollars"))
+                if(secondWord.equals("bn") ||  secondWord.equals("m")) {
+                    tokens[tNum + 1] = null;
+                    tokens[tNum + 2] = null;
+                    if (secondWord.equals("m"))
+                        return num + " M Dollars";
+                    double d = Double.valueOf(num)*1000;
+                    int i = (int)d;
+
+                    return (int)d + " M Dollars";
+                }
+
+        }
+        catch (Exception e){
+            return num;
+        }
+
         return num;
     }
 

@@ -107,7 +107,7 @@ public class View {
                 a.setAlertType(Alert.AlertType.INFORMATION);
                 a.getDialogPane().setMinWidth(300);
                 a.setTitle("SUCCESS!");
-                a.setContentText("YEY!!");
+                a.setContentText("it works!! it actually works!!");
                 a.setHeaderText("All tests passed!!");
 
             }
