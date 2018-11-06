@@ -123,6 +123,7 @@ public class View {
         return s;
     }
 
+    //<editor-fold desc="ReadFile testing">
     public void testReadFile(){
         ClassLoader classLoader = getClass().getClassLoader();
         ReadFile rf = new ReadFile(classLoader.getResource("corpus").getFile());
@@ -145,6 +146,7 @@ public class View {
         a.setContentText(txt);
         a.show();
     }
+    //</editor-fold>
 
     public void textPress(){
         fld_text.setOpacity(1);
