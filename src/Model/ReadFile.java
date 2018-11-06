@@ -21,7 +21,7 @@ public class ReadFile {
         ClassLoader classLoader = getClass().getClassLoader();
         docIdxFile = new File(classLoader.getResource("documentIdx.txt").getFile());
         try {
-            FileWriter fileWriter = new FileWriter(docIdxFile, true);
+            FileWriter fileWriter = new FileWriter(docIdxFile, false);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             writer = new PrintWriter(bufferedWriter);
         }
