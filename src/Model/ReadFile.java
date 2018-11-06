@@ -3,11 +3,11 @@ package Model;
 import java.io.*;
 
 public class ReadFile {
-    String path;
-    File docIdxFile;
-    PrintWriter writer;
-//    PrintWriter writer = new PrintWriter(new File((getClass().getClassLoader()).getResource("documentIdx").getFile()));
-
+    //<editor-fold desc="Fields">
+    String path; //the path to the corpus
+    File docIdxFile; //the file ReadFile writes into. AKA doocumentIdx.txt
+    PrintWriter writer; // the object that writes to the file
+    //</editor-fold>
 
     //<editor-fold desc="Constructor">
 
@@ -54,6 +54,11 @@ public class ReadFile {
         return path;
     }
 
+    /**
+     * get a document from corpus by name(docID)
+     * @param docName - the unique name(docID) of the requested document
+     * @return - the requested document.
+     */
     public MyDocument getDocument(String docName){
         try {
             FileReader fileReader = new FileReader(docIdxFile);
@@ -87,6 +92,10 @@ public class ReadFile {
     //</editor-fold>
 
     //<editor-fold desc="Read Files">
+
+    /**
+     * reads all the files in the corpus and writes to the documentIdx the relevant details
+     */
     public void readDirectory(){
         File mainDir = new File(path);
         File[] list = mainDir.listFiles();
@@ -97,6 +106,10 @@ public class ReadFile {
         writer.close();
     }
 
+    /**
+     * read all the files in a specific directory
+     * @param directory - the given directory to read files from
+     */
     private void readDirectory(File directory){
         File[] list = directory.listFiles();
         for (File file: list) {
@@ -104,6 +117,10 @@ public class ReadFile {
         }
     }
 
+    /**
+     * dismember a file to documents. for each document it writes the relevant details to the documentIdx file.
+     * @param file
+     */
     private void dismember2Docs(File file) {
         String line,entry = "";
         int startIdx=0, endIdx=0, currentLine = 0;
