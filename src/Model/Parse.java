@@ -34,11 +34,8 @@ public class Parse {
     public Parse(String text,boolean stemmerStatus) {
         this.txt = text;
         this.useStemming = stemmerStatus;
-        maxFreq = 0;
         initializeMaps();
-        quote="\"";
-        quoteInProgress = false;
-        ans ="";
+
     }
 
     /**
@@ -47,7 +44,6 @@ public class Parse {
     private void initializeMaps() {
         monthMap = new HashMap<>();
         moneyMap = new HashMap<>();
-        indexMap = new HashMap<>();
         numberMap = new HashMap<>();
         stopWords = new HashSet<>();
         monthMap.put("January","01");monthMap.put("February","02");monthMap.put("March","03");monthMap.put("April","04");monthMap.put("May","05");
@@ -94,7 +90,11 @@ public class Parse {
      * @throws Exception
      */
     public void parse() throws Exception{
-        ans = "";
+        indexMap = new HashMap<>();
+        quote="\"";
+        quoteInProgress = false;
+        ans ="";
+        maxFreq=0;
         if(txt==null)
             throw new Exception("error: text was empty (PARSE: parse()");
         tokens = txt.split(" ");
