@@ -4,7 +4,7 @@ import java.io.*;
 
 public class ReadFile {
     //<editor-fold desc="Fields">
-    String path; //the path to the corpus
+    String path; /////////////////////////////////////////**********//the path to the corpus should be in config!!!!!!
     File docIdxFile; //the file ReadFile writes into. AKA doocumentIdx.txt
     PrintWriter writer; // the object that writes to the file
     //</editor-fold>
@@ -71,7 +71,7 @@ public class ReadFile {
             String[] info = line.split(",");
             reader.close();
             fileReader.close();
-            fileReader = new FileReader(new File(info[3]));
+            fileReader = new FileReader(new File(path+info[3]));
             reader = new BufferedReader(fileReader);
             String doc = "";
             for (int i = 1; i<Integer.valueOf(info[1]); i++){
@@ -146,7 +146,8 @@ public class ReadFile {
                     }
                     endIdx = currentLine;
 //                    entry = entry + "," + startIdx + "," + endIdx + "," +file.getPath() + "\n";
-                    entry = new StringBuilder().append(entry).append(",").append(startIdx).append(",").append(endIdx).append(",").append(file.getPath()).append("\n").toString();
+
+                    entry = new StringBuilder().append(entry).append(",").append(startIdx).append(",").append(endIdx).append(",").append(file.getPath().replace(path.substring(1).replace("/","\\"),"")).append("\n").toString();
 //                    writer.println(entry);
                     writer.append(entry);
                     writer.flush();
