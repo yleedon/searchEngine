@@ -15,8 +15,9 @@ public class MyDocument {
      */
     public MyDocument(String doc) {
         setDoc(doc);
-        this.docNo = create("<DocNo>");
-        this.txt = create("<Text>");
+//        this.docNo = create("<DocNo>");
+//        this.txt = create("<Text>");
+
     }
     //</editor-fold>
 
@@ -27,6 +28,8 @@ public class MyDocument {
      * @return - the text of the document. If there is no tag <Text> the getter will return null;
      */
     public String getTxt() {
+        if (txt==null)
+            txt = create("<Text>");
         return txt;
     }
 
@@ -43,6 +46,8 @@ public class MyDocument {
      * @return - the docId of the document(between the tags <Doc> and </Doc>). If there is no tag <DocNo> the getter will return null;
      */
     public String getDocId() {
+        if (this.docNo==null)
+            this.docNo = create("<DocNo>");
         return docNo;
     }
     //</editor-fold>
@@ -57,8 +62,8 @@ public class MyDocument {
         doc = cleanEdges(doc);
         if(doc != null && ((doc.startsWith("<Doc>") && doc.endsWith("</Doc>")) || (doc.startsWith("<DOC>") && doc.endsWith("</DOC>")))) {
             this.doc = doc;
-            this.docNo = create("<DocNo>");
-            this.txt = create("<Text>");
+//            this.docNo = create("<DocNo>");
+//            this.txt = create("<Text>");
         }
         else
             this.doc = null;

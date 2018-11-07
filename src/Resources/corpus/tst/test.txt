@@ -14,8 +14,6 @@ eeeeeeeee
 <Head> Test </Head>
 <DocNo>tst4</DocNo>
 <Text>
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-i love eggs and ham
-you
+I love running and $100.
 </Text>
 </Doc>

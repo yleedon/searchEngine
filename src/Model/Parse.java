@@ -102,7 +102,7 @@ public class Parse {
         }
         tokens = txt.split(" ");
         if (tokens==null || tokens.length==0)
-            throw new Exception("error: split didnt work (PARSE: parse()");
+            return;
 
         String word = "";
         for (int tNum = 0;tNum < tokens.length;tNum++ ) {
@@ -155,9 +155,7 @@ public class Parse {
      * @return  a word without delimeters (can return "")
      */
     private String deleteDelimeter(String word) {
-        char t;
         for(int i = 0; i < delimeters.length;i++) {
-            t=delimeters[i];
             while (word.length()> 0 && word.charAt(word.length() - 1) == delimeters[i]) {
                 word = word.substring(0, word.length() - 1);
                 i=0;
@@ -548,8 +546,16 @@ public class Parse {
         }
 
 
-        if(quoteInProgress)
-            quote += " " + word;
+        if(quoteInProgress){
+            if (originalWord.startsWith("\""))
+                quote += word;
+            else quote += " " + word;
+            if(quote.length() > 30){// cancel long qoutes
+                quoteInProgress =false;
+                quote = "\"";
+
+            }
+        }
 
         if(containsNumber(word)) { // deals with numbers in String
             word = numberEvaluation(word, tNum);
@@ -571,12 +577,18 @@ public class Parse {
 
         }
 
-        if(useStemming) // stemming
-            word = stem(word);
+
 
         checkIfWeb(word); // check if website
 
         word = Capitalize(word); // capitalizes all letters if starts with upperCase
+
+        if(useStemming) { // stemming
+            if(word.toLowerCase().equals(word))
+            word = stem(word);
+            else word = stem(word.toLowerCase()).toUpperCase();
+
+        }
 
         return word;
     }
@@ -746,14 +758,12 @@ public class Parse {
      * @param text - the String to parse
      */
     public void setTxt(String text){
-        System.out.println("///////////////////////////////////////////////////////////////////////////////////////");
-        if(text==null) {
-            System.out.println("text given was null!!!");
-            txt=null;
-            return;
+//        System.out.println("///////////////////////////////////////////////////////////////////////////////////////");
+        txt  = text;
+        if(text!=null) {
+            txt = text.replace("\n"," ");
         }
-        System.out.println(text);
-        txt = text.replace("\n"," ");
+//        System.out.println(text);
     }
 
     /**

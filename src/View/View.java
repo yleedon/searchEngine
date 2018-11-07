@@ -167,6 +167,7 @@ public class View {
     }
 
     public void testIndexer(){
+        testReadFile();
         Indexer indexer = new Indexer(rf);
         indexer.parse();
 

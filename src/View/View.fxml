@@ -12,15 +12,15 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.View">
   <children>
     <TextField fx:id="fld_text" layoutX="111.0" layoutY="451.0" onKeyPressed="#onSearchPressed" onMouseClicked="#textPress" opacity="0.28" prefHeight="25.0" prefWidth="615.0" />
-    <TextField fx:id="fld_path" layoutX="123.0" layoutY="385.0" opacity="0.28" prefHeight="38.0" prefWidth="392.0" />
+    <TextField fx:id="fld_path" layoutX="123.0" layoutY="398.0" prefHeight="25.0" prefWidth="392.0" text="LA122790-0230" />
     <GridPane layoutX="168.0" layoutY="483.0" prefHeight="41.0" prefWidth="564.0">
       <children>
-        <Button fx:id="btn_testParse" mnemonicParsing="false" onAction="#testParse" prefHeight="25.0" prefWidth="203.0" text="test pars">
+        <Button fx:id="btn_testParse" mnemonicParsing="false" onAction="#testParse" prefHeight="25.0" prefWidth="203.0" text="test pars ">
           <GridPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
           </GridPane.margin>
         </Button>
-        <Button fx:id="btn_runTests" mnemonicParsing="false" onAction="#runTests" prefHeight="25.0" prefWidth="202.0" text="Run Automatic Tests" GridPane.columnIndex="1">
+        <Button fx:id="btn_runTests" mnemonicParsing="false" onAction="#runTests" prefHeight="25.0" prefWidth="202.0" text="Run Parser Automatic Tests" GridPane.columnIndex="1">
           <GridPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
           </GridPane.margin>
@@ -35,7 +35,7 @@
       </rowConstraints>
     </GridPane>
     <CheckBox fx:id="btn_stemmingBox" layoutX="123.0" layoutY="537.0" mnemonicParsing="false" selected="true" text="use stemmer" />
-    <Button fx:id="Btn_ReadFile" layoutX="547.0" layoutY="388.0" mnemonicParsing="false" onAction="#testReadFile" prefHeight="31.0" prefWidth="105.0" text="ReadFile" />
-      <Button fx:id="btn_testIndexer" layoutX="675.0" layoutY="56.0" mnemonicParsing="false" onAction="#testIndexer" text="test indexer" />
+    <Button fx:id="Btn_ReadFile" layoutX="557.0" layoutY="395.0" mnemonicParsing="false" onAction="#testReadFile" prefHeight="31.0" prefWidth="150.0" text="indexDoc and get doc" />
+      <Button fx:id="btn_testIndexer" layoutX="380.0" layoutY="531.0" mnemonicParsing="false" onAction="#testIndexer" text="test indexer" />
   </children>
 </AnchorPane>
