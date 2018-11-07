@@ -35,7 +35,7 @@
       </rowConstraints>
     </GridPane>
     <CheckBox fx:id="btn_stemmingBox" layoutX="123.0" layoutY="537.0" mnemonicParsing="false" selected="true" text="use stemmer" />
-    <Button fx:id="Btn_ReadFile" layoutX="557.0" layoutY="395.0" mnemonicParsing="false" onAction="#testReadFile" prefHeight="31.0" prefWidth="150.0" text="indexDoc and get doc" />
+    <Button fx:id="Btn_ReadFile" layoutX="557.0" layoutY="395.0" mnemonicParsing="false" onAction="#testGetDoc" prefHeight="31.0" prefWidth="150.0" text="get doc" />
       <Button fx:id="btn_testIndexer" layoutX="380.0" layoutY="531.0" mnemonicParsing="false" onAction="#testIndexer" text="test indexer" />
   </children>
 </AnchorPane>

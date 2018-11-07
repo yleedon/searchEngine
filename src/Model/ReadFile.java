@@ -22,15 +22,6 @@ public class ReadFile {
         parser = new Parse("", true);
         ClassLoader classLoader = getClass().getClassLoader();
         docIdxFile = new File(classLoader.getResource("documentIdx.txt").getFile());
-        try {
-            FileWriter fileWriter = new FileWriter(docIdxFile, false);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            writer = new PrintWriter(bufferedWriter);
-        }
-        catch (IOException e){
-            System.out.println(e.getMessage());
-            writer = null;
-        }
 
     }
     //</editor-fold>
@@ -99,6 +90,15 @@ public class ReadFile {
      * reads all the files in the corpus and writes to the documentIdx the relevant details
      */
     public void readDirectory(){
+        try {
+            FileWriter fileWriter = new FileWriter(docIdxFile, false);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            writer = new PrintWriter(bufferedWriter);
+        }
+        catch (IOException e){
+            System.out.println(e.getMessage());
+            writer = null;
+        }
         File mainDir = new File(path);
         File[] list = mainDir.listFiles();
         writer.flush();
