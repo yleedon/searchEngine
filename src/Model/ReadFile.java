@@ -147,10 +147,13 @@ public class ReadFile {
                         currentLine++;
                     }
                     endIdx = currentLine;
-//                    entry = entry + "," + startIdx + "," + endIdx + "," +file.getPath() + "\n";
 
+                    //entry = entry + "," + startIdx + "," + endIdx + "," +file.getPath().replace(path.substring(1).replace("/","\\"),"") + "\n";
+
+                    //parse.settext(doc);
                     entry = new StringBuilder().append(entry).append(",").append(startIdx).append(",").append(endIdx).append(",").append(file.getPath().replace(path.substring(1).replace("/","\\"),"")).append("\n").toString();
 //                    writer.println(entry);
+
                     writer.append(entry);
                     writer.flush();
                 }
