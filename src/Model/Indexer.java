@@ -21,7 +21,7 @@ public class Indexer {
             rf.readDirectory();
             long end = System.nanoTime();
             double time = end-start;
-            System.out.println(time/1000000000);
+            System.out.println("total time: "+(time/1000000000)+"sec");
         }
         catch(Exception e){
             System.out.println("something went wrong!!!");

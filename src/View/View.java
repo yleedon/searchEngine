@@ -126,26 +126,8 @@ public class View {
     }
 
     //<editor-fold desc="ReadFile testing">
-    public void testReadFile() {
-        ClassLoader classLoader = getClass().getClassLoader();
 
-        rf = new ReadFile(classLoader.getResource("corpus").getFile());
-//        ReadFile rf = new ReadFile("C:\\Users\\Dan\\Desktop\\corpus");
-        rf.readDirectory();
-        if(!fld_path.getText().equals(""))
-        testGetDoc(fld_path.getText());
-    }
-    public void testGetDoc(String docName){
-        try {
-//            int iDoc = Integer.valueOf(fld_path.getText());
-            MyDocument document= rf.getDocument(docName);// ("LA122790-0222");
-            System.out.println(document.getTxt());
-//            testReadFileAlert(document.getDocId(), document.getTxt());
-        }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-    }
+
 
     private void testReadFileAlert(String docId, String txt){
         Alert a = new Alert(Alert.AlertType.INFORMATION);
@@ -168,8 +150,37 @@ public class View {
 
     public void testIndexer(){
         testReadFile();
-        Indexer indexer = new Indexer(rf);
-        indexer.parse();
+//        Indexer indexer = new Indexer(rf);
+//        indexer.parse();
 
+    }
+
+
+    public void testReadFile() {
+        ClassLoader classLoader = getClass().getClassLoader();
+        rf = new ReadFile(classLoader.getResource("corpus").getFile());
+//        ReadFile rf = new ReadFile("C:\\Users\\Dan\\Desktop\\corpus");
+        rf.readDirectory();
+//        if(!fld_path.getText().equals(""))
+//            testGetDoc(fld_path.getText());
+    }
+
+
+    public void testGetDoc(){
+        try {
+            ClassLoader classLoader = getClass().getClassLoader();
+
+            rf = new ReadFile(classLoader.getResource("corpus").getFile());
+            if(!fld_path.getText().equals("")) {
+
+//            int iDoc = Integer.valueOf(fld_path.getText());
+                MyDocument document = rf.getDocument(fld_path.getText());// ("LA122790-0222");
+                System.out.println(document.getTxt());
+//            testReadFileAlert(document.getDocId(), document.getTxt());
+            }
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 }
