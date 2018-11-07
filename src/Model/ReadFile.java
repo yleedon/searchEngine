@@ -105,6 +105,7 @@ public class ReadFile {
         for(File directory: list){
             readDirectory(directory);
         }
+        System.out.println(parser.getNumberSet());
         System.out.println("document indexing complete");
         writer.close();
     }

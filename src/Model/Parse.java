@@ -12,6 +12,7 @@ import java.util.Set;
 
 public class Parse {
 
+    private Set<String> numberSet;
     private String txt;
     private boolean useStemming;
     private Map<String,String> monthMap;
@@ -36,6 +37,7 @@ public class Parse {
         this.txt = text.replace("\n", " ");
         this.useStemming = stemmerStatus;
         initializeMaps();
+        numberSet = new HashSet<>();
 
     }
 
@@ -274,9 +276,12 @@ public class Parse {
             if((Math.abs(number) >= 1000 && Math.abs(number) < 1000000)){
 //                number = (int)number;
                 number=number/1000;
-                if(number % 1 == 0)
-                    return (int)number + "K";
+                if(number % 1 == 0) {
+                    numberSet.add((int) number + "K");
+                    return (int) number + "K";
+                }
 //
+                numberSet.add(number + "K");
                 return number + "K";
             }
 
@@ -289,19 +294,26 @@ public class Parse {
 
                 number=(int)number;
                 number=number/1000000;
-                if(number % 1 == 0)
-                    return (int)number + "M";
+                if(number % 1 == 0) {
+                    numberSet.add(number + "M");
+                    return (int) number + "M";
+                }
+                numberSet.add(number + "M");
                 return number + "M";
             }
             if (Math.abs(number) >= 1000000000){
-                if ((number/1000000000) % 1 == 0)
-                    return (int)(number/1000000000) + "B";
+                if ((number/1000000000) % 1 == 0) {
+                    numberSet.add((int) (number / 1000000000) + "B");
+                    return (int) (number / 1000000000) + "B";
+                }
+                numberSet.add(number / 1000000000 + "B");
                 return number/1000000000 + "B";
             }
         }
         catch(Exception e){
             return word; // not a number
         }
+        numberSet.add(word);
         return word;
     }
 
@@ -342,9 +354,16 @@ public class Parse {
         if (numberMap.containsKey(secondWord)){
             double number = Double.valueOf(num);
             tokens[tNum+1] = null;
-            if(!isInteger(number))
-                return number*numberMap.get(secondWord).getKey() + "" +numberMap.get(secondWord).getValue();
-            else return (int)number*numberMap.get(secondWord).getKey() + "" +numberMap.get(secondWord).getValue();
+            if(!isInteger(number)) {
+                String numberTerm = number * numberMap.get(secondWord).getKey() + "" + numberMap.get(secondWord).getValue();
+                numberSet.add(numberTerm);
+                return number * numberMap.get(secondWord).getKey() + "" + numberMap.get(secondWord).getValue();
+            }
+            else {
+                String numberTerm = (int) number * numberMap.get(secondWord).getKey() + "" + numberMap.get(secondWord).getValue();
+                numberSet.add(numberTerm);
+                return numberTerm;
+            }
         }
 
         //checks for "Dollars"
@@ -419,6 +438,7 @@ public class Parse {
             return num;
         }
         tokens[tNum+1] = null;
+        numberSet.add(num+" "+secondToken);
         return num+" "+secondToken;
     }
 
@@ -767,6 +787,10 @@ public class Parse {
      */
     public void setStemming(boolean use){
         useStemming = use;
+    }
+
+    public Set<String> getNumberSet() {
+        return numberSet;
     }
 
     public void printIndex(){
