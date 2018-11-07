@@ -1,9 +1,15 @@
 package Model;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
 public class MyDocument {
 
     //<editor-fold desc="Fields">
-    String doc, docNo, txt;
+    String doc, docNo, txt, city, date;
+    int maxFrequency;
+    HashMap<String, Integer> terms;
     //</editor-fold>
 
     //<editor-fold desc="Constructor">
@@ -15,6 +21,7 @@ public class MyDocument {
      */
     public MyDocument(String doc) {
         setDoc(doc);
+        maxFrequency = -1;
 //        this.docNo = create("<DocNo>");
 //        this.txt = create("<Text>");
 
@@ -24,6 +31,33 @@ public class MyDocument {
     //<editor-fold desc="Getters">
 
     /**
+     * Getter to the city that the document came from.
+     * @return The city where they post this document, if there is no city, returns null
+     */
+    public String getCity(){
+        if(city==null) {
+            city = create("<F P=104>");
+            if (city.contains(" ")){
+                city = city.split(" ")[0].toUpperCase();
+            }
+        }
+        return city;
+    }
+
+    /**
+     * The date that the document made at.
+     * @return the date when they post this document, if there is no date, returns null
+     */
+    public String getDate() {
+        if(date==null) {
+            date = create("<Date>");
+            if (date==null)
+                date = create("<Date1>");
+        }
+        return date;
+    }
+
+    /**
      * Getter to the txt field
      * @return - the text of the document. If there is no tag <Text> the getter will return null;
      */
@@ -31,6 +65,22 @@ public class MyDocument {
         if (txt==null)
             txt = create("<Text>");
         return txt;
+    }
+
+    /**
+     * Getter to the maximum frequency of all the terms in the document
+     * @return the max frequency of the term, if hasn't been set yet return -1
+     */
+    public int getMaxFrequency() {
+        return maxFrequency;
+    }
+
+    /**
+     * Getter for all the terms and their frequency in this document
+     * @return The term HashMap of the doc
+     */
+    public HashMap<String, Integer> getTerms() {
+        return terms;
     }
 
     /**
@@ -68,6 +118,23 @@ public class MyDocument {
         else
             this.doc = null;
     }
+
+    /**
+     * Setter for the terms HashMap of the document(the terms and their frequency
+     * @param terms - The HashMap of the terms and their frequency.
+     */
+    public void setTerms(HashMap<String, Integer> terms) {
+        this.terms = terms;
+    }
+
+    /**
+     * Setter for the max frequency term
+     * @param maxFrequency - the maximum frequency of a term
+     */
+    public void setMaxFrequency(int maxFrequency) {
+        this.maxFrequency = maxFrequency;
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="Fields Creator Functions">
@@ -78,14 +145,11 @@ public class MyDocument {
      * @return - all the string between the tag and its closing tag (for example will return all the text between <Text> and </Text> in the doc field. if tag doesn't exists returns null.
      */
     private String create(String tag){
-        String ans;
         try{
             if (!(doc.contains(tag))) {tag = tag.toUpperCase();}
             if (!(doc.contains(tag))) {return null;}
             String[] splittedDoc = doc.split(tag);
-            ans = (splittedDoc[1].split(tag.replace("<", "</")))[0];
-            ans = cleanEdges(ans);
-            return ans;
+            return cleanEdges((splittedDoc[1].split(tag.replace("<", "</")))[0]);
         }
         catch (Exception e){
             return null;
@@ -98,16 +162,15 @@ public class MyDocument {
      * @return - the same given string without '\n' in the beginning and in the end.
      */
     private String cleanEdges(String s) {
-        String ans = s;
-        if (ans == null)
+        if (s == null)
             return null;
-        if(ans.startsWith("\n")){
-            ans = ans.substring(1);
+        while(s.startsWith("\n") || s.startsWith(" ")){
+            s = s.substring(1);
         }
-        if (ans.endsWith("\n")){
-            ans = ans.substring(0, ans.length()-1);
+        if (s.endsWith("\n") || s.endsWith(" ")){
+            s = s.substring(0, s.length()-1);
         }
-        return ans;
+        return s;
     }
     //</editor-fold>
 }
