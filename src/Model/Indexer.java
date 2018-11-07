@@ -23,10 +23,13 @@ public class Indexer {
             while (reader.ready()){
 
                 line = line.split(",")[0];
-                rf.getDocument(line).getDoc();
-                parser.setTxt( rf.getDocument(line).getDoc());
+
+                parser.setTxt( rf.getDocument(line).getTxt());
+                System.out.println("********************************doc name is: " + line+ "*************************************************");
                 parser.parse();
                 parser.printIndex();
+                if (line.equals("LA122790-0018"))
+                    System.out.println("sdsddsdsdsdsdsds");
                 line = reader.readLine();
             }
         }
