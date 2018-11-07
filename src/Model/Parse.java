@@ -574,11 +574,7 @@ public class Parse {
 
         if (stopWords.contains(word.toLowerCase())) { //remove wanted stop word
             return "";
-
         }
-
-
-
         checkIfWeb(word); // check if website
 
         word = Capitalize(word); // capitalizes all letters if starts with upperCase
@@ -587,7 +583,6 @@ public class Parse {
             if(word.toLowerCase().equals(word))
             word = stem(word);
             else word = stem(word.toLowerCase()).toUpperCase();
-
         }
 
         return word;
@@ -723,7 +718,7 @@ public class Parse {
                     tokens[tNum+1]=null;
                     return monthMap.get(word) + "-" + sNum;
                 }
-                if (number >= 0 && sNum.length()>2){
+                if (number >= 32){
                     tokens[tNum+1]=null;
                     return number +"-"+monthMap.get(word);
                 }
@@ -746,7 +741,7 @@ public class Parse {
     private String Capitalize(String word) {
         if(word==null || word.equals(""))
             return word;
-        if(word.charAt(0) >=65 && word.charAt(0) <=90)
+        if(word.charAt(0) >= 65 && word.charAt(0) <=90)
             return word.toUpperCase();
         return word;
     }
