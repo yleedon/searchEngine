@@ -577,12 +577,18 @@ public class Parse {
 
         }
 
-        if(useStemming) // stemming
-            word = stem(word);
+
 
         checkIfWeb(word); // check if website
 
         word = Capitalize(word); // capitalizes all letters if starts with upperCase
+
+        if(useStemming) { // stemming
+            if(word.toLowerCase().equals(word))
+            word = stem(word);
+            else word = stem(word.toLowerCase()).toUpperCase();
+
+        }
 
         return word;
     }
