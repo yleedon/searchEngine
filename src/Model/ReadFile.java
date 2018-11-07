@@ -7,6 +7,7 @@ public class ReadFile {
     String path; /////////////////////////////////////////**********//the path to the corpus should be in config!!!!!!
     File docIdxFile; //the file ReadFile writes into. AKA doocumentIdx.txt
     PrintWriter writer; // the object that writes to the file
+    Parse parser;
     //</editor-fold>
 
     //<editor-fold desc="Constructor">
@@ -18,6 +19,7 @@ public class ReadFile {
     public ReadFile(String path) {
 
         this.path = path;
+        parser = new Parse("", true);
         ClassLoader classLoader = getClass().getClassLoader();
         docIdxFile = new File(classLoader.getResource("documentIdx.txt").getFile());
         try {
@@ -124,35 +126,41 @@ public class ReadFile {
      * @param file
      */
     private void dismember2Docs(File file) {
+        StringBuilder docBuilder = new StringBuilder();
         String line,entry = "";
         int startIdx=0, endIdx=0, currentLine = 0;
         try{
             FileReader fileReader = new FileReader(file);
             BufferedReader reader = new BufferedReader(fileReader);
-//            Scanner scanner = new Scanner(file);
             while(reader.ready()){
                 line = reader.readLine();
                 currentLine++;
                 if (line.toLowerCase().contains("<doc>")){
+                    docBuilder.append(line);
                     line = reader.readLine();
                     startIdx = currentLine++;
-//                    currentLine++;
-                    while(!line.toLowerCase().contains("</doc>")){
+                    while(reader.ready() && !line.toLowerCase().contains("</doc>")){
                         if(line.toLowerCase().contains("<docno>")){
                             String tag = getTag(line);
                             entry = (line.split(tag)[1]).split(tag.replace("<", "</"))[0];
                             entry = cleanEdges(entry);
                         }
+                        docBuilder.append(line);
                         line = reader.readLine();
                         currentLine++;
                     }
+                    docBuilder.append(line);
                     endIdx = currentLine;
-
-                    //entry = entry + "," + startIdx + "," + endIdx + "," +file.getPath().replace(path.substring(1).replace("/","\\"),"") + "\n";
-
-                    //parse.settext(doc);
+                    parser.setTxt(new MyDocument(docBuilder.toString()).getTxt());
+                    try {
+                        parser.parse();
+                        System.out.println("DocName: "+ entry);
+                        parser.printIndex();
+                    }
+                    catch (Exception e){
+                        System.out.println("didn't parse");
+                    }
                     entry = new StringBuilder().append(entry).append(",").append(startIdx).append(",").append(endIdx).append(",").append(file.getPath().replace(path.substring(1).replace("/","\\"),"")).append("\n").toString();
-//                    writer.println(entry);
 
                     writer.append(entry);
                     writer.flush();
