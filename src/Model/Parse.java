@@ -32,7 +32,8 @@ public class Parse {
      * @param text - the string to work on
      */
     public Parse(String text,boolean stemmerStatus) {
-        this.txt = text;
+        System.out.println(text);
+        this.txt = text.replace("\n", " ");
         this.useStemming = stemmerStatus;
         initializeMaps();
 
@@ -95,8 +96,10 @@ public class Parse {
         quoteInProgress = false;
         ans ="";
         maxFreq=0;
-        if(txt==null)
-            throw new Exception("error: text was empty (PARSE: parse()");
+        if(txt==null) {
+            System.out.println("*******************************************************************8 this doc.gettext was empty(null)");
+            return;
+        }
         tokens = txt.split(" ");
         if (tokens==null || tokens.length==0)
             throw new Exception("error: split didnt work (PARSE: parse()");
@@ -534,6 +537,8 @@ public class Parse {
 
 
         word = deleteDelimeter(word); // deletes delimiters
+        if(word.equals(""))
+            return"";
 
         if (originalWord.endsWith("\"") && quoteInProgress){
             quoteInProgress = false;
@@ -608,7 +613,7 @@ public class Parse {
                 else word = word.substring(4);
                 if (word.contains("."))
                     word=word.substring(0,word.indexOf('.'));
-                    addTerm(word);
+                addTerm(word);
             }
         }catch (Exception e){
             return;
@@ -741,7 +746,14 @@ public class Parse {
      * @param text - the String to parse
      */
     public void setTxt(String text){
-        txt = text;
+        System.out.println("///////////////////////////////////////////////////////////////////////////////////////");
+        if(text==null) {
+            System.out.println("text given was null!!!");
+            txt=null;
+            return;
+        }
+        System.out.println(text);
+        txt = text.replace("\n"," ");
     }
 
     /**
