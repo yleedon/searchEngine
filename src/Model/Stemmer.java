@@ -518,4 +518,11 @@ class Stemmer {
         i_end = k + 1;
         i = 0;
     }
+
+    public void resetStemer(){
+        b = new char[INC];
+        i = 0;
+        j=0;
+        i_end = 0;
+    }
 }

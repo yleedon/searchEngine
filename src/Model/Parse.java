@@ -26,7 +26,7 @@ public class Parse {
     int maxFreq;
     private String quote;
     private boolean quoteInProgress;
-
+    private Stemmer stemmer;
 
     /**
      * Constructer - recieves a string to work on
@@ -38,6 +38,7 @@ public class Parse {
         this.useStemming = stemmerStatus;
         initializeMaps();
         numberSet = new HashSet<>();
+        stemmer = new Stemmer();
 
     }
 
@@ -97,7 +98,7 @@ public class Parse {
 
         try{
             ClassLoader classLoader = getClass().getClassLoader();
-            File file = new File(classLoader.getResource("StopWords").getFile());
+            File file = new File(classLoader.getResource("corpus/StopWords").getFile());
             BufferedReader br = new BufferedReader(new FileReader(file));
             String st;
             while ((st = br.readLine()) != null)
@@ -217,7 +218,7 @@ public class Parse {
         }
         catch(Exception e){
 
-            if(tNum+1 < tokens.length && tokens[tNum+1]!=null && tokens[tNum+1].equals("Dollars"))  // takes care of 123bn and 123m
+            if(tNum+1 < tokens.length && tokens[tNum+1]!=null && tokens[tNum+1].toLowerCase().equals("dollars"))  // takes care of 123bn and 123m
                 return checknumberAndSize(word,tNum,originalWord);
 
             return originalWord ; // the number contains a char that is not a number - rules do not apply - f
@@ -375,7 +376,7 @@ public class Parse {
 
 
         //checks for "Dollars"
-        if(secondWord.equals("Dollars")){
+        if(secondWord.toLowerCase().equals("dollars")){
             tokens[tNum+1] = null;
             try{
                 if(Math.abs(Integer.valueOf(num))>=1000000)
@@ -400,7 +401,7 @@ public class Parse {
 
         //checks for bn/m Dollars
         try {
-            if(tokens[tNum+2].equals("Dollars"))
+            if(tokens[tNum+2].toLowerCase().equals("dollars"))
                 if(secondWord.equals("bn") ||  secondWord.equals("m")) {
                     tokens[tNum + 1] = null;
                     tokens[tNum + 2] = null;
@@ -429,25 +430,49 @@ public class Parse {
      */
     private String dealWithFractionAfterNumber(String num, int tNum, String secondToken) {
         String[] fraction = secondToken.split("/");
-        if(fraction.length != 2)
+        if (fraction.length != 2)
             return num;
+
         // sheck if integers
-        try{
+        boolean endWithPercent = false;
+        try {
+            if (fraction[1].charAt(fraction[1].length() - 1) == '%') {
+                endWithPercent = true;
+                fraction[1] = fraction[1].substring(0,fraction[1].length()-1);
+            }
+
             Integer.valueOf(fraction[0]);
             Integer.valueOf(fraction[1]);
-        }
-        catch (Exception e){
+
+
+            if (tNum + 2 < tokens.length && tokens[tNum + 2].toLowerCase().equals("dollars")) {
+                num = num + " " + secondToken + " Dollars";
+                tokens[tNum + 1] = null;
+                tokens[tNum + 2] = null;
+                return num;
+            }
+
+
+            if (endWithPercent) {
+                tokens[tNum + 1] = null;
+                return num + " " + secondToken;
+            }
+            if(tokens[tNum + 2].toLowerCase().equals("percent") || tokens[tNum + 2].toLowerCase().equals("percentage")){
+                tokens[tNum +1] = null; tokens[tNum+2]= null;
+                return num + " " + secondToken + "%";
+            }
+
+
+
+            /// just number with fraction
+            tokens[tNum + 1] = null;
+            numberSet.add(num + " " + secondToken);
+            return num + " " + secondToken;
+
+        } catch (Exception e) {
             /// not a leagal fraction
             return num;
         }
-        if (tNum + 2 < tokens.length && tokens[tNum+2].equals("Dollars") ){
-            num = num+ " " + secondToken + " Dollars";
-            tokens[tNum +1] = null; tokens[tNum + 2] = null;
-            return num;
-        }
-        tokens[tNum+1] = null;
-        numberSet.add(num+" "+secondToken);
-        return num+" "+secondToken;
     }
 
     /**
@@ -642,7 +667,7 @@ public class Parse {
      */
     private String stem(String word) {
         if (!word.contains("-")) {
-            Stemmer stemmer = new Stemmer();
+            stemmer.resetStemer();
             for (int i = 0; i < word.length(); i++)
                 stemmer.add(word.charAt(i));
             stemmer.stem();
