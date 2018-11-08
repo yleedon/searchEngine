@@ -295,7 +295,7 @@ public class Parse {
                 number=(int)number;
                 number=number/1000000;
                 if(number % 1 == 0) {
-                    numberSet.add(number + "M");
+                    numberSet.add((int)number + "M");
                     return (int) number + "M";
                 }
                 numberSet.add(number + "M");
@@ -341,8 +341,8 @@ public class Parse {
         String secondWord = deleteDelimeter(tokens[tNum+1]);
 
         //checks for Dates
-        if(monthMap.containsKey(secondWord) ) // second word is month
-            return createDateTerm(num,tNum,secondWord);
+        if(monthMap.containsKey(secondWord.toLowerCase()) ) // second word is month
+            return createDateTerm(num,tNum,secondWord.toLowerCase());
 
         //checks for percent/percentae
         if(secondWord.equals("percent") || secondWord.equals("percentage")){
