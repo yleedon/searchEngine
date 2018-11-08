@@ -59,13 +59,34 @@ public class Parse {
         monthMap.put("Nov","11");monthMap.put("Dec","12");
 
         moneyMap.put("million",new Pair<>(1,"M"));
+        moneyMap.put("Million",new Pair<>(1,"M"));
+        moneyMap.put("MILLION",new Pair<>(1,"M"));
+
         moneyMap.put("billion",new Pair<>(1000,"M"));
+        moneyMap.put("BILLION",new Pair<>(1000,"M"));
+        moneyMap.put("Billion",new Pair<>(1000,"M"));
+
         moneyMap.put("trillion",new Pair<>(1000000,"M"));
+        moneyMap.put("TRILLION",new Pair<>(1000000,"M"));
+        moneyMap.put("Trillion",new Pair<>(1000000,"M"));
+
 
         numberMap.put("Trillion", new Pair(1000,"B"));
+        numberMap.put("trillion", new Pair(1000,"B"));
+        numberMap.put("TRILLION", new Pair(1000,"B"));
+
+        numberMap.put("million", new Pair(1,"M"));
         numberMap.put("Million", new Pair(1,"M"));
+        numberMap.put("MILLION", new Pair(1,"M"));
+
         numberMap.put("Billion",new Pair(1,"B"));
+        numberMap.put("BILLION",new Pair(1,"B"));
+        numberMap.put("billion",new Pair(1,"B"));
+
+        numberMap.put("THOUSAND",new Pair(1,"K"));
+        numberMap.put("thousand",new Pair(1,"K"));
         numberMap.put("Thousand",new Pair(1,"K"));
+
         initializeStopWords();
     }
 
@@ -341,30 +362,17 @@ public class Parse {
         String secondWord = deleteDelimeter(tokens[tNum+1]);
 
         //checks for Dates
-        if(monthMap.containsKey(secondWord.toLowerCase()) ) // second word is month
-            return createDateTerm(num,tNum,secondWord.toLowerCase());
+        if(monthMap.containsKey(secondWord) ) // second word is month
+            return createDateTerm(num,tNum,secondWord);
 
         //checks for percent/percentae
-        if(secondWord.equals("percent") || secondWord.equals("percentage")){
+        if(secondWord.toLowerCase().equals("percent") || secondWord.toLowerCase().equals("percentage")){
             tokens[tNum+1] = null;
             return num + "%";
         }
 
         //checks for numberSizeword
-        if (numberMap.containsKey(secondWord)){
-            double number = Double.valueOf(num);
-            tokens[tNum+1] = null;
-            if(!isInteger(number)) {
-                String numberTerm = number * numberMap.get(secondWord).getKey() + "" + numberMap.get(secondWord).getValue();
-                numberSet.add(numberTerm);
-                return number * numberMap.get(secondWord).getKey() + "" + numberMap.get(secondWord).getValue();
-            }
-            else {
-                String numberTerm = (int) number * numberMap.get(secondWord).getKey() + "" + numberMap.get(secondWord).getValue();
-                numberSet.add(numberTerm);
-                return numberTerm;
-            }
-        }
+
 
         //checks for "Dollars"
         if(secondWord.equals("Dollars")){
@@ -382,7 +390,7 @@ public class Parse {
         }
 
         // checks for a numberSize word
-        if(moneyMap.containsKey(secondWord)){
+        if(numberMap.containsKey(secondWord)){
             return dealWithSizeAfterNumber(num,tNum);
         }
 
@@ -450,12 +458,31 @@ public class Parse {
      */
     private String dealWithSizeAfterNumber(String num, int tNum) {
         String secondWord = deleteDelimeter(tokens[tNum+1]);
-        if(tNum+2 < tokens.length && tokens[tNum+2].equals("U.S."))
-            if(tNum+3 < tokens.length && deleteDelimeter(tokens[tNum+3]).equals("dollars")){
-                tokens[tNum + 1] = null; tokens[tNum+2] = null; tokens[tNum + 3] = null;
-                return Integer.valueOf(num)*moneyMap.get(secondWord).getKey() + " M Dollars";
+        if (moneyMap.containsKey(secondWord)) {
+            if (tNum + 2 < tokens.length && tokens[tNum + 2].equals("U.S."))
+                if (tNum + 3 < tokens.length && deleteDelimeter(tokens[tNum + 3]).toLowerCase().equals("dollars")) {
+                    tokens[tNum + 1] = null;
+                    tokens[tNum + 2] = null;
+                    tokens[tNum + 3] = null;
+                    return Integer.valueOf(num) * moneyMap.get(secondWord).getKey() + " M Dollars";
+                }
+        }
+        if (numberMap.containsKey(secondWord)){
+            double number = Double.valueOf(num);
+            tokens[tNum+1] = null;
+            if(!isInteger(number)) {
+                String numberTerm = number * numberMap.get(secondWord).getKey() + "" + numberMap.get(secondWord).getValue();
+                numberSet.add(numberTerm);
+                return number * numberMap.get(secondWord).getKey() + "" + numberMap.get(secondWord).getValue();
             }
+            else {
+                String numberTerm = (int) number * numberMap.get(secondWord).getKey() + "" + numberMap.get(secondWord).getValue();
+                numberSet.add(numberTerm);
+                return numberTerm;
+            }
+        }
         return num;
+
     }
 
     /**
@@ -699,7 +726,7 @@ public class Parse {
         }
 
         try {
-            if (tokens[tNum+2].equals("and") &&(word.equals("Between")) || word.equals("between")) {
+            if (tokens[tNum+2].toLowerCase().equals("and") &&(word.toLowerCase().equals("between"))) {
                 String num1 = tokens[tNum+1];
                 String num2 = tokens[tNum+3];
                 //test its numbers
