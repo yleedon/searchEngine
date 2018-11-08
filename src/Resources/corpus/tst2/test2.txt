@@ -1,13 +1,10 @@
 <Doc>
 <DocNo>tst1</DocNo>
 <Text>
-test test test
-it is a test
-just checking shit for java
-1345 dollars
-info R
-12.87 percent of the world
-fucking engine
+10000000
+13,000,432
+12 Million 123,321 4 3/5 10,123 123 Thousand 1010.56
+1010.56 10,123,000 55 Million 10,123,000,000 55 Billion 7 Trillion
 </Text>
 </Doc>
 
@@ -15,10 +12,6 @@ fucking engine
 <Head> Test </Head>
 <DocNo>tst2</DocNo>
 <Text>
-another test
-just checking if now it is working
-don't really know what i'm doing yet
-bla bla mudafucka bla
-yayyy what else
+hello
 </Text>
 </Doc>

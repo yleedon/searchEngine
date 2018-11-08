@@ -137,7 +137,7 @@ public class ReadFile {
                 line = reader.readLine();
                 currentLine++;
                 if (line.toLowerCase().contains("<doc>")){
-                    docBuilder.append(line);
+                    docBuilder.append(line+"\n");
                     line = reader.readLine();
                     startIdx = currentLine++;
                     while(reader.ready() && !line.toLowerCase().contains("</doc>")){
@@ -146,17 +146,20 @@ public class ReadFile {
                             entry = (line.split(tag)[1]).split(tag.replace("<", "</"))[0];
                             entry = cleanEdges(entry);
                         }
-                        docBuilder.append(line);
+                        docBuilder.append(line+"\n");
                         line = reader.readLine();
                         currentLine++;
                     }
-                    docBuilder.append(line);
+                    docBuilder.append(line+"\n");
                     endIdx = currentLine;
+//                    System.out.println(new MyDocument(docBuilder.toString()).getTxt());
                     parser.setTxt(new MyDocument(docBuilder.toString()).getTxt());
                     try {
                         parser.parse();
                         System.out.println("DocName: "+ entry);
                         parser.printIndex();
+//                        System.out.println(parser.getNumberSet());
+//                        System.out.println("amount: " + parser.getNumberSet().size());
                     }
                     catch (Exception e){
                         System.out.println("didn't parse");

@@ -295,7 +295,7 @@ public class Parse {
                 number=(int)number;
                 number=number/1000000;
                 if(number % 1 == 0) {
-                    numberSet.add(number + "M");
+                    numberSet.add((int)number + "M");
                     return (int) number + "M";
                 }
                 numberSet.add(number + "M");
