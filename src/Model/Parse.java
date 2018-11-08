@@ -341,8 +341,8 @@ public class Parse {
         String secondWord = deleteDelimeter(tokens[tNum+1]);
 
         //checks for Dates
-        if(monthMap.containsKey(secondWord) ) // second word is month
-            return createDateTerm(num,tNum,secondWord);
+        if(monthMap.containsKey(secondWord.toLowerCase()) ) // second word is month
+            return createDateTerm(num,tNum,secondWord.toLowerCase());
 
         //checks for percent/percentae
         if(secondWord.equals("percent") || secondWord.equals("percentage")){
