@@ -8,6 +8,7 @@ public class ReadFile {
     File docIdxFile; //the file ReadFile writes into. AKA doocumentIdx.txt
     PrintWriter writer; // the object that writes to the file
     Parse parser;
+    Indexer indexer;
     //</editor-fold>
 
     //<editor-fold desc="Constructor">
@@ -20,6 +21,7 @@ public class ReadFile {
 
         this.path = path;
         parser = new Parse("", true);
+        indexer = new Indexer();
         ClassLoader classLoader = getClass().getClassLoader();
         docIdxFile = new File(classLoader.getResource("documentIdx.txt").getFile());
 
@@ -103,9 +105,17 @@ public class ReadFile {
         File[] list = mainDir.listFiles();
         writer.flush();
         for(File directory: list){
+            if(directory.getPath().endsWith("StopWords")) {
+//                System.out.println("stop");
+                readDirectory(directory);
+            }
+
+            if(!directory.getPath().endsWith("StopWords"))
             readDirectory(directory);
         }
-        System.out.println(parser.getNumberSet());
+//        System.out.println(parser.getNumberSet());
+        indexer.printWaitList();
+        indexer.printTermlist();
         System.out.println("document indexing complete");
         writer.close();
     }
@@ -116,6 +126,7 @@ public class ReadFile {
      */
     private void readDirectory(File directory){
         File[] list = directory.listFiles();
+        if(list!=null)
         for (File file: list) {
             dismember2Docs(file);
         }
@@ -152,12 +163,21 @@ public class ReadFile {
                     }
                     docBuilder.append(line+"\n");
                     endIdx = currentLine;
+                    System.out.println("********************************" +entry);
 //                    System.out.println(new MyDocument(docBuilder.toString()).getTxt());
-                    parser.setTxt(new MyDocument(docBuilder.toString()).getTxt());
+                    MyDocument document = new MyDocument(docBuilder.toString());
+
+                    parser.setTxt(document.getTxt());
                     try {
                         parser.parse();
-                        System.out.println("DocName: "+ entry);
-                        parser.printIndex();
+//                        System.out.println("DocName: "+ entry);
+//                        parser.printIndex();
+                        document.setMaxFrequency(parser.maxFreq);
+                        document.setTerms(parser.getDocMap());
+                        indexer.addDoc(document);
+
+//                        indexer.addDoc(new Doc);
+
 //                        System.out.println(parser.getNumberSet());
 //                        System.out.println("amount: " + parser.getNumberSet().size());
                     }
@@ -166,6 +186,7 @@ public class ReadFile {
                     }
                     entry = new StringBuilder().append(entry).append(",").append(startIdx).append(",").append(endIdx).append(",").append(file.getPath().replace(path.substring(1).replace("/","\\"),"")).append("\n").toString();
 
+                    docBuilder.delete(0,docBuilder.length());
                     writer.append(entry);
                     writer.flush();
                 }
