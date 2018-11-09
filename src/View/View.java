@@ -149,7 +149,13 @@ public class View {
     }
 
     public void testIndexer(){
+        long end;
+        long start = System.nanoTime();
+
         testReadFile();
+        end = System.nanoTime();
+        double time = (end-start)/1000000000;
+        System.out.println("total index time:  "+ time);
 //        Indexer indexer = new Indexer(rf);
 //        indexer.parse();
 

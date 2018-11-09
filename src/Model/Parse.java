@@ -603,8 +603,11 @@ public class Parse {
 
         if (word.startsWith("\"") && !quoteInProgress){
             quoteInProgress = true;
+            if(word.endsWith("\"")) {
+                quoteInProgress = false;
+                addTerm(word);
+            }
         }
-
 
         word = deleteDelimeter(word); // deletes delimiters
         if(word.equals(""))
@@ -656,6 +659,10 @@ public class Parse {
             word = stem(word);
             else word = stem(word.toLowerCase()).toUpperCase();
         }
+        if (stopWords.contains(word.toLowerCase())) { //remove wanted stop word
+            return "";
+        }
+
 
         return word;
     }
@@ -854,4 +861,8 @@ public class Parse {
         System.out.println("end.\n\n\n");
     }
     //</editor-fold>
+
+    public Map<String,Integer> getDocMap(){
+        return indexMap;
+    }
 }
