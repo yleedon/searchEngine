@@ -113,9 +113,10 @@ public class ReadFile {
             if(!directory.getPath().endsWith("StopWords"))
             readDirectory(directory);
         }
-//        System.out.println(parser.getNumberSet());
+
         indexer.printWaitList();
         indexer.printTermlist();
+        System.out.println(parser.getNumberSet());
         System.out.println("document indexing complete");
         writer.close();
     }

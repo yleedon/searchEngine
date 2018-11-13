@@ -211,12 +211,39 @@ public class Parse {
             word = word.substring(1);
         }
         try {
+            if(word.contains("/")){
+                word=dealWithFraction(word);
+                if (word.endsWith("%"))
+                    return word;
+
+            }
+            boolean isNormalledNumber = false;
+            String end ="";
+            boolean dontTuch= false;
+            if(tNum+1 < tokens.length && tokens[tNum+1]!=null && tokens[tNum+1].toLowerCase().equals("dollars"))
+                dontTuch=true;
+            if(!dontTuch)
+                if(word.toLowerCase().endsWith("m") || word.toLowerCase().endsWith("k") || word.toLowerCase().endsWith("b")){
+                    isNormalledNumber=true;
+                    end = ""+word.charAt(word.length()-1);
+                    word = word.substring(0,word.length()-1);
+                }
+
             double numValue = Double.parseDouble(word);
+            if (isNormalledNumber){
+                word=word+end;
+                numberSet.add(word.toUpperCase());
+                return word.toUpperCase();
+
+
+            }
+
 
             if (startsWithDoller)
                 return DealWithDollerSign(tNum,numValue,originalWord);
         }
         catch(Exception e){
+
 
             if(tNum+1 < tokens.length && tokens[tNum+1]!=null && tokens[tNum+1].toLowerCase().equals("dollars"))  // takes care of 123bn and 123m
                 return checknumberAndSize(word,tNum,originalWord);
@@ -421,6 +448,33 @@ public class Parse {
         return num;
     }
 
+    private String dealWithFraction(String word) {
+        String[] fraction = word.split("/");
+        if (fraction.length != 2)
+            return word;
+
+        // sheck if integers
+        boolean endWithPercent = false;
+        try {
+            if (fraction[1].charAt(fraction[1].length() - 1) == '%') {
+                endWithPercent = true;
+                fraction[1] = fraction[1].substring(0, fraction[1].length() - 1);
+            }
+
+            Integer.valueOf(fraction[0]);
+            Integer.valueOf(fraction[1]);
+
+        } catch (Exception e) {
+            return word; }
+
+        double tempDouble = (Double.valueOf(fraction[0])/Double.valueOf(fraction[1]));
+        if(endWithPercent)
+            return tempDouble+"%";
+        else return ""+tempDouble;
+
+
+
+    }
     /**
      * checks if the second token is a fraction
      * @param num - the first number
@@ -429,6 +483,23 @@ public class Parse {
      * @return the term
      */
     private String dealWithFractionAfterNumber(String num, int tNum, String secondToken) {
+        if(num.contains("."))
+            return num;
+
+//        2 2/4-5 5/2
+//        ********************************************************************************************************
+//        String withoughtMinus = secondToken;
+//        if (secondToken.startsWith("-"))
+//            withoughtMinus = secondToken.substring(1);
+//        if (withoughtMinus.contains("-")){
+//
+//
+//        }
+//        if(secondToken.contains("-")){
+//
+//        }
+//        ********************************************************************************************************8
+
         String[] fraction = secondToken.split("/");
         if (fraction.length != 2)
             return num;
@@ -445,29 +516,39 @@ public class Parse {
             Integer.valueOf(fraction[1]);
 
 
-            if (tNum + 2 < tokens.length && tokens[tNum + 2].toLowerCase().equals("dollars")) {
-                num = num + " " + secondToken + " Dollars";
-                tokens[tNum + 1] = null;
-                tokens[tNum + 2] = null;
-                return num;
-            }
-
-
+//            if (tNum + 2 < tokens.length && tokens[tNum + 2].toLowerCase().equals("dollars")) {
+//                num = num + " " + secondToken + " Dollars";
+//                tokens[tNum + 1] = null;
+//                tokens[tNum + 2] = null;
+//                return num;
+//            }
+            tokens[tNum + 1] = null;
+            double tempDouble = Integer.valueOf(num)+(Double.valueOf(fraction[0])/Double.valueOf(fraction[1]));
             if (endWithPercent) {
-                tokens[tNum + 1] = null;
-                return num + " " + secondToken;
+                return tempDouble+"%";
             }
-            if(tokens[tNum + 2].toLowerCase().equals("percent") || tokens[tNum + 2].toLowerCase().equals("percentage")){
-                tokens[tNum +1] = null; tokens[tNum+2]= null;
-                return num + " " + secondToken + "%";
-            }
+
+            return checkAfterNumber(""+tempDouble,tNum+1);
+
+
+
+//            try {
+//                if (tokens[tNum + 2].toLowerCase().equals("percent") || tokens[tNum + 2].toLowerCase().equals("percentage")) {
+//                    tokens[tNum + 1] = null;
+//                    tokens[tNum + 2] = null;
+//                    return num + " " + secondToken + "%";
+//                }
+//            }
+//            catch (Exception e){
+//
+//            }
 
 
 
             /// just number with fraction
-            tokens[tNum + 1] = null;
-            numberSet.add(num + " " + secondToken);
-            return num + " " + secondToken;
+
+//            numberSet.add(num + " " + secondToken);
+//            return num + " " + secondToken;
 
         } catch (Exception e) {
             /// not a leagal fraction
@@ -543,7 +624,7 @@ public class Parse {
     private void addTerm(String word) {
 
         if(word!=null && !word.equals("") && !word.equals("-") ) {
-            word = tradeUppercase(word);
+            word = deleteDelimeter(tradeUppercase(word));
 
             if(indexMap.containsKey(word)) {
                 indexMap.replace(word, indexMap.get(word) + 1);
@@ -656,7 +737,7 @@ public class Parse {
 
         if(useStemming) { // stemming
             if(word.toLowerCase().equals(word))
-            word = stem(word);
+                word = stem(word);
             else word = stem(word.toLowerCase()).toUpperCase();
         }
         if (stopWords.contains(word.toLowerCase())) { //remove wanted stop word
@@ -758,13 +839,28 @@ public class Parse {
         }
 
         try {
-            if (tokens[tNum+2].toLowerCase().equals("and") &&(word.toLowerCase().equals("between"))) {
+            if ((tokens[tNum+2].toLowerCase().equals("and") || tokens[tNum+3].toLowerCase().equals("and")) &&(word.toLowerCase().equals("between"))) {
                 String num1 = tokens[tNum+1];
-                String num2 = tokens[tNum+3];
+                String num2;
+                if(tokens[tNum+2].toLowerCase().equals("and"))
+                 num2 = tokens[tNum+3];
+                else  num2 = tokens[tNum+4];
                 //test its numbers
-                Double.valueOf(deleteDelimeter(tokens[tNum+1]).replaceAll(",",""));
-                Double.valueOf(deleteDelimeter(tokens[tNum+3]).replaceAll(",","")); //are numbers
+//                num1 = dealWithFraction(num1);
+//                num2 = dealWithFraction(num2);
+                num1 = numberEvaluation(num1,tNum+1);
+                boolean isLong = false;
+                if(tokens[tNum+3].toLowerCase().equals("and")) {
+                    num2 = numberEvaluation(num2, tNum + 4);
+                    isLong=true;
+                }
+                else num2 = numberEvaluation(num2,tNum+3);
+
+//                Double.valueOf(deleteDelimeter(num1));
+//                Double.valueOf(deleteDelimeter(num2)); //are numbers
                 tokens[tNum] = null;  tokens[tNum+1] = null;  tokens[tNum+2] = null;  tokens[tNum+3] = null;
+                if (isLong)
+                    tokens[tNum+4] = null;
                 num1 = tokenToTerm(num1,tNum-1);
                 num2 = tokenToTerm(num2,tNum-1);
                 addTerm(num1);
@@ -864,5 +960,11 @@ public class Parse {
 
     public Map<String,Integer> getDocMap(){
         return indexMap;
+    }
+
+    public void printNumberSet(){
+        for(String num:numberSet){
+            System.out.println(num);
+        }
     }
 }

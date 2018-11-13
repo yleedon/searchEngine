@@ -2,15 +2,7 @@
 <DocNo>tst3</DocNo>
 <Text>
 test 3 document
-aaaaaaaaa
-bbbbbbbbb
-ccccccccc
-ddddddddd
-eeeeeeeee 413
-t
-t 12
-t 13
-14
+yaniv
 </Text>
 </Doc>
 
