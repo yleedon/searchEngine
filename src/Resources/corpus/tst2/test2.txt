@@ -1,10 +1,9 @@
 <Doc>
 <DocNo>tst1</DocNo>
 <Text>
-10000000
-13,000,432
-12 Million 123,321 4 3/5 10,123 123 Thousand 1010.56
-1010.56 10,123,000 55 Million 10,123,000,000 55 Billion 7 Trillion
+98765k
+98765K
+
 </Text>
 </Doc>
 
