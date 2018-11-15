@@ -156,7 +156,7 @@ public class View {
 
         testReadFile();
         end = System.nanoTime();
-        double time = (end-start)/1000000000;
+        long time = (end-start)/1000000;
         System.out.println("total index time:  "+ time);
 //        Indexer indexer = new Indexer(rf);
 //        indexer.parse();

@@ -105,18 +105,20 @@ public class ReadFile {
         File[] list = mainDir.listFiles();
         writer.flush();
         for(File directory: list){
-            if(directory.getPath().endsWith("StopWords")) {
-//                System.out.println("stop");
-                readDirectory(directory);
-            }
+
 
             if(!directory.getPath().endsWith("StopWords"))
             readDirectory(directory);
         }
 
-        indexer.printWaitList();
+        indexer.writeWaitingList();
         indexer.printTermlist();
+//        indexer.printWaitList();
+        indexer.printWaitListSize();
+
+        System.out.println("amount of numbers: "+ parser.getNumberSet().size());
         System.out.println(parser.getNumberSet());
+//        indexer.test();
         System.out.println("document indexing complete");
         writer.close();
     }
@@ -183,6 +185,7 @@ public class ReadFile {
 //                        System.out.println("amount: " + parser.getNumberSet().size());
                     }
                     catch (Exception e){
+                        System.out.println(e.getMessage());
                         System.out.println("didn't parse");
                     }
                     entry = new StringBuilder().append(entry).append(",").append(startIdx).append(",").append(endIdx).append(",").append(file.getPath().replace(path.substring(1).replace("/","\\"),"")).append("\n").toString();
