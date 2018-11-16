@@ -205,6 +205,7 @@ public class Parse {
         String originalWord = word;
         word = word.replaceAll(",","");
         boolean startsWithDoller = false;
+        boolean ispercent= word.endsWith("%");
 
         if(word.length() > 0 && word.charAt(0) == '$') {
             startsWithDoller = true;
@@ -229,7 +230,18 @@ public class Parse {
                     word = word.substring(0,word.length()-1);
                 }
 
+                if(ispercent)
+                    word = (word.substring(0,word.length()-1));
             double numValue = Double.parseDouble(word);
+            if(ispercent){
+                if(isInteger(numValue)) {
+                    return (int)numValue+ "%";
+                }
+                else return numValue+"%";
+
+
+            }
+
             if (isNormalledNumber){
                 word=word+end;
                 numberSet.add(word.toUpperCase());
@@ -243,6 +255,8 @@ public class Parse {
                 return DealWithDollerSign(tNum,numValue,originalWord);
         }
         catch(Exception e){
+
+
 
 
             if(tNum+1 < tokens.length && tokens[tNum+1]!=null && tokens[tNum+1].toLowerCase().equals("dollars"))  // takes care of 123bn and 123m
@@ -358,6 +372,9 @@ public class Parse {
                 numberSet.add(number / 1000000000 + "B");
                 return number/1000000000 + "B";
             }
+            if(isInteger(number)){
+                word = (int)number+"";
+            }
         }
         catch(Exception e){
             return word; // not a number
@@ -373,9 +390,14 @@ public class Parse {
      */
     private boolean isInteger(double v) {
 
-        if(v/(int)v==1)
-            return true;
-        return false;
+        try {
+            if (v / (int) v == 1)
+                return true;
+            return false;
+        }
+        catch (Exception e){
+            return false;
+        }
     }
 
     /**
