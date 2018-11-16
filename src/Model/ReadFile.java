@@ -1,9 +1,13 @@
 package Model;
 //pleaseeeeee
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+
 import java.io.*;
 
 public class ReadFile {
     //<editor-fold desc="Fields">
+
     String path; /////////////////////////////////////////**********//the path to the corpus should be in config!!!!!!
     File docIdxFile; //the file ReadFile writes into. AKA doocumentIdx.txt
     PrintWriter writer; // the object that writes to the file
@@ -80,6 +84,7 @@ public class ReadFile {
             return new MyDocument(doc);
         }
         catch (Exception e){
+            System.out.println("error read file");
             System.out.println(e.getMessage());
             return null;
         }
@@ -98,23 +103,26 @@ public class ReadFile {
             writer = new PrintWriter(bufferedWriter);
         }
         catch (IOException e){
+            System.out.println("error read file");
             System.out.println(e.getMessage());
             writer = null;
         }
         File mainDir = new File(path);
         File[] list = mainDir.listFiles();
         writer.flush();
-        for(File directory: list){
 
+        for(File directory: list){
 
             if(!directory.getPath().endsWith("StopWords"))
             readDirectory(directory);
         }
 
         indexer.writeWaitingList();
+        indexer.saveDictinary();
         indexer.printTermlist();
 //        indexer.printWaitList();
         indexer.printWaitListSize();
+
 
         System.out.println("amount of numbers: "+ parser.getNumberSet().size());
         System.out.println(parser.getNumberSet());
@@ -185,8 +193,9 @@ public class ReadFile {
 //                        System.out.println("amount: " + parser.getNumberSet().size());
                     }
                     catch (Exception e){
+                        System.out.println("error (readFile) didn't parse");
                         System.out.println(e.getMessage());
-                        System.out.println("didn't parse");
+
                     }
                     entry = new StringBuilder().append(entry).append(",").append(startIdx).append(",").append(endIdx).append(",").append(file.getPath().replace(path.substring(1).replace("/","\\"),"")).append("\n").toString();
 
@@ -197,6 +206,7 @@ public class ReadFile {
             }
         }
         catch (IOException e){
+            System.out.println("error read file");
             System.out.println(e.getMessage());
         }
 
@@ -231,4 +241,5 @@ public class ReadFile {
         return "<" + tag + ">";
     }
     //</editor-fold>
+
 }
