@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class View {
+    public ProgressBar progressBar;
     public TextField fld_text;
     public TextField fld_path;
     public Button btn_testParse;
@@ -155,6 +156,7 @@ public class View {
         long start = System.nanoTime();
 
         testReadFile();
+
         end = System.nanoTime();
         long time = (end-start)/1000000;
         System.out.println("total index time:  "+ time);
@@ -167,6 +169,7 @@ public class View {
     public void testReadFile() {
         ClassLoader classLoader = getClass().getClassLoader();
         rf = new ReadFile(classLoader.getResource("corpus").getFile());
+
 //        ReadFile rf = new ReadFile("C:\\Users\\Dan\\Desktop\\corpus");
         rf.readDirectory();
 //        if(!fld_path.getText().equals(""))

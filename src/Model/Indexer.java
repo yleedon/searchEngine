@@ -34,7 +34,6 @@ public class Indexer {
                 continue;
 
             String term = t.toString();
-
             if(!term.toLowerCase().equals(term.toUpperCase())) { // big and small are different
 
                 if(term.toLowerCase().equals(term)) { // is lower case
@@ -97,7 +96,6 @@ public class Indexer {
                 writer.flush();
                 writer.println(waitList.get(line));
             }
-            writer.flush();
             writer.close();
 
 
@@ -105,7 +103,7 @@ public class Indexer {
 
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
+            System.out.println("error index "+e.getMessage());
         }
         tempFileName++;
         waitlistSize=0;
