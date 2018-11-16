@@ -37,6 +37,7 @@ public class Indexer {
             if(!term.toLowerCase().equals(term.toUpperCase())) { // big and small are different
 
                 if(term.toLowerCase().equals(term)) { // is lower case
+
                     if (dictianary.containsKey(term.toUpperCase())) {
                         ///// a bigger allready exists
                         int line = dictianary.get(term.toUpperCase());
@@ -51,16 +52,12 @@ public class Indexer {
                     }
                 }
             }
-
-
-
-
             if(!dictianary.containsKey(term)){
                 dictianary.put(term,nextLineNum);
                 nextLineNum++;
             }
             //(docid,number Of times term appears,max frequancy)
-            String entry = "(id:"+doc.getDocId()+",freq:"+ docMap.get(term)  + ",maxFreq" + doc.getMaxFrequency() + ")~";
+            String entry = doc.getDocId()+","+ docMap.get(term)  + "," + doc.getMaxFrequency() + "~";
             if(!waitList.containsKey(dictianary.get(term))) {
                 waitlistSize+= (""+dictianary.get(term)).length()+1+entry.length();
                 waitList.put(dictianary.get(term),  dictianary.get(term)+":"+entry);
@@ -70,9 +67,6 @@ public class Indexer {
                 entry = waitList.get(dictianary.get(term))+entry;
                 waitList.replace(dictianary.get(term),entry);
             }
-
-//            System.out.println("testing  ...  "+ term.toString());
-
         }
         if (waitlistSize > 300000) { // file size 300kb
             writeWaitingList();
@@ -126,6 +120,29 @@ public class Indexer {
     }
     public void printWaitListSize(){
         System.out.println("waitlist size = "+ (double)waitlistSize/1000000+"MB");
+    }
+
+
+    public void saveDictinary() {
+        try {
+            ClassLoader classLoader = getClass().getClassLoader();
+            String tempPath = classLoader.getResource("").getPath() + "Resources/dictionary.txt";
+            File tempFile = new File(tempPath);
+            FileWriter fileWriter = new FileWriter(tempFile, false);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            PrintWriter writer = new PrintWriter(bufferedWriter);
+            writer.flush();
+
+            for (String term : dictianary.keySet()) {
+                writer.flush();
+                writer.println(term+","+dictianary.get(term));
+            }
+            writer.close();
+
+        } catch (Exception e) {
+            System.out.println("error indexer");
+            System.out.println(e.getMessage());
+        }
     }
 
 }

@@ -624,7 +624,10 @@ public class Parse {
     private void addTerm(String word) {
 
         if(word!=null && !word.equals("") && !word.equals("-") ) {
+
+
             word = deleteDelimeter(tradeUppercase(word));
+
 
             if(indexMap.containsKey(word)) {
                 indexMap.replace(word, indexMap.get(word) + 1);
@@ -637,6 +640,7 @@ public class Parse {
                     maxFreq = 1;
             }
             ans = ans + "{" + word + "} ";
+
         }
     }
 
@@ -832,9 +836,11 @@ public class Parse {
                 if(i!=0)
                     totalTerm = totalTerm + "-" + temp;
                 else totalTerm = totalTerm + temp;
+
                 addTerm(tokenToTerm(tempTokens[i],tNum-1)); // (-1 so that it thinks the next token is num
             }
-            addTerm(totalTerm);
+
+            addTerm(totalTerm.toLowerCase());
             return true;
         }
 
@@ -849,6 +855,8 @@ public class Parse {
 //                num1 = dealWithFraction(num1);
 //                num2 = dealWithFraction(num2);
                 num1 = numberEvaluation(num1,tNum+1);
+                if(!containsNumber(num1))
+                    return false;
                 boolean isLong = false;
                 if(tokens[tNum+3].toLowerCase().equals("and")) {
                     num2 = numberEvaluation(num2, tNum + 4);

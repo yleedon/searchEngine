@@ -118,9 +118,11 @@ public class ReadFile {
         }
 
         indexer.writeWaitingList();
+        indexer.saveDictinary();
         indexer.printTermlist();
 //        indexer.printWaitList();
         indexer.printWaitListSize();
+
 
         System.out.println("amount of numbers: "+ parser.getNumberSet().size());
         System.out.println(parser.getNumberSet());

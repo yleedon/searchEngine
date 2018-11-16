@@ -62,6 +62,8 @@ between 4 4/5 and 8 2/4=4.8 8.5 4.8-8.5
 #between 5 1/2 and kow=5.5 kow
 between 19K and 21K=19K 21K 19K-21K
 between 5 million and 7=5M 7 5M-7
+between California fruit and the depth=CALIFORNIA fruit depth
+7.0%=7%
 
 
 
