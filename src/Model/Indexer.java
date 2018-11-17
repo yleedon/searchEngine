@@ -19,7 +19,7 @@ public class Indexer {
     public Indexer(double size) {
         tempFileName = 1;
         waitlistSize=0;
-        this.dictianary =  new HashMap<>();
+        this.dictianary =  new TreeMap<>();
         nextLineNum = 0;
         waitList = new TreeMap<>();
         tempFileSize = size*1000000;

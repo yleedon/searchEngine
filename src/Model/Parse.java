@@ -13,11 +13,12 @@ import java.util.Set;
 
 public class Parse {
 
+
     private Set<String> numberSet;
     private String txt;
     private boolean useStemming;
     private Map<String,String> monthMap;
-    private char[] delimeters = {'.',',','?','!','"','\'',':',';','(',')','{','}','[',']','/','\\','<','>','\n'};
+    private char[] delimeters = {'-','$','%','.',',','?','!','"','\'',':',';','(',')','{','}','[',']','/','\\','<','>','\n','#','&','|','*','�','+','=','^','@','_'};
     private Map<String, Pair<Integer,String>> moneyMap;
     private Map<String,Pair<Integer,String>> numberMap;
     private String ans;
@@ -182,10 +183,19 @@ public class Parse {
     private String deleteDelimeter(String word) {
         for(int i = 0; i < delimeters.length;i++) {
             while (word.length()> 0 && word.charAt(word.length() - 1) == delimeters[i]) {
+                if(i==2){
+                    if(word.length() > 1 && (word.charAt(word.length()-2) >= '0' && word.charAt(word.length()-2) <= '9'))
+                        break;
+                }
                 word = word.substring(0, word.length() - 1);
                 i=0;
             }
             while (word.length()> 0 &&word.charAt(0) == delimeters[i]) {
+
+                if(i==0 || i==1){//'-']\
+                    if(word.length()>1 && (word.charAt(1) <= '9' && word.charAt(1) >= '0'))// iis minus - need to keep
+                        break;
+                }
                 word = word.substring(1);
                 i=0;
             }
