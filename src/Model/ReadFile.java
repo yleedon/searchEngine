@@ -13,6 +13,7 @@ public class ReadFile {
     PrintWriter writer; // the object that writes to the file
     Parse parser;
     Indexer indexer;
+    int numOdfiles;
     //</editor-fold>
 
     //<editor-fold desc="Constructor">
@@ -24,8 +25,9 @@ public class ReadFile {
     public ReadFile(String path) {
 
         this.path = path;
+        numOdfiles = 0;
         parser = new Parse("", true);
-        indexer = new Indexer();
+        indexer = new Indexer(3);
         ClassLoader classLoader = getClass().getClassLoader();
         docIdxFile = new File(classLoader.getResource("documentIdx.txt").getFile());
 
@@ -113,15 +115,17 @@ public class ReadFile {
 
         for(File directory: list){
 
+
             if(!directory.getPath().endsWith("StopWords"))
             readDirectory(directory);
         }
 
         indexer.writeWaitingList();
         indexer.saveDictinary();
-        indexer.printTermlist();
+//        indexer.printTermlist();
 //        indexer.printWaitList();
-        indexer.printWaitListSize();
+//        indexer.printWaitListSize();
+        System.out.println("total files processed: "+ numOdfiles);
 
 
         System.out.println("amount of numbers: "+ parser.getNumberSet().size());
@@ -136,6 +140,7 @@ public class ReadFile {
      * @param directory - the given directory to read files from
      */
     private void readDirectory(File directory){
+        numOdfiles++;
         File[] list = directory.listFiles();
         if(list!=null)
         for (File file: list) {
@@ -174,7 +179,7 @@ public class ReadFile {
                     }
                     docBuilder.append(line+"\n");
                     endIdx = currentLine;
-                    System.out.println("********************************" +entry);
+                    System.out.println("working on doc: "+entry);
 //                    System.out.println(new MyDocument(docBuilder.toString()).getTxt());
                     MyDocument document = new MyDocument(docBuilder.toString());
 

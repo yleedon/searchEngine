@@ -2,16 +2,16 @@
 10,123=10.123K
 123 Thousand=123K
 1010.56=1.01056K
-10,123,000=10.123M
+10,123,000=10.12M
 55 Million=55M
 1010.56=1.01056K
-10,123,000,000=10.123B
+10,123,000,000=10.12B
 55 Billion=55B
 7 Trillion=7000B
 6%=6%
 10.6 percent=10.6%
 10.6 percentage=10.6%
-1.7320 Dollars=1.7320 Dollars
+1.7320 Dollars=1.73 Dollars
 22 3/4 Dollars=22.75 Dollars
 22 3/4=22.75
 $450,000=450,000 Dollars
@@ -48,7 +48,7 @@ www.github.com=github www.github.com
 2.3 bn Dollars=2300 M Dollars
 3 3/4=3.75
 100 3/4 percent=100.75%
-5 7/8%=5.875%
+5 7/8%=5.87%
 3/6 percentage=0.5%
 3/4 percent=0.75%
 3 1/2 million=3.5M
@@ -64,6 +64,8 @@ between 19K and 21K=19K 21K 19K-21K
 between 5 million and 7=5M 7 5M-7
 between California fruit and the depth=CALIFORNIA fruit depth
 7.0%=7%
+8.5 million U.S. dollars=8.5 M Dollars
+$2.6 million=2.6 M Dollars
 
 
 
