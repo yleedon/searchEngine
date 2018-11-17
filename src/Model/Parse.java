@@ -1,5 +1,6 @@
 package Model;
 
+import javafx.beans.property.DoubleProperty;
 import javafx.util.Pair;
 
 import java.io.BufferedReader;
@@ -233,6 +234,7 @@ public class Parse {
                 if(ispercent)
                     word = (word.substring(0,word.length()-1));
             double numValue = Double.parseDouble(word);
+            numValue = Math.floor(numValue * 100) / 100;
             if(ispercent){
                 if(isInteger(numValue)) {
                     return (int)numValue+ "%";
@@ -292,6 +294,7 @@ public class Parse {
         }
         try {
             double numValue = Double.parseDouble(word);
+            numValue =  Math.floor(numValue * 100) / 100;
             tokens[tNum + 1] = null;
             if (word.contains("."))
                 return numValue * multyplyer + " M Dollars";
@@ -335,6 +338,7 @@ public class Parse {
     private String dealWithSimpleNumber(String word,int tNum) {
         try {
             double number = Double.valueOf(word);
+            number =  Math.floor(number * 100) / 100;
 
             if((Math.abs(number) >= 1000 && Math.abs(number) < 1000000)){
 //                number = (int)number;
@@ -357,6 +361,7 @@ public class Parse {
 
                 number=(int)number;
                 number=number/1000000;
+                number =  Math.floor(number * 100) / 100;
                 if(number % 1 == 0) {
                     numberSet.add((int)number + "M");
                     return (int) number + "M";
@@ -365,12 +370,15 @@ public class Parse {
                 return number + "M";
             }
             if (Math.abs(number) >= 1000000000){
-                if ((number/1000000000) % 1 == 0) {
-                    numberSet.add((int) (number / 1000000000) + "B");
-                    return (int) (number / 1000000000) + "B";
+                number = number/1000000000;
+                number =  Math.floor(number * 100) / 100;
+
+                if ((number) % 1 == 0) {
+                    numberSet.add((int) (number) + "B");
+                    return (int) (number) + "B";
                 }
-                numberSet.add(number / 1000000000 + "B");
-                return number/1000000000 + "B";
+                numberSet.add(number + "B");
+                return number + "B";
             }
             if(isInteger(number)){
                 word = (int)number+"";
@@ -427,14 +435,19 @@ public class Parse {
         //checks for "Dollars"
         if(secondWord.toLowerCase().equals("dollars")){
             tokens[tNum+1] = null;
+
             try{
-                if(Math.abs(Integer.valueOf(num))>=1000000)
+                double n =Double.valueOf(num);
+                n = Math.floor(n * 100) / 100;
+                if(Math.abs(n)>=1000000)
                     return Integer.valueOf(num)/1000000 + " M Dollars";
-                return num +" Dollars";
+                return n +" Dollars";
             }
             catch (Exception e){
-                if(Math.abs(Double.valueOf(num))>=1000000)
-                    return Double.valueOf(num)/1000000 + " M Dollars";
+                double n =Double.valueOf(num);
+                n = Math.floor(n * 100) / 100;
+                if(Math.abs(n) >=1000000)
+                    return n/1000000 + " M Dollars";
                 return num +" Dollars";
             }
         }
@@ -457,7 +470,6 @@ public class Parse {
                     if (secondWord.equals("m"))
                         return num + " M Dollars";
                     double d = Double.valueOf(num)*1000;
-                    int i = (int)d;
 
                     return (int)d + " M Dollars";
                 }
@@ -490,6 +502,7 @@ public class Parse {
             return word; }
 
         double tempDouble = (Double.valueOf(fraction[0])/Double.valueOf(fraction[1]));
+        tempDouble = Math.floor(tempDouble * 100) / 100;
         if(endWithPercent)
             return tempDouble+"%";
         else return ""+tempDouble;
@@ -546,6 +559,7 @@ public class Parse {
 //            }
             tokens[tNum + 1] = null;
             double tempDouble = Integer.valueOf(num)+(Double.valueOf(fraction[0])/Double.valueOf(fraction[1]));
+            tempDouble = Math.floor(tempDouble * 100) / 100;
             if (endWithPercent) {
                 return tempDouble+"%";
             }
@@ -592,11 +606,18 @@ public class Parse {
                     tokens[tNum + 1] = null;
                     tokens[tNum + 2] = null;
                     tokens[tNum + 3] = null;
-                    return Integer.valueOf(num) * moneyMap.get(secondWord).getKey() + " M Dollars";
+                    if(isInteger(Double.valueOf(num)))
+                        return Integer.valueOf(num) * moneyMap.get(secondWord).getKey() + " M Dollars";
+                    else {
+                        double n = Double.valueOf(num);
+                        n = Math.floor(n * 100) / 100;
+                        return n * moneyMap.get(secondWord).getKey() + " M Dollars";
+                    }
                 }
         }
         if (numberMap.containsKey(secondWord)){
             double number = Double.valueOf(num);
+            number  = Math.floor(number * 100) / 100;
             tokens[tNum+1] = null;
             if(!isInteger(number)) {
                 String numberTerm = number * numberMap.get(secondWord).getKey() + "" + numberMap.get(secondWord).getValue();
@@ -630,8 +651,8 @@ public class Parse {
             }
         }
         catch (Exception e){
-            System.out.println("number date term exception ");
-            System.out.println(e.getMessage());
+//            System.out.println("number date term exception ");
+//            System.out.println(e.getMessage());
             return day;
         }
         return day;

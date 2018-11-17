@@ -8,7 +8,7 @@ import java.util.TreeMap;
 
 public class Indexer {
 
-
+    private double tempFileSize;
     private int waitlistSize;
     private Map<String,Integer> dictianary;
     private int nextLineNum;
@@ -16,12 +16,13 @@ public class Indexer {
     private int tempFileName;
 
 
-    public Indexer() {
+    public Indexer(double size) {
         tempFileName = 1;
         waitlistSize=0;
         this.dictianary =  new HashMap<>();
         nextLineNum = 0;
         waitList = new TreeMap<>();
+        tempFileSize = size*1000000;
 
     }
 
@@ -34,6 +35,7 @@ public class Indexer {
                 continue;
 
             String term = t.toString();
+            String originalTerm = term;
             if(!term.toLowerCase().equals(term.toUpperCase())) { // big and small are different
 
                 if(term.toLowerCase().equals(term)) { // is lower case
@@ -57,7 +59,7 @@ public class Indexer {
                 nextLineNum++;
             }
             //(docid,number Of times term appears,max frequancy)
-            String entry = doc.getDocId()+","+ docMap.get(term)  + "," + doc.getMaxFrequency() + "~";
+            String entry = doc.getDocId()+","+ docMap.get(originalTerm)  + "," + doc.getMaxFrequency() + "~";
             if(!waitList.containsKey(dictianary.get(term))) {
                 waitlistSize+= (""+dictianary.get(term)).length()+1+entry.length();
                 waitList.put(dictianary.get(term),  dictianary.get(term)+":"+entry);
@@ -68,7 +70,8 @@ public class Indexer {
                 waitList.replace(dictianary.get(term),entry);
             }
         }
-        if (waitlistSize > 300000) { // file size 300kb
+        ;
+        if (waitlistSize > tempFileSize) { // file size 300kb
             writeWaitingList();
             System.out.println("write waiting list to disk");
         }
@@ -76,7 +79,6 @@ public class Indexer {
 
     public void writeWaitingList() {
         try {
-
             String fName = ""+tempFileName;
             ClassLoader classLoader = getClass().getClassLoader();
             String tempPath = classLoader.getResource("").getPath()+"Resources/waitingList/"+fName+".txt";
@@ -85,12 +87,20 @@ public class Indexer {
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             PrintWriter writer = new PrintWriter(bufferedWriter);
             writer.flush();
+            String lines = "";
 
             for(int line:waitList.keySet()){
                 writer.flush();
                 writer.println(waitList.get(line));
             }
             writer.close();
+
+//            for(int line:waitList.keySet()){
+//
+//               lines += waitList.get(line)+"\n";
+//            }
+//            writer.println(lines);
+//            writer.close();
 
 
 
