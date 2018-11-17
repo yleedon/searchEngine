@@ -317,8 +317,11 @@ public class Parse {
             secondWord = deleteDelimeter(tokens[tNum + 1]);
             if (moneyMap.containsKey(secondWord)) {
                 tokens[tNum+1] = null;
-                int number = (int)numValue*moneyMap.get(secondWord).getKey();
-                return number + " M Dollars";
+                numValue = numValue * moneyMap.get(secondWord).getKey();
+                if(isInteger(numValue)) {
+                    return (int) numValue + " M Dollars";
+                }
+                else return numValue + " M Dollars";
             }
         }
         if (Math.abs(numValue) < 1000000 )
@@ -337,8 +340,13 @@ public class Parse {
      */
     private String dealWithSimpleNumber(String word,int tNum) {
         try {
-            double number = Double.valueOf(word);
-            number =  Math.floor(number * 100) / 100;
+            double dan = 2.07;
+            dan = 100*dan;
+            double number = Double.parseDouble(word);
+            number = number*100;
+            number = Math.floor(number);
+            number = number/100;
+//            number =  Math.floor(number * 100) / 100;
 
             if((Math.abs(number) >= 1000 && Math.abs(number) < 1000000)){
 //                number = (int)number;
@@ -380,15 +388,17 @@ public class Parse {
                 numberSet.add(number + "B");
                 return number + "B";
             }
+            word = number+"";
             if(isInteger(number)){
                 word = (int)number+"";
             }
+            numberSet.add(word);
+            return word;
         }
-        catch(Exception e){
+        catch(Exception e) {
             return word; // not a number
         }
-        numberSet.add(word);
-        return word;
+
     }
 
     /**
@@ -620,9 +630,17 @@ public class Parse {
             number  = Math.floor(number * 100) / 100;
             tokens[tNum+1] = null;
             if(!isInteger(number)) {
-                String numberTerm = number * numberMap.get(secondWord).getKey() + "" + numberMap.get(secondWord).getValue();
-                numberSet.add(numberTerm);
-                return number * numberMap.get(secondWord).getKey() + "" + numberMap.get(secondWord).getValue();
+                number = number * numberMap.get(secondWord).getKey();
+                if(isInteger(number)){
+                    String numberTerm =  (int)number + "" + numberMap.get(secondWord).getValue();
+                    numberSet.add(numberTerm);
+                    return (int)number + "" + numberMap.get(secondWord).getValue();
+                }
+                    else {
+                    String numberTerm = number + "" + numberMap.get(secondWord).getValue();
+                    numberSet.add(numberTerm);
+                    return number + "" + numberMap.get(secondWord).getValue();
+                }
             }
             else {
                 String numberTerm = (int) number * numberMap.get(secondWord).getKey() + "" + numberMap.get(secondWord).getValue();

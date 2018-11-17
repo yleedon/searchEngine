@@ -65,6 +65,7 @@ between 5 million and 7=5M 7 5M-7
 between California fruit and the depth=CALIFORNIA fruit depth
 7.0%=7%
 8.5 million U.S. dollars=8.5 M Dollars
+$2.6 million=2.6 M Dollars
 
 
 

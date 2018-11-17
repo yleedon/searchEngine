@@ -179,7 +179,7 @@ public class ReadFile {
                     }
                     docBuilder.append(line+"\n");
                     endIdx = currentLine;
-                    System.out.println("working on doc: "+entry);
+//                    System.out.println("working on doc: "+entry);
 //                    System.out.println(new MyDocument(docBuilder.toString()).getTxt());
                     MyDocument document = new MyDocument(docBuilder.toString());
 
