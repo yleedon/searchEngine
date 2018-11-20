@@ -1,5 +1,7 @@
 package Model;
 
+import javafx.util.Pair;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -10,7 +12,7 @@ public class MyDocument {
     //<editor-fold desc="Fields">
     String doc, docNo, txt, city, date;
     int maxFrequency;
-    Map<String, Integer> terms;
+    Map<String, Pair<Integer,Integer>> terms;
     //</editor-fold>
 
     //<editor-fold desc="Constructor">
@@ -80,7 +82,7 @@ public class MyDocument {
      * Getter for all the terms and their frequency in this document
      * @return The term HashMap of the doc
      */
-    public Map<String, Integer> getTerms() {
+    public Map<String, Pair<Integer,Integer>> getTerms() {
         return terms;
     }
 
@@ -124,7 +126,7 @@ public class MyDocument {
      * Setter for the terms HashMap of the document(the terms and their frequency
      * @param terms - The HashMap of the terms and their frequency.
      */
-    public void setTerms(Map<String, Integer> terms) {
+    public void setTerms(Map<String, Pair<Integer,Integer>> terms) {
         this.terms = terms;
     }
 

@@ -24,7 +24,7 @@ public class Parse {
     private String ans;
     private Set<String> stopWords;
     private String[] tokens;
-    private Map<String,Integer> indexMap;
+    private Map<String,Pair<Integer,Integer>> indexMap; //pair: frequency,first appearance
     int maxFreq;
     private String quote;
     private boolean quoteInProgress;
@@ -705,12 +705,12 @@ public class Parse {
 
 
             if(indexMap.containsKey(word)) {
-                indexMap.replace(word, indexMap.get(word) + 1);
-                if (maxFreq<indexMap.get(word)+1)
-                    maxFreq = indexMap.get(word);
+                indexMap.replace(word, new Pair<>(indexMap.get(word).getKey() + 1,indexMap.get(word).getValue()));
+                if (maxFreq<indexMap.get(word).getKey())
+                    maxFreq = indexMap.get(word).getKey();
             }
             else {
-                indexMap.put(word, 1);
+                indexMap.put(word, new Pair<>(1,termPosition));
                 if (maxFreq<1)
                     maxFreq = 1;
             }
@@ -736,10 +736,10 @@ public class Parse {
         if(word.charAt(0) >= 'a' && word.charAt(0) <= 'z'){
             if(indexMap.containsKey(word.toUpperCase())){
                 String upperCase = word.toUpperCase();
-                int bigLetterCount = indexMap.get(upperCase);
+                Pair bigLetterCount = indexMap.get(upperCase);
                 indexMap.remove(upperCase);
                 if(indexMap.containsKey(word)){
-                    indexMap.replace(word,indexMap.get(word)+bigLetterCount);
+                    indexMap.replace(word,new Pair<>(indexMap.get(word).getKey()+ (Integer)bigLetterCount.getKey(),(Integer)bigLetterCount.getValue()));//indexMap.get(word)+bigLetterCount);
                 }
                 else indexMap.put(word,bigLetterCount);////////////////////////////////////////problem
             }
@@ -1034,14 +1034,14 @@ public class Parse {
     public void printIndex(){
         System.out.println("IndexTable:");
         for (String term:indexMap.keySet()) {
-            System.out.println("{"+term + " , "+ indexMap.get(term)+"}");
+            System.out.println("{"+term + " , "+ indexMap.get(term).getKey()+","+indexMap.get(term).getValue()+"}");
         }
         System.out.println("Max frequency: " + maxFreq);
         System.out.println("end.\n\n\n");
     }
     //</editor-fold>
 
-    public Map<String,Integer> getDocMap(){
+    public Map<String,Pair<Integer,Integer>> getDocMap(){
         return indexMap;
     }
 

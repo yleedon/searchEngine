@@ -1,12 +1,7 @@
 <Doc>
 <DocNo>tst1</DocNo>
 <Text>
-98765k
-98765K
-dan and yaniv 89 dan dan dan
-98765K
-poopoop
-reynaga
+yaniv dan Yaniv DOG happy 5 million
 </Text>
 </Doc>
 
