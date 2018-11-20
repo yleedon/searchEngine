@@ -16,13 +16,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class View {
-    public ProgressBar progressBar;
+//    public ProgressBar progressBar;
     public TextField fld_text;
     public TextField fld_path;
     public Button btn_testParse;
     public Button btn_runTests;
     public CheckBox btn_stemmingBox;
-    public ReadFile rf;
+//    public ReadFile rf;
     public Button btn_testIndexer;
 
     public void testParse() {
@@ -168,10 +168,15 @@ public class View {
 
     public void testReadFile() {
         ClassLoader classLoader = getClass().getClassLoader();
-        rf = new ReadFile(classLoader.getResource("corpus").getFile());
+        ReadFile readF = new ReadFile(classLoader.getResource("corpus").getFile());
 
 //        ReadFile rf = new ReadFile("C:\\Users\\Dan\\Desktop\\corpus");
-        rf.readDirectory();
+        readF.readDirectory();
+        readF.reset();
+        readF=null;
+        Runtime r = Runtime.getRuntime();
+        r.gc();
+
 //        if(!fld_path.getText().equals(""))
 //            testGetDoc(fld_path.getText());
     }
@@ -181,6 +186,7 @@ public class View {
         try {
             ClassLoader classLoader = getClass().getClassLoader();
 
+            ReadFile rf;
             rf = new ReadFile(classLoader.getResource("corpus").getFile());
             if(!fld_path.getText().equals("")) {
 

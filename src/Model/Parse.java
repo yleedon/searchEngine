@@ -13,11 +13,12 @@ import java.util.Set;
 
 public class Parse {
 
+    int termPosition;
     private Set<String> numberSet;
     private String txt;
     private boolean useStemming;
     private Map<String,String> monthMap;
-    private char[] delimeters = {'.',',','?','!','"','\'',':',';','(',')','{','}','[',']','/','\\','<','>','\n'};
+    private char[] delimeters = {'-','$','%','`','.',',','?','!','"','\'',':',';','(',')','{','}','[',']','/','\\','<','>','\n','#','&','|','*','�','+','=','^','@','_'};
     private Map<String, Pair<Integer,String>> moneyMap;
     private Map<String,Pair<Integer,String>> numberMap;
     private String ans;
@@ -34,7 +35,7 @@ public class Parse {
      * @param text - the string to work on
      */
     public Parse(String text,boolean stemmerStatus) {
-        System.out.println(text);
+//        System.out.println(text);
         this.txt = text.replace("\n", " ");
         this.useStemming = stemmerStatus;
         initializeMaps();
@@ -104,7 +105,10 @@ public class Parse {
             String st;
             while ((st = br.readLine()) != null)
                 stopWords.add(st);
+
+            br.close();
         }
+
         catch (Exception e){
             System.out.println(e.getMessage());
             System.out.println("stop words were not used!!");
@@ -117,8 +121,8 @@ public class Parse {
      */
     public void parse() throws Exception{
         indexMap = new HashMap<>();
-        quote="\"";
-        quoteInProgress = false;
+//        quote="\"";
+//        quoteInProgress = false;
         ans ="";
         maxFreq=0;
         if(txt==null) {
@@ -134,6 +138,7 @@ public class Parse {
             if(tokens[tNum]==null)
                 continue;
             try {
+                termPosition = tNum;
                 word = tokenToTerm(tokens[tNum], tNum);
             }
             catch (Exception e){
@@ -182,10 +187,19 @@ public class Parse {
     private String deleteDelimeter(String word) {
         for(int i = 0; i < delimeters.length;i++) {
             while (word.length()> 0 && word.charAt(word.length() - 1) == delimeters[i]) {
+                if(i==2){
+                    if(word.length() > 1 && (word.charAt(word.length()-2) >= '0' && word.charAt(word.length()-2) <= '9'))
+                        break;
+                }
                 word = word.substring(0, word.length() - 1);
                 i=0;
             }
             while (word.length()> 0 &&word.charAt(0) == delimeters[i]) {
+
+                if(i==0 || i==1){//'-']\
+                    if(word.length()>1 && (word.charAt(1) <= '9' && word.charAt(1) >= '0'))// iis minus - need to keep
+                        break;
+                }
                 word = word.substring(1);
                 i=0;
             }
@@ -747,36 +761,36 @@ public class Parse {
     private String tokenToTerm(String word, int tNum) {
         String originalWord = word;
 
-        if (word.startsWith("\"") && !quoteInProgress){
-            quoteInProgress = true;
-            if(word.endsWith("\"")) {
-                quoteInProgress = false;
-                addTerm(word);
-            }
-        }
+//        if (word.startsWith("\"") && !quoteInProgress){
+//            quoteInProgress = true;
+//            if(word.endsWith("\"")) {
+//                quoteInProgress = false;
+//                addTerm(word);
+//            }
+//        }
 
         word = deleteDelimeter(word); // deletes delimiters
         if(word.equals(""))
             return"";
 
-        if (originalWord.endsWith("\"") && quoteInProgress){
-            quoteInProgress = false;
-            quote += " " + word+"\"";
-            addTerm(quote);
-            quote = "\"";
-        }
+//        if (originalWord.endsWith("\"") && quoteInProgress){
+//            quoteInProgress = false;
+//            quote += " " + word+"\"";
+//            addTerm(quote);
+//            quote = "\"";
+//        }
 
-
-        if(quoteInProgress){
-            if (originalWord.startsWith("\""))
-                quote += word;
-            else quote += " " + word;
-            if(quote.length() > 30){// cancel long qoutes
-                quoteInProgress =false;
-                quote = "\"";
-
-            }
-        }
+//
+//        if(quoteInProgress){
+//            if (originalWord.startsWith("\""))
+//                quote += word;
+//            else quote += " " + word;
+//            if(quote.length() > 30){// cancel long qoutes
+//                quoteInProgress =false;
+//                quote = "\"";
+//
+//            }
+//        }
 
         if(containsNumber(word)) { // deals with numbers in String
             word = numberEvaluation(word, tNum);
