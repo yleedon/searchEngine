@@ -30,7 +30,6 @@ public class ReadFile {
         indexer = new Indexer(3);
         ClassLoader classLoader = getClass().getClassLoader();
         docIdxFile = new File(classLoader.getResource("documentIdx.txt").getFile());
-
     }
     //</editor-fold>
 
@@ -209,8 +208,11 @@ public class ReadFile {
                     writer.flush();
                 }
             }
+            reader.close();//yaniv
+            writer.close();//yaniv
         }
         catch (IOException e){
+            writer.close();//yaniv
             System.out.println("error read file");
             System.out.println(e.getMessage());
         }
@@ -244,6 +246,15 @@ public class ReadFile {
         String tag = line.split("<")[1];
         tag = tag.split(">")[0];
         return "<" + tag + ">";
+    }
+
+    public void reset() {
+        path = null; /////////////////////////////////////////**********//the path to the corpus should be in config!!!!!!
+        docIdxFile = null;; //the file ReadFile writes into. AKA doocumentIdx.txt
+        writer.close(); // the object that writes to the file
+        parser = null;;
+        indexer.reset();
+        numOdfiles = 0;;
     }
     //</editor-fold>
 

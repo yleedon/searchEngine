@@ -155,4 +155,14 @@ public class Indexer {
         }
     }
 
+    public void reset() {
+
+
+        dictianary.clear();
+        dictianary=null;
+
+       waitList.clear();
+       waitList = null;
+
+    }
 }
