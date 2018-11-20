@@ -8,7 +8,7 @@ import java.util.Set;
 public class MyDocument {
 
     //<editor-fold desc="Fields">
-    String doc, docNo, txt, city, date;
+    String doc, docNo, txt, city, date, title;
     int maxFrequency;
     Map<String, Integer> terms;
     //</editor-fold>
@@ -100,6 +100,16 @@ public class MyDocument {
         if (this.docNo==null)
             this.docNo = create("<DocNo>");
         return docNo;
+    }
+
+    /**
+     * Getter to the title of the document
+     * @return - the title of the document( between the tags <TI> and </TI>0. if there is no taf <TI> returns null;
+     */
+    public String getTitle(){
+        if(this.title==null)
+            this.title = create(("<TI"));
+        return title;
     }
     //</editor-fold>
 
