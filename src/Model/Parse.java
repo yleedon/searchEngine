@@ -34,11 +34,11 @@ public class Parse {
      * Constructer - recieves a string to work on
      * @param text - the string to work on
      */
-    public Parse(String text,boolean stemmerStatus) {
+    public Parse(String stopWordPath, String text,boolean stemmerStatus) {
 //        System.out.println(text);
         this.txt = text.replace("\n", " ");
         this.useStemming = stemmerStatus;
-        initializeMaps();
+        initializeMaps(stopWordPath);
         numberSet = new HashSet<>();
         stemmer = new Stemmer();
 
@@ -47,7 +47,7 @@ public class Parse {
     /**
      * initializes the Hash Maps
      */
-    private void initializeMaps() {
+    private void initializeMaps(String path) {
         monthMap = new HashMap<>();
         moneyMap = new HashMap<>();
         numberMap = new HashMap<>();
@@ -90,17 +90,17 @@ public class Parse {
         numberMap.put("thousand",new Pair(1,"K"));
         numberMap.put("Thousand",new Pair(1,"K"));
 
-        initializeStopWords();
+        initializeStopWords(path);
     }
 
     /**
      * initializes stop words from a file
      */
-    private void initializeStopWords() {
+    private void initializeStopWords(String path) {
 
         try{
-            ClassLoader classLoader = getClass().getClassLoader();
-            File file = new File(classLoader.getResource("corpus/StopWords").getFile());
+
+            File file = new File(path+"/StopWords");
             BufferedReader br = new BufferedReader(new FileReader(file));
             String st;
             while ((st = br.readLine()) != null)
