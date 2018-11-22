@@ -13,6 +13,7 @@ public class MyDocument {
     String doc, docNo, txt, city, date;
     int maxFrequency;
     Map<String, Pair<Integer,Integer>> terms;
+    int textTokenCount;
     //</editor-fold>
 
     //<editor-fold desc="Constructor">
@@ -25,6 +26,7 @@ public class MyDocument {
     public MyDocument(String doc) {
         setDoc(doc);
         maxFrequency = -1;
+
 //        this.docNo = create("<DocNo>");
 //        this.txt = create("<Text>");
 
@@ -99,8 +101,6 @@ public class MyDocument {
      * @return - the docId of the document(between the tags <Doc> and </Doc>). If there is no tag <DocNo> the getter will return null;
      */
     public String getDocId() {
-        if (this.docNo==null)
-            this.docNo = create("<DocNo>");
         return docNo;
     }
     //</editor-fold>
@@ -174,6 +174,18 @@ public class MyDocument {
             s = s.substring(0, s.length()-1);
         }
         return s;
+    }
+
+    public void setDocId(int docNumber){
+        docNo = docNumber+"";
+    }
+
+    public int getTextTokenCount(){
+        return textTokenCount;
+    }
+
+    public void setTextTokenCount(int count){
+        textTokenCount = count;
     }
     //</editor-fold>
 }

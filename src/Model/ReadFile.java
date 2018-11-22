@@ -8,6 +8,7 @@ import java.io.*;
 public class ReadFile {
     //<editor-fold desc="Fields">
 
+    int docNumber;
     String path; /////////////////////////////////////////**********//the path to the corpus should be in config!!!!!!
     File docIdxFile; //the file ReadFile writes into. AKA doocumentIdx.txt
     PrintWriter writer; // the object that writes to the file
@@ -25,6 +26,7 @@ public class ReadFile {
     public ReadFile(String path) {
 
         this.path = path;
+        docNumber=1;
         numOdfiles = 0;
         parser = new Parse("", true);
         indexer = new Indexer(3);
@@ -124,11 +126,13 @@ public class ReadFile {
 //        indexer.printTermlist();
 //        indexer.printWaitList();
 //        indexer.printWaitListSize();
+        System.out.println("\n***************************************************************************");
         System.out.println("total files processed: "+ numOdfiles);
+        System.out.println("total documents parsed: "+ (docNumber-1));
 
 
         System.out.println("amount of numbers: "+ parser.getNumberSet().size());
-        System.out.println(parser.getNumberSet());
+//        System.out.println(parser.getNumberSet());
 //        indexer.test();
         System.out.println("document indexing complete");
         writer.close();
@@ -144,6 +148,7 @@ public class ReadFile {
         if(list!=null)
         for (File file: list) {
             dismember2Docs(file);
+            System.out.println("finished working on file: "+ file.getName());
         }
 
     }
@@ -178,9 +183,10 @@ public class ReadFile {
                     }
                     docBuilder.append(line+"\n");
                     endIdx = currentLine;
-                    System.out.println("working on doc: "+entry);
+//                    System.out.println("working on doc: "+entry);
 //                    System.out.println(new MyDocument(docBuilder.toString()).getTxt());
                     MyDocument document = new MyDocument(docBuilder.toString());
+                    document.setDocId(docNumber);
 
                     parser.setTxt(document.getTxt());
                     try {
@@ -189,6 +195,7 @@ public class ReadFile {
 //                        parser.printIndex();
                         document.setMaxFrequency(parser.maxFreq);
                         document.setTerms(parser.getDocMap());
+                        document.setTextTokenCount(parser.getTokenSize());
                         indexer.addDoc(document);
 
 //                        indexer.addDoc(new Doc);
@@ -201,18 +208,18 @@ public class ReadFile {
                         System.out.println(e.getMessage());
 
                     }
-                    entry = new StringBuilder().append(entry).append(",").append(startIdx).append(",").append(endIdx).append(",").append(file.getPath().replace(path.substring(1).replace("/","\\"),"")).append("\n").toString();
-
+                    entry = new StringBuilder().append(docNumber).append(",").append(startIdx).append(",").append(endIdx).append(",").append(file.getPath().replace(path.substring(1).replace("/","\\"),"")).append("\n").toString();
+                    docNumber++;
                     docBuilder.delete(0,docBuilder.length());
                     writer.append(entry);
                     writer.flush();
                 }
             }
-            reader.close();//yaniv
-            writer.close();//yaniv
+//            reader.close();//yaniv
+//            writer.close();//yaniv
         }
         catch (IOException e){
-            writer.close();//yaniv
+//            writer.close();//yaniv
             System.out.println("error read file");
             System.out.println(e.getMessage());
         }

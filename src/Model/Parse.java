@@ -138,13 +138,14 @@ public class Parse {
             if(tokens[tNum]==null)
                 continue;
             try {
-                termPosition = tNum;
+
                 word = tokenToTerm(tokens[tNum], tNum);
             }
             catch (Exception e){
                 System.out.println("something went terribly wrong - this should never happen ) (PARSE: parse():");
                 System.out.println(e.getMessage());
             }
+            termPosition = tNum;
             addTerm(word);
         }
     }
@@ -699,10 +700,7 @@ public class Parse {
     private void addTerm(String word) {
 
         if(word!=null && !word.equals("") && !word.equals("-") ) {
-
-
             word = deleteDelimeter(tradeUppercase(word));
-
 
             if(indexMap.containsKey(word)) {
                 indexMap.replace(word, new Pair<>(indexMap.get(word).getKey() + 1,indexMap.get(word).getValue()));
@@ -736,12 +734,15 @@ public class Parse {
         if(word.charAt(0) >= 'a' && word.charAt(0) <= 'z'){
             if(indexMap.containsKey(word.toUpperCase())){
                 String upperCase = word.toUpperCase();
-                Pair bigLetterCount = indexMap.get(upperCase);
+                Pair<Integer,Integer> bigLetterCount = indexMap.get(upperCase);
                 indexMap.remove(upperCase);
                 if(indexMap.containsKey(word)){
                     indexMap.replace(word,new Pair<>(indexMap.get(word).getKey()+ (Integer)bigLetterCount.getKey(),(Integer)bigLetterCount.getValue()));//indexMap.get(word)+bigLetterCount);
                 }
-                else indexMap.put(word,bigLetterCount);////////////////////////////////////////problem
+
+                else {
+                    indexMap.put(word, bigLetterCount);////////////////////////////////////////problem
+                }
             }
         }
         return word;
@@ -1049,5 +1050,8 @@ public class Parse {
         for(String num:numberSet){
             System.out.println(num);
         }
+    }
+    public int getTokenSize(){
+        return tokens.length;
     }
 }
