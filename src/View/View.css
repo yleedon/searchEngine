@@ -1,5 +1,5 @@
 .root {
-    -fx-background-image: url("../Resources/wGoogle.jpg");
+    -fx-background-image: url("../Resources/notGoogle.jpg");
     -fx-background-repeat: no-repeat;
     -fx-background-size: cover, auto;
 }

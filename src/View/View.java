@@ -22,6 +22,8 @@ public class View {
     public Button btn_testParse;
     public Button btn_runTests;
     public CheckBox btn_stemmingBox;
+    public TextField fld_outputPath;
+    public TextField fld_corpusPath;
 //    public ReadFile rf;
     public Button btn_testIndexer;
 
@@ -30,7 +32,7 @@ public class View {
         if ((fld_text.getText().equals("")))
             return;
 
-        Parse parser = new Parse(fld_text.getText(),btn_stemmingBox.isSelected());
+        Parse parser = new Parse(fld_corpusPath.getText(),fld_text.getText(),btn_stemmingBox.isSelected());
         try {
             parser.parse();
             parser.printIndex();
@@ -48,7 +50,7 @@ public class View {
 
     }
 
-    //for the test button
+    //parser auto test
     public void runTests(){
 
         Map<String,String> tests = new HashMap<>();
@@ -76,7 +78,7 @@ public class View {
             String outPut;
             boolean failed = false;
             String ans = "Format: [input] != [wantedOutput] --> [actualOutput]\n\nResults:\n";
-            Parse parser = new Parse("",btn_stemmingBox.isSelected());
+            Parse parser = new Parse(fld_corpusPath.getText(),"",btn_stemmingBox.isSelected());
             int i = 0;
             for (String input:tests.keySet()) {
                 i++;
@@ -167,8 +169,7 @@ public class View {
 
 
     public void testReadFile() {
-        ClassLoader classLoader = getClass().getClassLoader();
-        ReadFile readF = new ReadFile(classLoader.getResource("corpus").getFile());
+        ReadFile readF = new ReadFile(fld_corpusPath.getText(),fld_outputPath.getText(),btn_stemmingBox.isSelected());
 
 //        ReadFile rf = new ReadFile("C:\\Users\\Dan\\Desktop\\corpus");
         readF.readDirectory();
@@ -184,10 +185,10 @@ public class View {
 
     public void testGetDoc(){
         try {
-            ClassLoader classLoader = getClass().getClassLoader();
+
 
             ReadFile rf;
-            rf = new ReadFile(classLoader.getResource("corpus").getFile());
+            rf = new ReadFile(fld_corpusPath.getText(),fld_outputPath.getText(),btn_stemmingBox.isSelected());
             if(!fld_path.getText().equals("")) {
 
 //            int iDoc = Integer.valueOf(fld_path.getText());

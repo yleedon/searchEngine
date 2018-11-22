@@ -16,9 +16,11 @@ public class Indexer {
     private int nextLineNum;
     private Map<Integer,String> waitList;
     private int tempFileName;
+    private String path;
 
 
-    public Indexer(double size) {
+    public Indexer(String outPath, double size) {
+        path = outPath;
         tempFileName = 1;
         waitlistSize=0;
         this.dictianary =  new TreeMap<>();
@@ -85,8 +87,7 @@ public class Indexer {
     public void writeWaitingList() {
         try {
             String fName = ""+tempFileName;
-            ClassLoader classLoader = getClass().getClassLoader();
-            String tempPath = classLoader.getResource("").getPath()+"Resources/waitingList/"+fName+".txt";
+            String tempPath = path+"/waitingList/"+fName+".txt";
             File tempFile = new File(tempPath);
             FileWriter fileWriter = new FileWriter(tempFile, false);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -100,16 +101,6 @@ public class Indexer {
             }
             writer.close();
 
-//            for(int line:waitList.keySet()){
-//
-//               lines += waitList.get(line)+"\n";
-//            }
-//            writer.println(lines);
-//            writer.close();
-
-
-
-
         }
         catch (Exception e){
             System.out.println("error index "+e.getMessage());
@@ -117,8 +108,6 @@ public class Indexer {
         tempFileName++;
         waitlistSize=0;
         waitList=new TreeMap<>();
-
-
 
     }
 
@@ -141,7 +130,7 @@ public class Indexer {
     public void saveDictinary() {
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            String tempPath = classLoader.getResource("").getPath() + "Resources/dictionary.txt";
+            String tempPath = path+"/dictionary.txt";
             File tempFile = new File(tempPath);
             FileWriter fileWriter = new FileWriter(tempFile, false);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -161,13 +150,11 @@ public class Indexer {
     }
 
     public void reset() {
-
-
         dictianary.clear();
         dictianary=null;
 
-       waitList.clear();
-       waitList = null;
+        waitList.clear();
+        waitList = null;
 
     }
 }
