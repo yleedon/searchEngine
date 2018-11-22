@@ -1,6 +1,8 @@
 package Model;
 
 
+import javafx.util.Pair;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +31,7 @@ public class Indexer {
     public void addDoc(MyDocument doc){
         if(doc==null)
             return;
-        Map docMap = doc.getTerms();
+        Map<String, Pair<Integer,Integer>> docMap = doc.getTerms();
         for (Object t:docMap.keySet()) {
             if(t.toString().equals(""))
                 continue;
@@ -58,8 +60,11 @@ public class Indexer {
                 dictianary.put(term,nextLineNum);
                 nextLineNum++;
             }
-            //(docid,number Of times term appears,max frequancy)
-            String entry = doc.getDocId()+","+ docMap.get(originalTerm)  + "," + doc.getMaxFrequency() + "~";
+            //(docid,number Of times term appears,relative first appearence)
+
+            double termPlace = (1-(double)docMap.get(originalTerm).getValue()/doc.getTextTokenCount());
+            termPlace = Math.floor(termPlace * 10) / 10;
+            String entry = doc.getDocId()+","+ docMap.get(originalTerm).getKey()+","+termPlace+ "," + "~";
             if(!waitList.containsKey(dictianary.get(term))) {
                 waitlistSize+= (""+dictianary.get(term)).length()+1+entry.length();
                 waitList.put(dictianary.get(term),  dictianary.get(term)+":"+entry);
@@ -73,7 +78,7 @@ public class Indexer {
         ;
         if (waitlistSize > tempFileSize) { // file size 300kb
             writeWaitingList();
-            System.out.println("write waiting list to disk");
+            System.out.println("waiting list was written to disk");
         }
     }
 
