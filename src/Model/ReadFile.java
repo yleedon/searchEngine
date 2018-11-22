@@ -39,19 +39,22 @@ public class ReadFile {
         String masterDir = "/dataBase";
         createDirectory(outputPath+masterDir);
 
-        if(stemmer) {
-            createDirectory(outputPath+masterDir+"/stemmed");
-            docIdxFile = new File(outputPath + masterDir + "/stemmed/docIdx.txt");
-            indexer = new Indexer(outputPath + masterDir + "/stemmed",3);
-            createDirectory(outputPath+masterDir+"/stemmed/waitingList");
-        }
-        else {
-            createDirectory(outputPath+masterDir+"/not stemmed");
-            docIdxFile = new File(outputPath + masterDir +"/not stemmed/docIdx.txt");
-            indexer = new Indexer(outputPath+masterDir+"/not stemmed",3);
-            createDirectory(outputPath+masterDir+"/not stemmed/waitingList");
+        String stemType = "/stemmed";
+        if(!stemmer)
+            stemType = "/not stemmed";
 
-        }
+        createDirectory(outputPath+masterDir+stemType);
+        docIdxFile = new File(outputPath + masterDir + stemType+"/docIdx.txt");
+        indexer = new Indexer(outputPath + masterDir + stemType,3);
+        createDirectory(outputPath+masterDir+stemType+"/waitingList");
+
+//        else {
+//            createDirectory(outputPath+masterDir+"/not stemmed");
+//            docIdxFile = new File(outputPath + masterDir +"/not stemmed/docIdx.txt");
+//            indexer = new Indexer(outputPath+masterDir+"/not stemmed",3);
+//            createDirectory(outputPath+masterDir+"/not stemmed/waitingList");
+//
+//        }
 
     }
 
@@ -249,7 +252,6 @@ public class ReadFile {
                         System.out.println(e.getMessage());
 
                     }
-                    String yaniv = file.getPath();
                     entry = new StringBuilder().append(docNumber).append(",").append(startIdx).append(",").append(endIdx).append(",").append(file.getPath().replace(path+"\\","")).append("\n").toString();
                     docNumber++;
                     docBuilder.delete(0,docBuilder.length());

@@ -5,8 +5,12 @@ import Model.Indexer;
 import Model.MyDocument;
 import Model.Parse;
 import Model.ReadFile;
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 
 
 import java.io.BufferedReader;
@@ -24,8 +28,11 @@ public class View {
     public CheckBox btn_stemmingBox;
     public TextField fld_outputPath;
     public TextField fld_corpusPath;
+    private String corpusPath;
 //    public ReadFile rf;
     public Button btn_testIndexer;
+    public Button btn_corpusBrowse;
+    public Button btn_outputBrowse;
 
     public void testParse() {
         fld_text.setOpacity(0.3);
@@ -200,5 +207,34 @@ public class View {
         catch (Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    public void browse(ActionEvent event){
+
+        DirectoryChooser chooser = new DirectoryChooser();
+            Node node = (Node) event.getSource() ;
+            String data = (String) node.getUserData();
+            int button = Integer.parseInt(data);
+            if(button==1) {// corpusBrowse
+                chooser.setTitle("SELECT CORPUS DIRECTORY");
+                File defaultDirectory = new File("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\searchEnginOutPut\\corpus");
+                chooser.setInitialDirectory(defaultDirectory);
+            }
+        if(button==2) {// outputBrowse
+            chooser.setTitle("SELECT OUTPUT DIRECTORY");
+            File defaultDirectory = new File("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\searchEnginOutPut");
+            chooser.setInitialDirectory(defaultDirectory);
+        }
+
+
+
+        File selectedDirectory = chooser.showDialog(new Stage());
+        if(selectedDirectory==null)
+            return;
+        if(button==1)
+        fld_corpusPath.setText(selectedDirectory.getPath());
+        if(button==2)
+            fld_outputPath.setText(selectedDirectory.getPath());
+        System.out.println(selectedDirectory.getPath());
     }
 }
