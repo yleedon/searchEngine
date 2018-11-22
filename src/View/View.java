@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class View {
-//    public ProgressBar progressBar;
+    //    public ProgressBar progressBar;
     public TextField fld_text;
     public TextField fld_path;
     public Button btn_testParse;
@@ -29,7 +29,7 @@ public class View {
     public TextField fld_outputPath;
     public TextField fld_corpusPath;
     private String corpusPath;
-//    public ReadFile rf;
+    //    public ReadFile rf;
     public Button btn_testIndexer;
     public Button btn_corpusBrowse;
     public Button btn_outputBrowse;
@@ -209,32 +209,33 @@ public class View {
         }
     }
 
+    /**
+     * 
+     * @param event
+     */
     public void browse(ActionEvent event){
 
         DirectoryChooser chooser = new DirectoryChooser();
-            Node node = (Node) event.getSource() ;
-            String data = (String) node.getUserData();
-            int button = Integer.parseInt(data);
-            if(button==1) {// corpusBrowse
-                chooser.setTitle("SELECT CORPUS DIRECTORY");
-                File defaultDirectory = new File("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\searchEnginOutPut\\corpus");
-                chooser.setInitialDirectory(defaultDirectory);
-            }
-        if(button==2) {// outputBrowse
-            chooser.setTitle("SELECT OUTPUT DIRECTORY");
-            File defaultDirectory = new File("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\searchEnginOutPut");
+        Node node = (Node) event.getSource() ;
+        String data = (String) node.getUserData();
+        int button = Integer.parseInt(data);
+        if(button==1) {// corpusBrowse
+            chooser.setTitle("SELECT CORPUS DIRECTORY");
+            File defaultDirectory = new File("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data\\corpus");
             chooser.setInitialDirectory(defaultDirectory);
         }
-
-
+        if(button==2) {// outputBrowse
+            chooser.setTitle("SELECT OUTPUT DIRECTORY");
+            File defaultDirectory = new File("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data");
+            chooser.setInitialDirectory(defaultDirectory);
+        }
 
         File selectedDirectory = chooser.showDialog(new Stage());
         if(selectedDirectory==null)
             return;
         if(button==1)
-        fld_corpusPath.setText(selectedDirectory.getPath());
+            fld_corpusPath.setText(selectedDirectory.getPath());
         if(button==2)
             fld_outputPath.setText(selectedDirectory.getPath());
-        System.out.println(selectedDirectory.getPath());
     }
 }
