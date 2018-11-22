@@ -73,7 +73,6 @@ public class Parse {
         moneyMap.put("TRILLION",new Pair<>(1000000,"M"));
         moneyMap.put("Trillion",new Pair<>(1000000,"M"));
 
-
         numberMap.put("Trillion", new Pair(1000,"B"));
         numberMap.put("trillion", new Pair(1000,"B"));
         numberMap.put("TRILLION", new Pair(1000,"B"));

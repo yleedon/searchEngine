@@ -101,16 +101,6 @@ public class Indexer {
             }
             writer.close();
 
-//            for(int line:waitList.keySet()){
-//
-//               lines += waitList.get(line)+"\n";
-//            }
-//            writer.println(lines);
-//            writer.close();
-
-
-
-
         }
         catch (Exception e){
             System.out.println("error index "+e.getMessage());
@@ -118,8 +108,6 @@ public class Indexer {
         tempFileName++;
         waitlistSize=0;
         waitList=new TreeMap<>();
-
-
 
     }
 
@@ -162,13 +150,11 @@ public class Indexer {
     }
 
     public void reset() {
-
-
         dictianary.clear();
         dictianary=null;
 
-       waitList.clear();
-       waitList = null;
+        waitList.clear();
+        waitList = null;
 
     }
 }
