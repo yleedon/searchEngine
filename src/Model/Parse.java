@@ -24,7 +24,7 @@ public class Parse {
     private String ans;
     private Set<String> stopWords;
     private String[] tokens;
-    private Map<String,Integer> indexMap;
+    private Map<String,Pair<Integer,Integer>> indexMap; //pair: frequency,first appearance
     int maxFreq;
     private String quote;
     private boolean quoteInProgress;
@@ -34,11 +34,11 @@ public class Parse {
      * Constructer - recieves a string to work on
      * @param text - the string to work on
      */
-    public Parse(String text,boolean stemmerStatus) {
+    public Parse(String stopWordPath, String text,boolean stemmerStatus) {
 //        System.out.println(text);
         this.txt = text.replace("\n", " ");
         this.useStemming = stemmerStatus;
-        initializeMaps();
+        initializeMaps(stopWordPath);
         numberSet = new HashSet<>();
         stemmer = new Stemmer();
 
@@ -47,7 +47,7 @@ public class Parse {
     /**
      * initializes the Hash Maps
      */
-    private void initializeMaps() {
+    private void initializeMaps(String path) {
         monthMap = new HashMap<>();
         moneyMap = new HashMap<>();
         numberMap = new HashMap<>();
@@ -73,7 +73,6 @@ public class Parse {
         moneyMap.put("TRILLION",new Pair<>(1000000,"M"));
         moneyMap.put("Trillion",new Pair<>(1000000,"M"));
 
-
         numberMap.put("Trillion", new Pair(1000,"B"));
         numberMap.put("trillion", new Pair(1000,"B"));
         numberMap.put("TRILLION", new Pair(1000,"B"));
@@ -90,17 +89,17 @@ public class Parse {
         numberMap.put("thousand",new Pair(1,"K"));
         numberMap.put("Thousand",new Pair(1,"K"));
 
-        initializeStopWords();
+        initializeStopWords(path);
     }
 
     /**
      * initializes stop words from a file
      */
-    private void initializeStopWords() {
+    private void initializeStopWords(String path) {
 
         try{
-            ClassLoader classLoader = getClass().getClassLoader();
-            File file = new File(classLoader.getResource("corpus/StopWords").getFile());
+
+            File file = new File(path+"/StopWords");
             BufferedReader br = new BufferedReader(new FileReader(file));
             String st;
             while ((st = br.readLine()) != null)
@@ -138,13 +137,14 @@ public class Parse {
             if(tokens[tNum]==null)
                 continue;
             try {
-                termPosition = tNum;
+
                 word = tokenToTerm(tokens[tNum], tNum);
             }
             catch (Exception e){
                 System.out.println("something went terribly wrong - this should never happen ) (PARSE: parse():");
                 System.out.println(e.getMessage());
             }
+            termPosition = tNum;
             addTerm(word);
         }
     }
@@ -699,18 +699,15 @@ public class Parse {
     private void addTerm(String word) {
 
         if(word!=null && !word.equals("") && !word.equals("-") ) {
-
-
             word = deleteDelimeter(tradeUppercase(word));
 
-
             if(indexMap.containsKey(word)) {
-                indexMap.replace(word, indexMap.get(word) + 1);
-                if (maxFreq<indexMap.get(word)+1)
-                    maxFreq = indexMap.get(word);
+                indexMap.replace(word, new Pair<>(indexMap.get(word).getKey() + 1,indexMap.get(word).getValue()));
+                if (maxFreq<indexMap.get(word).getKey())
+                    maxFreq = indexMap.get(word).getKey();
             }
             else {
-                indexMap.put(word, 1);
+                indexMap.put(word, new Pair<>(1,termPosition));
                 if (maxFreq<1)
                     maxFreq = 1;
             }
@@ -736,12 +733,15 @@ public class Parse {
         if(word.charAt(0) >= 'a' && word.charAt(0) <= 'z'){
             if(indexMap.containsKey(word.toUpperCase())){
                 String upperCase = word.toUpperCase();
-                int bigLetterCount = indexMap.get(upperCase);
+                Pair<Integer,Integer> bigLetterCount = indexMap.get(upperCase);
                 indexMap.remove(upperCase);
                 if(indexMap.containsKey(word)){
-                    indexMap.replace(word,indexMap.get(word)+bigLetterCount);
+                    indexMap.replace(word,new Pair<>(indexMap.get(word).getKey()+ (Integer)bigLetterCount.getKey(),(Integer)bigLetterCount.getValue()));//indexMap.get(word)+bigLetterCount);
                 }
-                else indexMap.put(word,bigLetterCount);////////////////////////////////////////problem
+
+                else {
+                    indexMap.put(word, bigLetterCount);////////////////////////////////////////problem
+                }
             }
         }
         return word;
@@ -1034,14 +1034,14 @@ public class Parse {
     public void printIndex(){
         System.out.println("IndexTable:");
         for (String term:indexMap.keySet()) {
-            System.out.println("{"+term + " , "+ indexMap.get(term)+"}");
+            System.out.println("{"+term + " , "+ indexMap.get(term).getKey()+","+indexMap.get(term).getValue()+"}");
         }
         System.out.println("Max frequency: " + maxFreq);
         System.out.println("end.\n\n\n");
     }
     //</editor-fold>
 
-    public Map<String,Integer> getDocMap(){
+    public Map<String,Pair<Integer,Integer>> getDocMap(){
         return indexMap;
     }
 
@@ -1049,5 +1049,8 @@ public class Parse {
         for(String num:numberSet){
             System.out.println(num);
         }
+    }
+    public int getTokenSize(){
+        return tokens.length;
     }
 }

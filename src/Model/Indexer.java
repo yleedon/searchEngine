@@ -1,6 +1,8 @@
 package Model;
 
 
+import javafx.util.Pair;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,9 +16,11 @@ public class Indexer {
     private int nextLineNum;
     private Map<Integer,String> waitList;
     private int tempFileName;
+    private String path;
 
 
-    public Indexer(double size) {
+    public Indexer(String outPath, double size) {
+        path = outPath;
         tempFileName = 1;
         waitlistSize=0;
         this.dictianary =  new TreeMap<>();
@@ -29,7 +33,7 @@ public class Indexer {
     public void addDoc(MyDocument doc){
         if(doc==null)
             return;
-        Map docMap = doc.getTerms();
+        Map<String, Pair<Integer,Integer>> docMap = doc.getTerms();
         for (Object t:docMap.keySet()) {
             if(t.toString().equals(""))
                 continue;
@@ -58,8 +62,11 @@ public class Indexer {
                 dictianary.put(term,nextLineNum);
                 nextLineNum++;
             }
-            //(docid,number Of times term appears,max frequancy)
-            String entry = doc.getDocId()+","+ docMap.get(originalTerm)  + "," + doc.getMaxFrequency() + "~";
+            //(docid,number Of times term appears,relative first appearence)
+
+            double termPlace = (1-(double)docMap.get(originalTerm).getValue()/doc.getTextTokenCount());
+            termPlace = Math.floor(termPlace * 10) / 10;
+            String entry = doc.getDocId()+","+ docMap.get(originalTerm).getKey()+","+termPlace+ "," + "~";
             if(!waitList.containsKey(dictianary.get(term))) {
                 waitlistSize+= (""+dictianary.get(term)).length()+1+entry.length();
                 waitList.put(dictianary.get(term),  dictianary.get(term)+":"+entry);
@@ -73,15 +80,14 @@ public class Indexer {
         ;
         if (waitlistSize > tempFileSize) { // file size 300kb
             writeWaitingList();
-            System.out.println("write waiting list to disk");
+            System.out.println("waiting list was written to disk");
         }
     }
 
     public void writeWaitingList() {
         try {
             String fName = ""+tempFileName;
-            ClassLoader classLoader = getClass().getClassLoader();
-            String tempPath = classLoader.getResource("").getPath()+"Resources/waitingList/"+fName+".txt";
+            String tempPath = path+"/waitingList/"+fName+".txt";
             File tempFile = new File(tempPath);
             FileWriter fileWriter = new FileWriter(tempFile, false);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -95,16 +101,6 @@ public class Indexer {
             }
             writer.close();
 
-//            for(int line:waitList.keySet()){
-//
-//               lines += waitList.get(line)+"\n";
-//            }
-//            writer.println(lines);
-//            writer.close();
-
-
-
-
         }
         catch (Exception e){
             System.out.println("error index "+e.getMessage());
@@ -112,8 +108,6 @@ public class Indexer {
         tempFileName++;
         waitlistSize=0;
         waitList=new TreeMap<>();
-
-
 
     }
 
@@ -136,7 +130,7 @@ public class Indexer {
     public void saveDictinary() {
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            String tempPath = classLoader.getResource("").getPath() + "Resources/dictionary.txt";
+            String tempPath = path+"/dictionary.txt";
             File tempFile = new File(tempPath);
             FileWriter fileWriter = new FileWriter(tempFile, false);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -156,13 +150,11 @@ public class Indexer {
     }
 
     public void reset() {
-
-
         dictianary.clear();
         dictianary=null;
 
-       waitList.clear();
-       waitList = null;
+        waitList.clear();
+        waitList = null;
 
     }
 }

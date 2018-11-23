@@ -5,8 +5,12 @@ import Model.Indexer;
 import Model.MyDocument;
 import Model.Parse;
 import Model.ReadFile;
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 
 
 import java.io.BufferedReader;
@@ -16,21 +20,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class View {
-//    public ProgressBar progressBar;
+    //    public ProgressBar progressBar;
     public TextField fld_text;
     public TextField fld_path;
     public Button btn_testParse;
     public Button btn_runTests;
     public CheckBox btn_stemmingBox;
-//    public ReadFile rf;
+    public TextField fld_outputPath;
+    public TextField fld_corpusPath;
+    private String corpusPath;
+    //    public ReadFile rf;
     public Button btn_testIndexer;
+    public Button btn_corpusBrowse;
+    public Button btn_outputBrowse;
 
     public void testParse() {
         fld_text.setOpacity(0.3);
         if ((fld_text.getText().equals("")))
             return;
 
-        Parse parser = new Parse(fld_text.getText(),btn_stemmingBox.isSelected());
+        Parse parser = new Parse(fld_corpusPath.getText(),fld_text.getText(),btn_stemmingBox.isSelected());
         try {
             parser.parse();
             parser.printIndex();
@@ -48,7 +57,7 @@ public class View {
 
     }
 
-    //for the test button
+    //parser auto test
     public void runTests(){
 
         Map<String,String> tests = new HashMap<>();
@@ -76,7 +85,7 @@ public class View {
             String outPut;
             boolean failed = false;
             String ans = "Format: [input] != [wantedOutput] --> [actualOutput]\n\nResults:\n";
-            Parse parser = new Parse("",btn_stemmingBox.isSelected());
+            Parse parser = new Parse(fld_corpusPath.getText(),"",btn_stemmingBox.isSelected());
             int i = 0;
             for (String input:tests.keySet()) {
                 i++;
@@ -167,8 +176,7 @@ public class View {
 
 
     public void testReadFile() {
-        ClassLoader classLoader = getClass().getClassLoader();
-        ReadFile readF = new ReadFile(classLoader.getResource("corpus").getFile());
+        ReadFile readF = new ReadFile(fld_corpusPath.getText(),fld_outputPath.getText(),btn_stemmingBox.isSelected());
 
 //        ReadFile rf = new ReadFile("C:\\Users\\Dan\\Desktop\\corpus");
         readF.readDirectory();
@@ -184,10 +192,10 @@ public class View {
 
     public void testGetDoc(){
         try {
-            ClassLoader classLoader = getClass().getClassLoader();
+
 
             ReadFile rf;
-            rf = new ReadFile(classLoader.getResource("corpus").getFile());
+            rf = new ReadFile(fld_corpusPath.getText(),fld_outputPath.getText(),btn_stemmingBox.isSelected());
             if(!fld_path.getText().equals("")) {
 
 //            int iDoc = Integer.valueOf(fld_path.getText());
@@ -199,5 +207,35 @@ public class View {
         catch (Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    /**
+     * 
+     * @param event
+     */
+    public void browse(ActionEvent event){
+
+        DirectoryChooser chooser = new DirectoryChooser();
+        Node node = (Node) event.getSource() ;
+        String data = (String) node.getUserData();
+        int button = Integer.parseInt(data);
+        if(button==1) {// corpusBrowse
+            chooser.setTitle("SELECT CORPUS DIRECTORY");
+            File defaultDirectory = new File("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data\\corpus");
+            chooser.setInitialDirectory(defaultDirectory);
+        }
+        if(button==2) {// outputBrowse
+            chooser.setTitle("SELECT OUTPUT DIRECTORY");
+            File defaultDirectory = new File("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data");
+            chooser.setInitialDirectory(defaultDirectory);
+        }
+
+        File selectedDirectory = chooser.showDialog(new Stage());
+        if(selectedDirectory==null)
+            return;
+        if(button==1)
+            fld_corpusPath.setText(selectedDirectory.getPath());
+        if(button==2)
+            fld_outputPath.setText(selectedDirectory.getPath());
     }
 }

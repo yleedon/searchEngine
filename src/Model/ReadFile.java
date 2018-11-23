@@ -1,35 +1,81 @@
 package Model;
-//pleaseeeeee
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 
 import java.io.*;
 
 public class ReadFile {
     //<editor-fold desc="Fields">
 
-    String path; /////////////////////////////////////////**********//the path to the corpus should be in config!!!!!!
+    int docNumber;
+    String path;
     File docIdxFile; //the file ReadFile writes into. AKA doocumentIdx.txt
     PrintWriter writer; // the object that writes to the file
     Parse parser;
     Indexer indexer;
     int numOdfiles;
+
     //</editor-fold>
 
     //<editor-fold desc="Constructor">
 
     /**
-     * Constructor - get the path of the corpus and set the printWriter
-     * @param path - the path of the corpus
+     *  Constructor - get the path of the corpus and set the printWriter
+     * @param corpusPath - path of the corpus
+     * @param outputPath - path of the outPut
+     * @param stemmer - us stemming or not
      */
-    public ReadFile(String path) {
+    public ReadFile(String corpusPath,String outputPath, boolean stemmer) {
 
-        this.path = path;
+        this.path = corpusPath;
+        docNumber=1;
         numOdfiles = 0;
-        parser = new Parse("", true);
-        indexer = new Indexer(3);
-        ClassLoader classLoader = getClass().getClassLoader();
-        docIdxFile = new File(classLoader.getResource("documentIdx.txt").getFile());
+        parser = new Parse(corpusPath,"", stemmer);
+
+        setOutputDestination(outputPath,stemmer);
+
+
+    }
+
+    private void setOutputDestination(String outputPath, boolean stemmer) {
+        String masterDir = "/dataBase";
+        createDirectory(outputPath+masterDir);
+
+        String stemType = "/stemmed";
+        if(!stemmer)
+            stemType = "/not stemmed";
+
+        createDirectory(outputPath+masterDir+stemType);
+        docIdxFile = new File(outputPath + masterDir + stemType+"/docIdx.txt");
+        indexer = new Indexer(outputPath + masterDir + stemType,3);
+        createDirectory(outputPath+masterDir+stemType+"/waitingList");
+
+//        else {
+//            createDirectory(outputPath+masterDir+"/not stemmed");
+//            docIdxFile = new File(outputPath + masterDir +"/not stemmed/docIdx.txt");
+//            indexer = new Indexer(outputPath+masterDir+"/not stemmed",3);
+//            createDirectory(outputPath+masterDir+"/not stemmed/waitingList");
+//
+//        }
+
+    }
+
+    private void createDirectory(String dir) {
+        File output = new File(dir);
+        if (!output.exists()) {
+            System.out.println("creating directory: " + dir);
+            boolean result = false;
+
+            try{
+                output.mkdir();
+                result = true;
+            }
+            catch(SecurityException se){
+                //handle it
+            }
+            if(result) {
+                System.out.println("DIR created");
+            }
+        }
+
     }
     //</editor-fold>
 
@@ -71,7 +117,7 @@ public class ReadFile {
             String[] info = line.split(",");
             reader.close();
             fileReader.close();
-            fileReader = new FileReader(new File(path+info[3]));
+            fileReader = new FileReader(new File(path+"\\"+info[3]));
             reader = new BufferedReader(fileReader);
             String doc = "";
             for (int i = 1; i<Integer.valueOf(info[1]); i++){
@@ -116,7 +162,7 @@ public class ReadFile {
 
 
             if(!directory.getPath().endsWith("StopWords"))
-            readDirectory(directory);
+                readDirectory(directory);
         }
 
         indexer.writeWaitingList();
@@ -124,11 +170,13 @@ public class ReadFile {
 //        indexer.printTermlist();
 //        indexer.printWaitList();
 //        indexer.printWaitListSize();
+        System.out.println("\n***************************************************************************");
         System.out.println("total files processed: "+ numOdfiles);
+        System.out.println("total documents parsed: "+ (docNumber-1));
 
 
         System.out.println("amount of numbers: "+ parser.getNumberSet().size());
-        System.out.println(parser.getNumberSet());
+//        System.out.println(parser.getNumberSet());
 //        indexer.test();
         System.out.println("document indexing complete");
         writer.close();
@@ -142,9 +190,10 @@ public class ReadFile {
         numOdfiles++;
         File[] list = directory.listFiles();
         if(list!=null)
-        for (File file: list) {
-            dismember2Docs(file);
-        }
+            for (File file: list) {
+                dismember2Docs(file);
+                System.out.println("finished working on file: "+ file.getName());
+            }
 
     }
 
@@ -178,9 +227,10 @@ public class ReadFile {
                     }
                     docBuilder.append(line+"\n");
                     endIdx = currentLine;
-                    System.out.println("working on doc: "+entry);
+//                    System.out.println("working on doc: "+entry);
 //                    System.out.println(new MyDocument(docBuilder.toString()).getTxt());
                     MyDocument document = new MyDocument(docBuilder.toString());
+                    document.setDocId(docNumber);
 
                     parser.setTxt(document.getTxt());
                     try {
@@ -189,6 +239,7 @@ public class ReadFile {
 //                        parser.printIndex();
                         document.setMaxFrequency(parser.maxFreq);
                         document.setTerms(parser.getDocMap());
+                        document.setTextTokenCount(parser.getTokenSize());
                         indexer.addDoc(document);
 
 //                        indexer.addDoc(new Doc);
@@ -201,18 +252,18 @@ public class ReadFile {
                         System.out.println(e.getMessage());
 
                     }
-                    entry = new StringBuilder().append(entry).append(",").append(startIdx).append(",").append(endIdx).append(",").append(file.getPath().replace(path.substring(1).replace("/","\\"),"")).append("\n").toString();
-
+                    entry = new StringBuilder().append(docNumber).append(",").append(startIdx).append(",").append(endIdx).append(",").append(file.getPath().replace(path+"\\","")).append("\n").toString();
+                    docNumber++;
                     docBuilder.delete(0,docBuilder.length());
                     writer.append(entry);
                     writer.flush();
                 }
             }
-            reader.close();//yaniv
-            writer.close();//yaniv
+//            reader.close();//yaniv
+//            writer.close();//yaniv
         }
         catch (IOException e){
-            writer.close();//yaniv
+//            writer.close();//yaniv
             System.out.println("error read file");
             System.out.println(e.getMessage());
         }
