@@ -43,8 +43,8 @@ public class View {
         try {
             parser.parse();
             parser.printIndex();
-            System.out.println("Number set: ");
-            parser.printNumberSet();
+//            System.out.println("Number set: ");
+//            parser.printNumberSet();
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
