@@ -164,8 +164,6 @@ public class MyDocument {
      * @return - the same given string without '\n' in the beginning and in the end.
      */
     private String cleanEdges(String s) {
-        if(s.toUpperCase().contains("CLANDESTINE"))
-            System.out.println();
         if (s == null)
             return null;
         while(s.startsWith("\n") || s.startsWith(" ") || s.startsWith("(")){
