@@ -233,13 +233,19 @@ public class ReadFile {
                     document.setDocId(docNumber);
 
                     parser.setTxt(document.getTxt());
+                    int maxFreq = -1;
                     try {
                         parser.parse();
 //                        System.out.println("DocName: "+ entry);
 //                        parser.printIndex();
-                        document.setMaxFrequency(parser.maxFreq);
+                        maxFreq = parser.maxFreq;
                         document.setTerms(parser.getDocMap());
                         document.setTextTokenCount(parser.getTokenSize());
+
+                        parser.setTxt(document.getTitle());
+                        parser.parse();
+                        document.setTitleSet(parser.getDocMap());
+
                         indexer.addDoc(document);
 
 //                        indexer.addDoc(new Doc);
@@ -252,7 +258,9 @@ public class ReadFile {
                         System.out.println(e.getMessage());
 
                     }
-                    entry = new StringBuilder().append(docNumber).append(",").append(startIdx).append(",").append(endIdx).append(",").append(file.getPath().replace(path+"\\","")).append("\n").toString();
+                    //entry: doxId,startLine,endLine,path,termsCount,MaxFrequency,City(if needed)\n
+                    int termsCount = document.getTerms()!=null?document.getTerms().size():0;
+                    entry = new StringBuilder().append(docNumber).append(",").append(startIdx).append(",").append(endIdx).append(",").append(file.getPath().replace(path+"\\","")).append(",").append(termsCount).append(",").append(maxFreq).append(document.getCity()).append("\n").toString();
                     docNumber++;
                     docBuilder.delete(0,docBuilder.length());
                     writer.append(entry);

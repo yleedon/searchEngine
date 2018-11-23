@@ -65,8 +65,8 @@ public class Indexer {
             //(docid,number Of times term appears,relative first appearence)
 
             double termPlace = (1-(double)docMap.get(originalTerm).getValue()/doc.getTextTokenCount());
-            termPlace = Math.floor(termPlace * 10) / 10;
-            String entry = doc.getDocId()+","+ docMap.get(originalTerm).getKey()+","+termPlace+ "," + "~";
+            termPlace = Math.floor(termPlace * 10);
+            String entry = doc.getDocId()+","+ docMap.get(originalTerm).getKey()+","+(int)termPlace+ "," + doc.isInTitle(originalTerm)+ "~";
             if(!waitList.containsKey(dictianary.get(term))) {
                 waitlistSize+= (""+dictianary.get(term)).length()+1+entry.length();
                 waitList.put(dictianary.get(term),  dictianary.get(term)+":"+entry);

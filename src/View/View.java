@@ -221,13 +221,9 @@ public class View {
         int button = Integer.parseInt(data);
         if(button==1) {// corpusBrowse
             chooser.setTitle("SELECT CORPUS DIRECTORY");
-            File defaultDirectory = new File("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data\\corpus");
-            chooser.setInitialDirectory(defaultDirectory);
         }
         if(button==2) {// outputBrowse
             chooser.setTitle("SELECT OUTPUT DIRECTORY");
-            File defaultDirectory = new File("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data");
-            chooser.setInitialDirectory(defaultDirectory);
         }
 
         File selectedDirectory = chooser.showDialog(new Stage());

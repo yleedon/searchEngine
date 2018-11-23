@@ -11,9 +11,9 @@ public class MyDocument {
 
     //<editor-fold desc="Fields">
     String doc, docNo, txt, city, date, title;
-    int maxFrequency;
-    Map<String, Pair<Integer,Integer>> terms;
     int textTokenCount;
+    Map<String, Pair<Integer,Integer>> terms;
+    Set<String> titleSet;
     //</editor-fold>
 
     //<editor-fold desc="Constructor">
@@ -25,7 +25,6 @@ public class MyDocument {
      */
     public MyDocument(String doc) {
         setDoc(doc);
-        maxFrequency = -1;
 
 //        this.docNo = create("<DocNo>");
 //        this.txt = create("<Text>");
@@ -42,11 +41,12 @@ public class MyDocument {
     public String getCity(){
         if(city==null) {
             city = create("<F P=104>");
-            if (city.contains(" ")){
+            if (city == null || city.length()==0) return "";
+            else if (city.contains(" ")){
                 city = city.split(" ")[0].toUpperCase();
             }
         }
-        return city;
+        return ","+city;
     }
 
     /**
@@ -72,13 +72,6 @@ public class MyDocument {
         return txt;
     }
 
-    /**
-     * Getter to the maximum frequency of all the terms in the document
-     * @return the max frequency of the term, if hasn't been set yet return -1
-     */
-    public int getMaxFrequency() {
-        return maxFrequency;
-    }
 
     /**
      * Getter for all the terms and their frequency in this document
@@ -110,8 +103,8 @@ public class MyDocument {
      */
     public String getTitle(){
         if(this.title==null)
-            this.title = create(("<TI"));
-        return title;
+            this.title = create(("<TI>"));
+        return (title!=null?title:"");
     }
     //</editor-fold>
 
@@ -140,13 +133,7 @@ public class MyDocument {
         this.terms = terms;
     }
 
-    /**
-     * Setter for the max frequency term
-     * @param maxFrequency - the maximum frequency of a term
-     */
-    public void setMaxFrequency(int maxFrequency) {
-        this.maxFrequency = maxFrequency;
-    }
+    public void setTitleSet(Map<String, Pair<Integer,Integer>> titleMap){titleSet = titleMap.keySet();}
 
     //</editor-fold>
 
@@ -198,4 +185,14 @@ public class MyDocument {
         textTokenCount = count;
     }
     //</editor-fold>
+
+    /**
+     * check if a term is in the title
+     * @param term - the term to check
+     * @return 1 if the term is in the title, else returns 0.
+     */
+    public int isInTitle(String term){
+        if (titleSet == null) return 0;
+        return titleSet.contains(term)?1:0;
+    }
 }
