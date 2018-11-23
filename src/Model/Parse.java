@@ -759,7 +759,7 @@ public class Parse {
      * @return - the processed word
      */
     private String tokenToTerm(String word, int tNum) {
-        String originalWord = word;
+        String originalWord =deleteDelimeter(word);
 
 //        if (word.startsWith("\"") && !quoteInProgress){
 //            quoteInProgress = true;

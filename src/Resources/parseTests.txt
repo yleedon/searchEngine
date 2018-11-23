@@ -68,6 +68,8 @@ between California fruit and the depth=CALIFORNIA fruit depth
 $2.6 million=2.6 M Dollars
 -213 dollars=-213 Dollars
 1.2697100000000001K=1.26K
+The $7.5-million,=7.5 Dollars million 7.5 dollars-million
+The $7.5-million=7.5 Dollars million 7.5 dollars-million
 
 
 
