@@ -43,7 +43,7 @@ public class MyDocument {
             city = create("<F P=104>");
             if (city == null || city.length()==0) return "";
             else if (city.contains(" ")){
-                city = city.split(" ")[0].toUpperCase();
+                city = cleanEdges(city.split(" ")[0].toUpperCase());
             }
         }
         return ","+city;
@@ -148,8 +148,10 @@ public class MyDocument {
         try{
             if (!(doc.contains(tag))) {tag = tag.toUpperCase();}
             if (!(doc.contains(tag))) {return null;}
+            String closeTag = (tag.split(" ")[0]).replace("<", "</");
             String[] splittedDoc = doc.split(tag);
-            return cleanEdges((splittedDoc[1].split(tag.replace("<", "</")))[0]);
+            String ans = (splittedDoc[1].split(closeTag))[0];
+            return cleanEdges(ans);
         }
         catch (Exception e){
             return null;
@@ -162,12 +164,14 @@ public class MyDocument {
      * @return - the same given string without '\n' in the beginning and in the end.
      */
     private String cleanEdges(String s) {
+        if(s.toUpperCase().contains("CLANDESTINE"))
+            System.out.println();
         if (s == null)
             return null;
-        while(s.startsWith("\n") || s.startsWith(" ")){
+        while(s.startsWith("\n") || s.startsWith(" ") || s.startsWith("(")){
             s = s.substring(1);
         }
-        if (s.endsWith("\n") || s.endsWith(" ")){
+        while(s.endsWith("\n") || s.endsWith(" ") || s.endsWith(")")){
             s = s.substring(0, s.length()-1);
         }
         return s;
