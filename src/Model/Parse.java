@@ -259,7 +259,9 @@ public class Parse {
             }
 
             if (isNormalledNumber){
-                word=word+end;
+                if (isInteger(numValue))
+                    word=(int)numValue+end;
+                else  word=numValue+end;
                 numberSet.add(word.toUpperCase());
                 return word.toUpperCase();
 
