@@ -245,8 +245,8 @@ public class Parse {
                     word = word.substring(0,word.length()-1);
                 }
 
-                if(ispercent)
-                    word = (word.substring(0,word.length()-1));
+            if(ispercent)
+                word = (word.substring(0,word.length()-1));
             double numValue = Double.parseDouble(word);
             numValue = Math.floor(numValue * 100) / 100;
             if(ispercent){
@@ -465,7 +465,9 @@ public class Parse {
                 n = Math.floor(n * 100) / 100;
                 if(Math.abs(n)>=1000000)
                     return Integer.valueOf(num)/1000000 + " M Dollars";
-                return n +" Dollars";
+                if(isInteger(n))
+                    return (int)n +" Dollars";
+                else return n +" Dollars";
             }
             catch (Exception e){
                 double n =Double.valueOf(num);
@@ -650,7 +652,7 @@ public class Parse {
                     numberSet.add(numberTerm);
                     return (int)number + "" + numberMap.get(secondWord).getValue();
                 }
-                    else {
+                else {
                     String numberTerm = number + "" + numberMap.get(secondWord).getValue();
                     numberSet.add(numberTerm);
                     return number + "" + numberMap.get(secondWord).getValue();
@@ -924,7 +926,7 @@ public class Parse {
                 String num1 = tokens[tNum+1];
                 String num2;
                 if(tokens[tNum+2].toLowerCase().equals("and"))
-                 num2 = tokens[tNum+3];
+                    num2 = tokens[tNum+3];
                 else  num2 = tokens[tNum+4];
                 //test its numbers
 //                num1 = dealWithFraction(num1);
@@ -1037,6 +1039,7 @@ public class Parse {
             System.out.println("{"+term + " , "+ indexMap.get(term).getKey()+","+indexMap.get(term).getValue()+"}");
         }
         System.out.println("total unique terms: "+ indexMap.size());
+        System.out.println("num of numbers: "+numberSet.size());
         System.out.println("Max frequency: " + maxFreq);
         System.out.println("end.\n\n\n");
     }
