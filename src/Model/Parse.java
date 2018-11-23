@@ -1036,6 +1036,7 @@ public class Parse {
         for (String term:indexMap.keySet()) {
             System.out.println("{"+term + " , "+ indexMap.get(term).getKey()+","+indexMap.get(term).getValue()+"}");
         }
+        System.out.println("total unique terms: "+ indexMap.size());
         System.out.println("Max frequency: " + maxFreq);
         System.out.println("end.\n\n\n");
     }

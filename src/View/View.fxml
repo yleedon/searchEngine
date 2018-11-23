@@ -38,8 +38,8 @@
     <CheckBox fx:id="btn_stemmingBox" layoutX="123.0" layoutY="537.0" mnemonicParsing="false" selected="true" text="use stemmer" />
     <Button fx:id="Btn_ReadFile" layoutX="557.0" layoutY="395.0" mnemonicParsing="false" onAction="#testGetDoc" prefHeight="31.0" prefWidth="150.0" text="get doc" />
       <Button fx:id="btn_testIndexer" layoutX="380.0" layoutY="531.0" mnemonicParsing="false" onAction="#testIndexer" text="test indexer" />
-      <TextField fx:id="fld_corpusPath" layoutX="120.0" layoutY="14.0" prefHeight="25.0" prefWidth="446.0" text="C:\Users\Yaniv\Desktop\searchproject\searchEngine\searchEnginOutPut\corpus" />
-      <TextField fx:id="fld_outputPath" layoutX="120.0" layoutY="40.0" prefHeight="25.0" prefWidth="446.0" text="C:\Users\Yaniv\Desktop\searchproject\searchEngine\searchEnginOutPut" />
+      <TextField fx:id="fld_corpusPath" layoutX="120.0" layoutY="14.0" prefHeight="25.0" prefWidth="446.0" text="C:\Users\Yaniv\Desktop\searchproject\searchEngine\data\corpus" />
+      <TextField fx:id="fld_outputPath" layoutX="120.0" layoutY="40.0" prefHeight="25.0" prefWidth="446.0" text="C:\Users\Yaniv\Desktop\searchproject\searchEngine\data" />
       <Label layoutX="44.0" layoutY="14.0" prefHeight="25.0" prefWidth="78.0" text="corpos path:" />
       <Label layoutX="44.0" layoutY="40.0" prefHeight="25.0" prefWidth="78.0" text="output path:" />
       <Button fx:id="btn_outputBrowse" layoutX="577.0" layoutY="40.0" mnemonicParsing="false" onAction="#browse" text="browse" userData="2" />

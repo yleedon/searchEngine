@@ -43,8 +43,8 @@ public class View {
         try {
             parser.parse();
             parser.printIndex();
-            System.out.println("Number set: ");
-            parser.printNumberSet();
+//            System.out.println("Number set: ");
+//            parser.printNumberSet();
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -179,6 +179,7 @@ public class View {
         ReadFile readF = new ReadFile(fld_corpusPath.getText(),fld_outputPath.getText(),btn_stemmingBox.isSelected());
 
 //        ReadFile rf = new ReadFile("C:\\Users\\Dan\\Desktop\\corpus");
+        System.out.println("Indexing started");
         readF.readDirectory();
         readF.reset();
         readF=null;
