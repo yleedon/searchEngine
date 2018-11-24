@@ -12,7 +12,7 @@ public class Indexer {
 
     private double tempFileSize;
     private int waitlistSize;
-    private Map<String,Integer> dictianary;
+    private Map<String,DicEntry> dictianary;// term:[id,numOfDocs,totalFrequancy]
     private int nextLineNum;
     private Map<Integer,String> waitList;
     private int tempFileName;
@@ -46,9 +46,10 @@ public class Indexer {
 
                     if (dictianary.containsKey(term.toUpperCase())) {
                         ///// a bigger allready exists
-                        int line = dictianary.get(term.toUpperCase());
+                        DicEntry oldEntry = dictianary.get(term.toUpperCase());
+//                        int line = dictianary.get(term.toUpperCase());
                         dictianary.remove(term.toUpperCase());
-                        dictianary.put(term, line);
+                        dictianary.put(term, oldEntry);
                     }
                 }
                 else{
@@ -59,22 +60,29 @@ public class Indexer {
                 }
             }
             if(!dictianary.containsKey(term)){
-                dictianary.put(term,nextLineNum);
+                DicEntry dicEntry = new DicEntry(nextLineNum);
+                dicEntry.incrementNumOfDocs();
+                dicEntry.addTotalFrequency(docMap.get(originalTerm).getKey());
+                dictianary.put(term,dicEntry);
                 nextLineNum++;
+            }
+            else {
+                dictianary.get(term).incrementNumOfDocs();
+                dictianary.get(term).addTotalFrequency(docMap.get(originalTerm).getKey());
             }
             //(docid,number Of times term appears,relative first appearence)
 
             double termPlace = (1-(double)docMap.get(originalTerm).getValue()/doc.getTextTokenCount());
             termPlace = Math.floor(termPlace * 10);
-            String entry = doc.getDocId()+","+ docMap.get(originalTerm).getKey()+","+(int)termPlace+ "," + doc.isInTitle(originalTerm)+ "~";
-            if(!waitList.containsKey(dictianary.get(term))) {
-                waitlistSize+= (""+dictianary.get(term)).length()+1+entry.length();
-                waitList.put(dictianary.get(term),  dictianary.get(term)+":"+entry);
+            String entry = doc.getDocId()+","+ docMap.get(originalTerm).getKey()+","+(int)termPlace+ "," + doc.isInTitle(originalTerm);
+            if(!waitList.containsKey(dictianary.get(term).getId())) {
+                waitlistSize+= (""+dictianary.get(term).getId()).length()+1+entry.length();
+                waitList.put(dictianary.get(term).getId(),  dictianary.get(term).getId()+":"+entry);
             }
             else {
                 waitlistSize+=entry.length();
-                entry = waitList.get(dictianary.get(term))+entry;
-                waitList.replace(dictianary.get(term),entry);
+                entry = waitList.get(dictianary.get(term).getId())+"~"+entry;
+                waitList.replace(dictianary.get(term).getId(),entry);
             }
         }
         ;
