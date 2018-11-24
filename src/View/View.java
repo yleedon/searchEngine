@@ -4,8 +4,10 @@ package View;
 import Model.*;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
@@ -17,6 +19,7 @@ import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 
 public class View {
     //    public ProgressBar progressBar;
@@ -244,6 +247,7 @@ public class View {
     }
 
     public void showDictianary(){
+        System.out.println("yaivvvvv");
         if (dictianary==null){
             Alert alert = createAlert();
             alert.setAlertType(Alert.AlertType.ERROR);
@@ -252,9 +256,95 @@ public class View {
             alert.show();
             return;
         }
+
+        String dic ="";
+        for (String s:dictianary.keySet()){
+            dic += s+": "+dictianary.get(s)+"\n";
+        }
+
+        Stage stage = new Stage();
+
+        ScrollPane root = new ScrollPane();
+        Scene scene = new Scene(root, 300, 400);
+        Text text = new Text(dic);
+        text.wrappingWidthProperty().bind(scene.widthProperty());
+        root.setFitToWidth(true);
+        root.setContent(text);
+        stage.setTitle("Dictionary");
+        stage.setScene(scene);
+        stage.show();
     }
 
-    public Alert createAlert(){
+    public void loadDictionary(){
+        if(dictianary!=null){
+            Alert alert = createAlert();
+            alert.setContentText("dictianary is already loaded");
+            alert.setHeaderText("action not processed");
+            alert.show();
+            return;
+
+        }
+        String stemm = "stemmed";
+        if (!btn_stemmingBox.isSelected())
+            stemm = "not stemmed";
+        File file = new File(fld_outputPath.getText()+"/dataBase/"+stemm+"/dictionary.txt");
+        if (!file.exists()){
+            Alert alert = createAlert();
+            alert.setHeaderText("dictionary not loaded");
+            alert.setContentText("\""+stemm+"\" dictionary not found");
+            alert.show();
+            return;
+        }
+        dictianary = new TreeMap<String, DicEntry>();
+        Alert a = createAlert();
+        try{
+
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String st;
+            String[] line;
+            String[] data;
+            int n =0;
+            while ((st = br.readLine()) != null){
+                n++;
+                System.out.println(n);
+
+                line = st.split(":");
+                data = line[1].split(",");
+
+                DicEntry entry = new DicEntry(Integer.valueOf(data[0]));
+                entry.numOfDocs = Integer.valueOf(data[1]);
+                entry.totalTermFrequency = Integer.valueOf(data[2]);
+                dictianary.put(line[0],entry);
+            }
+
+
+            br.close();
+            a.setHeaderText("dictionary uploaded successful");
+            a.setContentText("total terms loaded: "+dictianary.size());
+            a.show();
+        }
+
+        catch (Exception e){
+           a.setContentText("dictianary was not loaded");
+           a.show();
+        }
+    }
+
+
+//
+//
+//        Stage stage = new Stage();
+//
+//        TextArea textArea = new TextArea(dic);
+//
+//        VBox vbox = new VBox(textArea);
+//
+//        Scene scene = new Scene(vbox, 500, 700);
+//        stage.setScene(scene);
+//        stage.show();
+
+
+    private Alert createAlert(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStylesheets().add(getClass().getResource("Alert.css").toExternalForm());
@@ -262,11 +352,44 @@ public class View {
         return alert;
     }
 
-    public void reset(){
+    /**
+     * when pressed will delete dictionary in memory and
+     * delete zv folder "dataBase"
+     */
+    public void reset() {
         dictianary=null;
-        Runtime r = Runtime.getRuntime();
-        r.gc();
-        System.gc();
+        Alert alert = createAlert();
+        System.out.println("resetPresed");
+        File file = new File(fld_outputPath.getText()+"/dataBase");
+
+        alert.setHeaderText("ERROR");
+        alert.setContentText("no files were deleted");
+        if (file.exists()){
+            if(deleteDir(file)) {
+                alert.setContentText("dataBase ase been deleted");
+                alert.setHeaderText("reset succeeded");
+            }
+        }
+        alert.show();
+        System.out.println("finished");
     }
 
+    /**
+     * this function givven a directorry will delete it recursivly
+     * @param dir - directory to be deleted
+     * @return true if deleted
+     */
+    private boolean deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+
+        return dir.delete(); // The directory is empty now and can be deleted.
+    }
 }
