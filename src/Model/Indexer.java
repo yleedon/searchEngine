@@ -147,7 +147,7 @@ public class Indexer {
 
             for (String term : dictianary.keySet()) {
                 writer.flush();
-                writer.println(term+","+dictianary.get(term));
+                writer.println(term+":"+dictianary.get(term));
             }
             writer.close();
 

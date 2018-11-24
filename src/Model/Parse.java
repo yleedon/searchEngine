@@ -703,6 +703,7 @@ public class Parse {
     private void addTerm(String word) {
 
         if(word!=null && !word.equals("") && !word.equals("-") ) {
+            word = word.replace(":","").replace(",",""); // makes sure no term contains : or ,
             word = deleteDelimeter(tradeUppercase(word));
 
             if(indexMap.containsKey(word)) {
@@ -715,7 +716,7 @@ public class Parse {
                 if (maxFreq<1)
                     maxFreq = 1;
             }
-            ans = ans + "{" + word + "} ";
+            ans = ans + "{" + word + "} "; // yaniv
 
         }
     }

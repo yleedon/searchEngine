@@ -3,10 +3,10 @@ package Model;
 public class DicEntry {
     private  int id;
 //    private int lastEntryId;
-    private int numOfDocs;
-    private int totalTermFrequency;
+    public int numOfDocs;
+    public int totalTermFrequency;
 
-    DicEntry(int row){
+    public DicEntry(int row){
         id = row;
 
     }
@@ -23,6 +23,6 @@ public class DicEntry {
 
     @Override
     public String toString() {
-        return "[id: "+id+", "+numOfDocs+", "+totalTermFrequency+"]";
+        return id+","+numOfDocs+","+totalTermFrequency;
     }
 }
