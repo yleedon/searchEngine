@@ -165,4 +165,8 @@ public class Indexer {
         waitList = null;
 
     }
+
+    public Map<String,DicEntry> getDictianary(){
+        return dictianary;
+    }
 }
