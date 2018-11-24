@@ -257,15 +257,26 @@ public class View {
             return;
         }
 
+        Alert a = createAlert();
+        a.setHeaderText("FETCHING THE DICTIONARY...");
+        a.setContentText("this may take sevral seconds, please wait...");
+        a.show();
         String dic ="";
+        double progress;
+        int total = dictianary.size();
+        double i=1;
         for (String s:dictianary.keySet()){
             dic += s+": "+dictianary.get(s)+"\n";
+            progress = Math.floor((i/total)*100);
+            a.setTitle(progress+"%");
+           i++;
         }
-
+        a.close();
         Stage stage = new Stage();
 
         ScrollPane root = new ScrollPane();
         Scene scene = new Scene(root, 300, 400);
+
         Text text = new Text(dic);
         text.wrappingWidthProperty().bind(scene.widthProperty());
         root.setFitToWidth(true);
@@ -273,6 +284,7 @@ public class View {
         stage.setTitle("Dictionary");
         stage.setScene(scene);
         stage.show();
+
     }
 
     public void loadDictionary(){

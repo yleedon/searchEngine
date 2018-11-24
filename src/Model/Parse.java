@@ -703,7 +703,7 @@ public class Parse {
     private void addTerm(String word) {
 
         if(word!=null && !word.equals("") && !word.equals("-") ) {
-            word = word.replace(":","").replace(",",""); // makes sure no term contains : or ,
+            word = word.replace(":","").replace(",","").replace("~",""); // makes sure no term contains : or ,
             word = deleteDelimeter(tradeUppercase(word));
 
             if(indexMap.containsKey(word)) {
