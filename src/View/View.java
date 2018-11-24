@@ -1,14 +1,12 @@
 package View;
 
 
-import Model.Indexer;
-import Model.MyDocument;
-import Model.Parse;
-import Model.ReadFile;
+import Model.*;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
@@ -18,6 +16,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 public class View {
     //    public ProgressBar progressBar;
@@ -33,6 +32,9 @@ public class View {
     public Button btn_testIndexer;
     public Button btn_corpusBrowse;
     public Button btn_outputBrowse;
+    public TextArea textArea;
+    public Button btn_reset;
+    private Map<String, DicEntry> dictianary;
 
     public void testParse() {
         fld_text.setOpacity(0.3);
@@ -164,10 +166,12 @@ public class View {
         long end;
         long start = System.nanoTime();
 
-        testReadFile();
+        int numOfDocsProcessed = testReadFile();
 
         end = System.nanoTime();
-        long time = (end-start)/1000000;
+        long time = (end-start)/1000000000;
+
+        showIndexSummary(numOfDocsProcessed,time);
         System.out.println("total index time:  "+ time);
 //        Indexer indexer = new Indexer(rf);
 //        indexer.parse();
@@ -175,20 +179,27 @@ public class View {
     }
 
 
-    public void testReadFile() {
+    public int testReadFile() {
         ReadFile readF = new ReadFile(fld_corpusPath.getText(),fld_outputPath.getText(),btn_stemmingBox.isSelected());
-
-//        ReadFile rf = new ReadFile("C:\\Users\\Dan\\Desktop\\corpus");
         System.out.println("Indexing started");
-        readF.readDirectory();
-        readF.reset();
-        readF=null;
-        Runtime r = Runtime.getRuntime();
-        r.gc();
-
-//        if(!fld_path.getText().equals(""))
-//            testGetDoc(fld_path.getText());
+        dictianary = readF.readDirectory();
+//        readF=null;
+//
+        return  readF.numOfDocsProcessed();
     }
+
+    private void showIndexSummary(int numOfDocsProcessed, long time) {
+        Alert summary = createAlert();
+        summary.setHeaderText("INDEX SUMMARY");
+        summary.setTitle("SUMMARY");
+        summary.setHeaderText("INDEX CREATION COMPLETE");
+        summary.setContentText("DOCS PROCESSED: " + numOfDocsProcessed+"\n" +
+                "DICTIANARY SIZE: "+ dictianary.size()+" terms\n" +
+                "INDEXING TIME: " + time+"sec");
+        summary.show();
+
+    }
+
 
 
     public void testGetDoc(){
@@ -210,10 +221,6 @@ public class View {
         }
     }
 
-    /**
-     * 
-     * @param event
-     */
     public void browse(ActionEvent event){
 
         DirectoryChooser chooser = new DirectoryChooser();
@@ -235,4 +242,31 @@ public class View {
         if(button==2)
             fld_outputPath.setText(selectedDirectory.getPath());
     }
+
+    public void showDictianary(){
+        if (dictianary==null){
+            Alert alert = createAlert();
+            alert.setAlertType(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR 123456FO67");
+            alert.setContentText("doctionary not found. load dictanar and try again");
+            alert.show();
+            return;
+        }
+    }
+
+    public Alert createAlert(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().add(getClass().getResource("Alert.css").toExternalForm());
+        dialogPane.getStyleClass().add("myDialog");
+        return alert;
+    }
+
+    public void reset(){
+        dictianary=null;
+        Runtime r = Runtime.getRuntime();
+        r.gc();
+        System.gc();
+    }
+
 }

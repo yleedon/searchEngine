@@ -1,6 +1,9 @@
 package Model;
 
+import javafx.util.Pair;
+
 import java.io.*;
+import java.util.Map;
 
 public class ReadFile {
     //<editor-fold desc="Fields">
@@ -26,7 +29,7 @@ public class ReadFile {
     public ReadFile(String corpusPath,String outputPath, boolean stemmer) {
 
         this.path = corpusPath;
-        docNumber=1;
+        docNumber=0;
         numOdfiles = 0;
         parser = new Parse(corpusPath,"", stemmer);
 
@@ -143,7 +146,7 @@ public class ReadFile {
     /**
      * reads all the files in the corpus and writes to the documentIdx the relevant details
      */
-    public void readDirectory(){
+    public Map<String,DicEntry>  readDirectory(){
         try {
             FileWriter fileWriter = new FileWriter(docIdxFile, false);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -172,7 +175,7 @@ public class ReadFile {
 //        indexer.printWaitListSize();
         System.out.println("\n***************************************************************************");
         System.out.println("total files processed: "+ numOdfiles);
-        System.out.println("total documents parsed: "+ (docNumber-1));
+        System.out.println("total documents parsed: "+ (docNumber));
 
 
         System.out.println("amount of numbers: "+ parser.getNumberSet().size());
@@ -180,6 +183,7 @@ public class ReadFile {
 //        indexer.test();
         System.out.println("document indexing complete");
         writer.close();
+        return indexer.getDictianary();
     }
 
     /**
@@ -230,14 +234,13 @@ public class ReadFile {
 //                    System.out.println("working on doc: "+entry);
 //                    System.out.println(new MyDocument(docBuilder.toString()).getTxt());
                     MyDocument document = new MyDocument(docBuilder.toString());
-                    document.setDocId(docNumber);
+                    document.setDocId(++docNumber);
 
                     parser.setTxt(document.getTxt());
                     int maxFreq = -1;
                     try {
                         parser.parse();
-//                        System.out.println("DocName: "+ entry);
-//                        parser.printIndex();
+
                         maxFreq = parser.maxFreq;
                         document.setTerms(parser.getDocMap());
                         document.setTextTokenCount(parser.getTokenSize());
@@ -248,10 +251,6 @@ public class ReadFile {
 
                         indexer.addDoc(document);
 
-//                        indexer.addDoc(new Doc);
-
-//                        System.out.println(parser.getNumberSet());
-//                        System.out.println("amount: " + parser.getNumberSet().size());
                     }
                     catch (Exception e){
                         System.out.println("error (readFile) didn't parse");
@@ -261,12 +260,14 @@ public class ReadFile {
                     //entry: doxId,startLine,endLine,path,termsCount,MaxFrequency,City(if needed)\n
                     int termsCount = document.getTerms()!=null?document.getTerms().size():0;
                     entry = new StringBuilder().append(docNumber).append(",").append(startIdx).append(",").append(endIdx).append(",").append(file.getPath().replace(path+"\\","")).append(",").append(termsCount).append(",").append(maxFreq).append(document.getCity()).append("\n").toString();
-                    docNumber++;
+
                     docBuilder.delete(0,docBuilder.length());
                     writer.append(entry);
                     writer.flush();
                 }
             }
+//            reader.close();
+//            fileReader.close();
 //            reader.close();//yaniv
 //            writer.close();//yaniv
         }
@@ -315,6 +316,8 @@ public class ReadFile {
         indexer.reset();
         numOdfiles = 0;;
     }
+
+    public int numOfDocsProcessed(){return  docNumber;}
     //</editor-fold>
 
 }
