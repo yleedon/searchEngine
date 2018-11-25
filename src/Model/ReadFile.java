@@ -48,17 +48,8 @@ public class ReadFile {
 
         createDirectory(outputPath+masterDir+stemType);
         docIdxFile = new File(outputPath + masterDir + stemType+"/docIdx.txt");
-        indexer = new Indexer(outputPath + masterDir + stemType,3);
+        indexer = new Indexer(outputPath + masterDir + stemType,0.5);
         createDirectory(outputPath+masterDir+stemType+"/waitingList");
-
-//        else {
-//            createDirectory(outputPath+masterDir+"/not stemmed");
-//            docIdxFile = new File(outputPath + masterDir +"/not stemmed/docIdx.txt");
-//            indexer = new Indexer(outputPath+masterDir+"/not stemmed",3);
-//            createDirectory(outputPath+masterDir+"/not stemmed/waitingList");
-//
-//        }
-
     }
 
     private void createDirectory(String dir) {
@@ -168,7 +159,7 @@ public class ReadFile {
                 readDirectory(directory);
         }
 
-        indexer.writeWaitingList();
+        indexer.writeLastWaitingList();
         indexer.saveDictinary();
 //        indexer.printTermlist();
 //        indexer.printWaitList();
