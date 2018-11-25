@@ -372,13 +372,14 @@ public class View {
 
     public void tempTest(){
         long start = System.nanoTime();
-        testMerge();
+//        fld_outputPath.setText("C:\\Users\\Dan\\Desktop");
+        testMerge(fld_outputPath.getText());
         long end = System.nanoTime();
         System.out.println((end-start)/1000000);
     }
-    private void testMerge(){
+    private void testMerge(String path){
         try {
-            MergeFile m = new MergeFile(new File("C:\\Users\\Dan\\Desktop\\dataBase\\stemmed"));
+            MergeFile m = new MergeFile(new File(new StringBuilder().append(path).append("\\dataBase\\stemmed").toString()));
             m.merge();
         }
         catch (Exception e){
