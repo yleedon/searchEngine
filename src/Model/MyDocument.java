@@ -10,10 +10,11 @@ import java.util.Set;
 public class MyDocument {
 
     //<editor-fold desc="Fields">
-    String doc, docNo, txt, city, date, title;
+    String doc, txt, city, date, title;
     int textTokenCount;
     Map<String, Pair<Integer,Integer>> terms;
     Set<String> titleSet;
+    int docNo;
     //</editor-fold>
 
     //<editor-fold desc="Constructor">
@@ -93,7 +94,7 @@ public class MyDocument {
      * Getter to the docId field
      * @return - the docId of the document(between the tags <Doc> and </Doc>). If there is no tag <DocNo> the getter will return null;
      */
-    public String getDocId() {
+    public int getDocId() {
         return docNo;
     }
 
@@ -176,7 +177,7 @@ public class MyDocument {
     }
 
     public void setDocId(int docNumber){
-        docNo = docNumber+"";
+        docNo = docNumber;
     }
 
     public int getTextTokenCount(){

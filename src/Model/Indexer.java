@@ -2,11 +2,13 @@ package Model;
 
 
 import javafx.util.Pair;
+import sun.awt.Mutex;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Indexer {
 
@@ -15,13 +17,20 @@ public class Indexer {
     private Map<String,DicEntry> dictianary;// term:[id,numOfDocs,totalFrequancy]
     private int nextLineNum;
     private Map<Integer,String> waitList;
-    private int tempFileName;
+    private AtomicInteger tempFileName;
     private String path;
+    private Mutex[] mutexsList;
+    private Map<Integer,String>[] waitingListChooser;
+    private int listInUse;
+
 
 
     public Indexer(String outPath, double size) {
+
+
+
+        tempFileName = new AtomicInteger(0);
         path = outPath;
-        tempFileName = 1;
         waitlistSize=0;
         this.dictianary =  new TreeMap<>();
         nextLineNum = 0;
@@ -29,6 +38,7 @@ public class Indexer {
         tempFileSize = size*1000000;
 
     }
+
 
     public void addDoc(MyDocument doc){
         if(doc==null)
@@ -74,27 +84,46 @@ public class Indexer {
 
             double termPlace = (1-(double)docMap.get(originalTerm).getValue()/doc.getTextTokenCount());
             termPlace = Math.floor(termPlace * 10);
-            String entry = doc.getDocId()+","+ docMap.get(originalTerm).getKey()+","+(int)termPlace+ "," + doc.isInTitle(originalTerm);
+            String entry = ","+ docMap.get(originalTerm).getKey()+","+(int)termPlace+ "," + doc.isInTitle(originalTerm);
             if(!waitList.containsKey(dictianary.get(term).getId())) {
+
+                ///////////////////////////////////////////////////////
+                entry=doc.getDocId()+entry;
+                dictianary.get(term).setLastDocin(doc.getDocId());
+                ////////////////////////////////////////////////////
+
                 waitlistSize+= (""+dictianary.get(term).getId()).length()+1+entry.length();
                 waitList.put(dictianary.get(term).getId(),  dictianary.get(term).getId()+":"+entry);
             }
             else {
+                int gap = doc.getDocId();
+                if(doc.getDocId()!=dictianary.get(term).getLastDocin())
+                    gap = getGap(term,gap);
+                entry = gap + entry;
                 waitlistSize+=entry.length();
                 entry = waitList.get(dictianary.get(term).getId())+"~"+entry;
                 waitList.replace(dictianary.get(term).getId(),entry);
+                dictianary.get(term).setLastDocin(doc.getDocId());
             }
         }
         ;
         if (waitlistSize > tempFileSize) { // file size 300kb
-            writeWaitingList();
+            waitlistSize=0;
+
+            Map temp = waitList;
+            Thread t = new Thread(()->writeWaitingList(temp));
+            t.start();
+            waitList = new TreeMap<>();
             System.out.println("waiting list was written to disk");
         }
     }
 
-    public void writeWaitingList() {
+
+
+    private void writeWaitingList(Map<Integer, String> CurrentWaitList) {
+
         try {
-            String fName = ""+tempFileName;
+            String fName = ""+ tempFileName.incrementAndGet();
             String tempPath = path+"/waitingList/"+fName+".txt";
             File tempFile = new File(tempPath);
             FileWriter fileWriter = new FileWriter(tempFile, false);
@@ -103,9 +132,9 @@ public class Indexer {
             writer.flush();
             String lines = "";
 
-            for(int line:waitList.keySet()){
+            for(int line:CurrentWaitList.keySet()){
                 writer.flush();
-                writer.println(waitList.get(line));
+                writer.println(CurrentWaitList.get(line));
             }
             writer.close();
 
@@ -113,13 +142,14 @@ public class Indexer {
         catch (Exception e){
             System.out.println("error index "+e.getMessage());
         }
-        tempFileName++;
-        waitlistSize=0;
-        waitList=new TreeMap<>();
+
 
     }
 
 
+    public void writeLastWaitingList(){
+        writeWaitingList(waitList);
+    }
     public void printWaitList(){
         for (int ent:waitList.keySet()) {
             System.out.println(waitList.get(ent));
@@ -169,4 +199,17 @@ public class Indexer {
     public Map<String,DicEntry> getDictianary(){
         return dictianary;
     }
+
+
+
+
+
+
+
+
+    private int getGap(String term,int docId){
+        int last = dictianary.get(term).getLastDocin();
+        return docId-last;
+    }
+
 }

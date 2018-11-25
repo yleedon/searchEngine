@@ -9,7 +9,6 @@ public class DicEntry {
 
     public DicEntry(int row){
         id = row;
-
     }
 
     public void incrementNumOfDocs(){
