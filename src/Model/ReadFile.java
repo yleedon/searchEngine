@@ -48,7 +48,7 @@ public class ReadFile {
 
         createDirectory(outputPath+masterDir+stemType);
         docIdxFile = new File(outputPath + masterDir + stemType+"/docIdx.txt");
-        indexer = new Indexer(outputPath + masterDir + stemType,0.5);
+        indexer = new Indexer(outputPath + masterDir + stemType,3);
         createDirectory(outputPath+masterDir+stemType+"/waitingList");
     }
 
@@ -152,11 +152,15 @@ public class ReadFile {
         File[] list = mainDir.listFiles();
         writer.flush();
 
+        double  n = 1;
+        double size = list.length;
         for(File directory: list){
 
 
             if(!directory.getPath().endsWith("StopWords"))
                 readDirectory(directory);
+            System.out.println((int)Math.floor((n/size)*100)+"%");
+            n++;
         }
 
         indexer.writeLastWaitingList();
@@ -187,7 +191,7 @@ public class ReadFile {
         if(list!=null)
             for (File file: list) {
                 dismember2Docs(file);
-                System.out.println("finished working on file: "+ file.getName());
+//                System.out.println("finished working on file: "+ file.getName());
             }
 
     }
