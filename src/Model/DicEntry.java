@@ -5,6 +5,7 @@ public class DicEntry {
 //    private int lastEntryId;
     public int numOfDocs;
     public int totalTermFrequency;
+    int lastDocin;
 
     public DicEntry(int row){
         id = row;
@@ -24,5 +25,11 @@ public class DicEntry {
     @Override
     public String toString() {
         return id+","+numOfDocs+","+totalTermFrequency;
+    }
+
+    public int getLastDocin(){return lastDocin;}
+
+    public void setLastDocin(int num){
+        lastDocin=num;
     }
 }
