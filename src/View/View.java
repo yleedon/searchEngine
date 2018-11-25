@@ -3,10 +3,14 @@ package View;
 
 import Model.*;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
@@ -30,14 +34,14 @@ public class View {
     public CheckBox btn_stemmingBox;
     public TextField fld_outputPath;
     public TextField fld_corpusPath;
-    private String corpusPath;
-    //    public ReadFile rf;
-    public Button btn_testIndexer;
-    public Button btn_corpusBrowse;
-    public Button btn_outputBrowse;
-    public TextArea textArea;
     public Button btn_reset;
     private Map<String, DicEntry> dictianary;
+
+
+    public View(){
+        fld_outputPath= new TextField("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data");
+        fld_corpusPath = new TextField("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data\\corpus");
+    }
 
     public void testParse() {
         fld_text.setOpacity(0.3);
@@ -166,6 +170,17 @@ public class View {
     }
 
     public void testIndexer(){
+        File corpue = new File(fld_corpusPath.getText());
+        File output = new File(fld_outputPath.getText());
+        if(!corpue.exists() || !output.exists()){
+            Alert alert = createAlert();
+            alert.setAlertType(Alert.AlertType.ERROR);
+            alert.setTitle("ILLEGAL PATH");
+            alert.setHeaderText("bad path given");
+            alert.setContentText("please enter a valid path");
+            alert.show();
+            return;
+        }
         long end;
         long start = System.nanoTime();
 
@@ -225,6 +240,7 @@ public class View {
     }
 
     public void browse(ActionEvent event){
+//        System.out.println(event.);
 
         DirectoryChooser chooser = new DirectoryChooser();
         Node node = (Node) event.getSource() ;
@@ -342,20 +358,10 @@ public class View {
         }
     }
 
-
-//
-//
-//        Stage stage = new Stage();
-//
-//        TextArea textArea = new TextArea(dic);
-//
-//        VBox vbox = new VBox(textArea);
-//
-//        Scene scene = new Scene(vbox, 500, 700);
-//        stage.setScene(scene);
-//        stage.show();
-
-
+    /**
+     * creates an alert with colors
+     * @return
+     */
     private Alert createAlert(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         DialogPane dialogPane = alert.getDialogPane();
@@ -403,5 +409,77 @@ public class View {
         }
 
         return dir.delete(); // The directory is empty now and can be deleted.
+    }
+
+    /**
+     * opens a window where user enters corpus path and output path
+     */
+    public void runIndex() {
+
+        // Custom dialog
+        Dialog dialog = new Dialog();
+        dialog.setHeaderText("Create DATABASE");
+        dialog.setResizable(true);
+
+        // Widgets
+        Label lbl_corpusPath = new Label( "corpus path:");
+        Label lbl_outPath = new Label("output path:");
+
+
+        TextField corpusPath = fld_corpusPath;
+        TextField outputPath = fld_outputPath;//// make the same
+        Button btn_index = new Button("start Indexing");
+        Button btn_corpBrows = new Button();
+        btn_corpBrows.setUserData("1");
+        Button btn_outBrowse = new Button();
+        btn_outBrowse.setUserData("2");
+        CheckBox cb_useStemmer = new CheckBox("use stemmer");
+        cb_useStemmer.setSelected(true);
+
+
+        btn_outBrowse.setText("Browse");
+        btn_corpBrows.setText("Browse");
+
+        // Create layout and add to dialog
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 100, 20, 50));
+        grid.add(lbl_corpusPath, 1, 1); // col=1, row=1
+        grid.add(corpusPath, 2, 1);
+        grid.add(lbl_outPath, 1, 2); // col=1, row=2
+        grid.add(outputPath, 2, 2);
+        grid.add(btn_outBrowse,3,2);
+        grid.add(btn_corpBrows,3,1);
+        grid.add(btn_index,1,5);
+        grid.add(cb_useStemmer,1,4);
+        dialog.getDialogPane().setContent(grid);
+
+//        dialog.getDialogPane().getButtonTypes().
+
+        // Add button to dialog
+        ButtonType btn_cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        dialog.getDialogPane().getButtonTypes().add(btn_cancel);
+
+
+        //on click handlers
+        /**
+         * opens the "createAccount" popup
+         */
+        btn_index.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                dialog.close();
+                btn_stemmingBox.setSelected(cb_useStemmer.isSelected());
+                testIndexer();
+            }
+        });
+
+        btn_corpBrows.setOnAction(this::browse);///???
+        btn_outBrowse.setOnAction(this::browse);
+
+        // Show dialog
+        dialog.showAndWait();
     }
 }
