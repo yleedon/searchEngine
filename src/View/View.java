@@ -370,6 +370,23 @@ public class View {
         return alert;
     }
 
+    public void tempTest(){
+        long start = System.nanoTime();
+//        fld_outputPath.setText("C:\\Users\\Dan\\Desktop");
+        testMerge(fld_outputPath.getText());
+        long end = System.nanoTime();
+        System.out.println((end-start)/1000000);
+    }
+    private void testMerge(String path){
+        try {
+            MergeFile m = new MergeFile(new File(new StringBuilder().append(path).append("\\dataBase\\stemmed").toString()));
+            m.merge();
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
     /**
      * when pressed will delete dictionary in memory and
      * delete zv folder "dataBase"
