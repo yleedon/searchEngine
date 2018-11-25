@@ -40,5 +40,6 @@
       <Button fx:id="btn_getDic" layoutX="682.0" layoutY="48.0" mnemonicParsing="false" onAction="#showDictianary" text="show dictionary" />
       <Button fx:id="btn_loadDic" layoutX="684.0" layoutY="14.0" mnemonicParsing="false" onAction="#loadDictionary" text="load dictionary" />
       <Button layoutX="374.0" layoutY="545.0" mnemonicParsing="false" onAction="#runIndex" text="start indexing" />
+      <Button layoutX="457.0" layoutY="231.0" mnemonicParsing="false" onAction="#tempTest" text="Test" />
   </children>
 </AnchorPane>
