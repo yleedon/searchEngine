@@ -263,55 +263,64 @@ public class View {
     }
 
     public void showDictianary(){
-        System.out.println("yaivvvvv");
-        if (dictianary==null){
+        String stem = "stemmed";
+        if(!btn_stemmingBox.isSelected())
+            stem = "not stemmed";
+
+
+
+
+//        Alert a = createAlert();
+//        a.setHeaderText("FETCHING THE DICTIONARY...");
+//        a.setContentText("this may take sevral seconds, please wait...");
+//        a.show();
+//        String dic ="";
+//        double progress;
+//        int total = dictianary.size();
+//        double i=1;
+//        for (String s:dictianary.keySet()){
+//            dic += s+": "+dictianary.get(s)+"\n";
+//            progress = Math.floor((i/total)*100);
+//            a.setTitle(progress+"%");
+//           i++;
+//        }
+//        a.close();
+//        Stage stage = new Stage();
+//
+//        ScrollPane root = new ScrollPane();
+//        Scene scene = new Scene(root, 300, 400);
+//
+//        Text text = new Text(dic);
+//        text.wrappingWidthProperty().bind(scene.widthProperty());
+//        root.setFitToWidth(true);
+//        root.setContent(text);
+//        stage.setTitle("Dictionary");
+//        stage.setScene(scene);
+//        stage.show();
+
+        try {
+            File f = new File(fld_outputPath.getText()+"/dataBase/"+stem+"/dictionary.txt");
+            if(!f.exists())
+                throw new Exception("error dic not found");
+            Process process = Runtime.getRuntime().exec("notepad " + f.getPath());
+            process.waitFor();
+            System.out.println("finish");
+
+        }
+        catch (Exception e){
             Alert alert = createAlert();
             alert.setAlertType(Alert.AlertType.ERROR);
-            alert.setTitle("ERROR 123456FO67");
-            alert.setContentText("doctionary not found. load dictanar and try again");
+            alert.setTitle("ERROR 123456FO65");
+            alert.setContentText("dictionary not found. try a different path");
             alert.show();
             return;
         }
-
-        Alert a = createAlert();
-        a.setHeaderText("FETCHING THE DICTIONARY...");
-        a.setContentText("this may take sevral seconds, please wait...");
-        a.show();
-        String dic ="";
-        double progress;
-        int total = dictianary.size();
-        double i=1;
-        for (String s:dictianary.keySet()){
-            dic += s+": "+dictianary.get(s)+"\n";
-            progress = Math.floor((i/total)*100);
-            a.setTitle(progress+"%");
-           i++;
-        }
-        a.close();
-        Stage stage = new Stage();
-
-        ScrollPane root = new ScrollPane();
-        Scene scene = new Scene(root, 300, 400);
-
-        Text text = new Text(dic);
-        text.wrappingWidthProperty().bind(scene.widthProperty());
-        root.setFitToWidth(true);
-        root.setContent(text);
-        stage.setTitle("Dictionary");
-        stage.setScene(scene);
-        stage.show();
 
     }
 
-    public void loadDictionary(){
-        if(dictianary!=null){
-            Alert alert = createAlert();
-            alert.setContentText("dictianary is already loaded");
-            alert.setHeaderText("action not processed");
-            alert.show();
-            return;
 
-        }
+    public void loadDictionary(){
+
         String stemm = "stemmed";
         if (!btn_stemmingBox.isSelected())
             stemm = "not stemmed";
@@ -331,10 +340,8 @@ public class View {
             String st;
             String[] line;
             String[] data;
-            int n =0;
             while ((st = br.readLine()) != null){
-                n++;
-                System.out.println(n);
+
 
                 line = st.split(":");
                 data = line[1].split(",");
@@ -373,7 +380,7 @@ public class View {
     public void tempTest(){
         long start = System.nanoTime();
 //        fld_outputPath.setText("C:\\Users\\Dan\\Desktop");
-        testMerge(fld_outputPath.getText());
+
         long end = System.nanoTime();
         System.out.println((end-start)/1000000);
     }
