@@ -48,7 +48,7 @@ public class ReadFile {
 
         createDirectory(outputPath+masterDir+stemType);
         docIdxFile = new File(outputPath + masterDir + stemType+"/docIdx.txt");
-        indexer = new Indexer(outputPath + masterDir + stemType,0.5);
+        indexer = new Indexer(outputPath + masterDir + stemType,10);
         createDirectory(outputPath+masterDir+stemType+"/waitingList");
     }
 

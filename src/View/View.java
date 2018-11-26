@@ -340,6 +340,7 @@ public class View {
         long start = System.nanoTime();
 //        fld_outputPath.setText("C:\\Users\\Dan\\Desktop");
 
+        testMerge(fld_outputPath.getText());
         long end = System.nanoTime();
         System.out.println((end-start)/1000000);
     }
