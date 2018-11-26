@@ -34,7 +34,7 @@ public class Indexer {
         waitlistSize=0;
         this.dictianary =  new TreeMap<>();
         nextLineNum = 0;
-        waitList = new TreeMap<>();
+        waitList = new TreeMap<>();/////yaniv
         tempFileSize = size*1000000;
 
     }
@@ -111,10 +111,11 @@ public class Indexer {
             waitlistSize=0;
 
             Map temp = waitList;
+            System.out.println("waiting list started writting to disk");
             Thread t = new Thread(()->writeWaitingList(temp));
             t.start();
-            waitList = new TreeMap<>();
-            System.out.println("waiting list was written to disk");
+            waitList = new TreeMap<>();//yaniv
+
         }
     }
 
@@ -142,6 +143,7 @@ public class Indexer {
         catch (Exception e){
             System.out.println("error index "+e.getMessage());
         }
+        System.out.println("finished writing waitlist to disk");
 
 
     }

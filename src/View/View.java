@@ -148,15 +148,6 @@ public class View {
 
     //<editor-fold desc="ReadFile testing">
 
-
-
-    private void testReadFileAlert(String docId, String txt){
-        Alert a = new Alert(Alert.AlertType.INFORMATION);
-        a.setTitle("The Text is:");
-        a.setHeaderText(docId);
-        a.setContentText(txt);
-        a.show();
-    }
     //</editor-fold>
 
     public void textPress(){
@@ -266,38 +257,6 @@ public class View {
         String stem = "stemmed";
         if(!btn_stemmingBox.isSelected())
             stem = "not stemmed";
-
-
-
-
-//        Alert a = createAlert();
-//        a.setHeaderText("FETCHING THE DICTIONARY...");
-//        a.setContentText("this may take sevral seconds, please wait...");
-//        a.show();
-//        String dic ="";
-//        double progress;
-//        int total = dictianary.size();
-//        double i=1;
-//        for (String s:dictianary.keySet()){
-//            dic += s+": "+dictianary.get(s)+"\n";
-//            progress = Math.floor((i/total)*100);
-//            a.setTitle(progress+"%");
-//           i++;
-//        }
-//        a.close();
-//        Stage stage = new Stage();
-//
-//        ScrollPane root = new ScrollPane();
-//        Scene scene = new Scene(root, 300, 400);
-//
-//        Text text = new Text(dic);
-//        text.wrappingWidthProperty().bind(scene.widthProperty());
-//        root.setFitToWidth(true);
-//        root.setContent(text);
-//        stage.setTitle("Dictionary");
-//        stage.setScene(scene);
-//        stage.show();
-
         try {
             File f = new File(fld_outputPath.getText()+"/dataBase/"+stem+"/dictionary.txt");
             if(!f.exists())
@@ -439,7 +398,6 @@ public class View {
      * opens a window where user enters corpus path and output path
      */
     public void runIndex() {
-
         // Custom dialog
         Dialog dialog = new Dialog();
         dialog.setHeaderText("Create DATABASE");
@@ -448,7 +406,6 @@ public class View {
         // Widgets
         Label lbl_corpusPath = new Label( "corpus path:");
         Label lbl_outPath = new Label("output path:");
-
 
         TextField corpusPath = fld_corpusPath;
         TextField outputPath = fld_outputPath;//// make the same
@@ -459,7 +416,6 @@ public class View {
         btn_outBrowse.setUserData("2");
         CheckBox cb_useStemmer = new CheckBox("use stemmer");
         cb_useStemmer.setSelected(true);
-
 
         btn_outBrowse.setText("Browse");
         btn_corpBrows.setText("Browse");
