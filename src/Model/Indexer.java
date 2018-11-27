@@ -140,6 +140,9 @@ public class Indexer {
         }
     }
 
+    public void mergeLastMiniFolded(){
+        mergeSingleFolder(waitFolderId,miniThreadList);
+    }
     private void mergeSingleFolder(int folderId, List<Thread> tList) {
         try {
             System.out.println("merging w"+folderId);
@@ -204,6 +207,7 @@ public class Indexer {
 
     public void saveDictinary() {
         try {
+            System.out.println("started writing dictionary");
             ClassLoader classLoader = getClass().getClassLoader();
             String tempPath = path+"/dictionary.txt";
             File tempFile = new File(tempPath);
@@ -217,6 +221,7 @@ public class Indexer {
                 writer.println(term+":"+dictianary.get(term));
             }
             writer.close();
+            System.out.println("finished writing dictionary");
 
         } catch (Exception e) {
             System.out.println("error indexer");
@@ -267,6 +272,19 @@ public class Indexer {
             }
         }
 
+    }
+
+    public void mergeFinalePostingList(){
+
+        try {
+            System.out.println("Creating Final PostingList");
+            MergeFile mg = new MergeFile(path+"\\waitingList",path+"\\postingList.txt");
+            mg.merge();
+            System.out.println("Final PostingList created");
+        } catch (Exception e) {
+
+            System.out.println("error thrown from mergeFile - function in indexer \"mergeFinalPostingList\"");
+        }
     }
 
 }
