@@ -301,10 +301,12 @@ public class View {
             String[] data;
             while ((st = br.readLine()) != null){
 
+                if(st.equals("")){
+                    continue;
+                }
 
                 line = st.split(":");
                 data = line[1].split(",");
-
                 DicEntry entry = new DicEntry(Integer.valueOf(data[0]));
                 entry.numOfDocs = Integer.valueOf(data[1]);
                 entry.totalTermFrequency = Integer.valueOf(data[2]);
@@ -313,8 +315,9 @@ public class View {
 
 
             br.close();
-            a.setHeaderText("dictionary uploaded successful");
+            a.setHeaderText("dictionary loaded successful");
             a.setContentText("total terms loaded: "+dictianary.size());
+            testLoadDic();
             a.show();
         }
 
@@ -336,13 +339,29 @@ public class View {
         return alert;
     }
 
-    public void tempTest(){
+    public void tempTest() throws Exception{
         long start = System.nanoTime();
 //        fld_outputPath.setText("C:\\Users\\Dan\\Desktop");
 
-        testMerge(fld_outputPath.getText());
+
+        File f = new File(fld_outputPath.getText()+"\\dataBase\\stemmed\\postingList.txt");
+        FileReader fr = new FileReader(f);
+        BufferedReader bf = new BufferedReader(fr);
+        int n = 0;
+
+        while (n<221820) {
+            bf.readLine();
+            n++;
+        }
+        String line = bf.readLine();
+        System.out.println(line);
+
+
+
+
         long end = System.nanoTime();
-        System.out.println((end-start)/1000000);
+        double time = (double) (end-start)/1000000000;
+        System.out.println(Math.floor(time*1000)/1000 +" seconds");
     }
     private void testMerge(String path){
         try {
@@ -462,5 +481,10 @@ public class View {
 
         // Show dialog
         dialog.showAndWait();
+    }
+
+    public void testLoadDic(){
+
+        System.out.println("test result: "+dictianary.get("hotel"));
     }
 }

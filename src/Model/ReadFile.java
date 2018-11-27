@@ -165,8 +165,18 @@ public class ReadFile {
             n++;
         }
 
+        Thread t = new Thread(()->indexer.saveDictinary());
+        t.start();
         indexer.writeLastWaitingList();
-        indexer.saveDictinary();
+        indexer.mergeLastMiniFolded();
+        indexer.mergeFinalePostingList();
+
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            System.out.println("wtf?! mergeFinalePostingList thread exception");
+        }
 //        indexer.printTermlist();
 //        indexer.printWaitList();
 //        indexer.printWaitListSize();

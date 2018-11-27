@@ -115,9 +115,9 @@ public class MergeFile {
             fileWriter.close();
 
             //delete files
-//            if(!deleteDir(waitingList)){
-//                System.out.println("error: did not delete waitinList");
-//            }
+            if(!deleteDir(waitingList)){
+                System.out.println("error: did not delete waitinList");
+            }
         }
         catch (IOException e){
             System.out.println("error: MergeFile.merge()");
