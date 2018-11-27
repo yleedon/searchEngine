@@ -14,15 +14,19 @@ public class MergeFile {
     /**
      * Constructor for MergeFile
      * @param dir - the directory which in there's directory named "waitingList" that needed to be merged
+     *
+     * @param input
+     * @param output
+     * @throws Exception
      */
-    public MergeFile(File dir) throws Exception{
-        if (dir == null)
-            throw new Exception("error: directory is null");
-        waitingList = new File(new StringBuilder().append(dir.getPath()).append("\\waitingList").toString());
+    public MergeFile(String input, String output) throws Exception{
+        if (input == null || output == null)
+            throw new Exception("error: path is null");
+        waitingList = new File(input);//yaniv
         if (!waitingList.isDirectory())
             throw new Exception("error: parameter does not have a directory named waitingList");
         files = waitingList.listFiles();
-        merged = new File(new StringBuilder().append(dir.getPath()).append("\\postingList.txt").toString());
+        merged = new File(output);
     }
     //</editor-fold>
 
@@ -66,6 +70,7 @@ public class MergeFile {
 
             //adding lines to the q
             for(String line: lines){
+                if(line!=null)//yaniv
                 qLines.add(line);
             }
 

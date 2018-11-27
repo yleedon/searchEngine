@@ -39,17 +39,19 @@ public class ReadFile {
     }
 
     private void setOutputDestination(String outputPath, boolean stemmer) {
-        String masterDir = "/dataBase";
+        String masterDir = "\\dataBase";
         createDirectory(outputPath+masterDir);
 
-        String stemType = "/stemmed";
+        String stemType = "\\stemmed";
         if(!stemmer)
-            stemType = "/not stemmed";
+            stemType = "\\not stemmed";
 
         createDirectory(outputPath+masterDir+stemType);
-        docIdxFile = new File(outputPath + masterDir + stemType+"/docIdx.txt");
+        docIdxFile = new File(outputPath + masterDir + stemType+"\\docIdx.txt");
+        createDirectory(outputPath+masterDir+stemType+"\\waitingList");
+
         indexer = new Indexer(outputPath + masterDir + stemType,0.5);
-        createDirectory(outputPath+masterDir+stemType+"/waitingList");
+
     }
 
     private void createDirectory(String dir) {
@@ -66,7 +68,7 @@ public class ReadFile {
                 //handle it
             }
             if(result) {
-                System.out.println("DIR created");
+                System.out.println("DIR "+dir+" created");
             }
         }
 
