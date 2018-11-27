@@ -346,7 +346,7 @@ public class View {
     }
     private void testMerge(String path){
         try {
-            MergeFile m = new MergeFile(new File(new StringBuilder().append(path).append("\\dataBase\\stemmed").toString()));
+            MergeFile m = new MergeFile(path+"\\dataBase\\stemmed\\waitingList",path+"\\dataBase\\stemmed\\postingList");
             m.merge();
         }
         catch (Exception e){

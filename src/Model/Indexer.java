@@ -3,11 +3,11 @@ package Model;
 
 import javafx.util.Pair;
 import sun.awt.Mutex;
+import sun.nio.ch.ThreadPool;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Indexer {
@@ -19,13 +19,17 @@ public class Indexer {
     private Map<Integer,String> waitList;
     private AtomicInteger tempFileName;
     private String path;
-    private Mutex[] mutexsList;
-    private Map<Integer,String>[] waitingListChooser;
-    private int listInUse;
+    private int waitFolderId;
+    private int numOflistsInCurrrentFolder;
+    private List<Thread> miniThreadList;
+    private List<Thread> bigThreadList;
 
 
 
     public Indexer(String outPath, double size) {
+
+        miniThreadList = new ArrayList<>();
+        bigThreadList = new ArrayList<>();
 
 
 
@@ -36,6 +40,8 @@ public class Indexer {
         nextLineNum = 0;
         waitList = new TreeMap<>();/////yaniv
         tempFileSize = size*1000000;
+        waitFolderId = 1;
+        createDirectory(path+"\\waitingList\\w1");
 
     }
 
@@ -100,7 +106,7 @@ public class Indexer {
                 if(doc.getDocId()!=dictianary.get(term).getLastDocin())
                     gap = getGap(term,gap);
                 entry = gap + entry;
-                waitlistSize+=entry.length();
+                waitlistSize+=entry.length()+1;//(~)
                 entry = waitList.get(dictianary.get(term).getId())+"~"+entry;
                 waitList.replace(dictianary.get(term).getId(),entry);
                 dictianary.get(term).setLastDocin(doc.getDocId());
@@ -111,21 +117,50 @@ public class Indexer {
             waitlistSize=0;
 
             Map temp = waitList;
-            System.out.println("waiting list started writting to disk");
-            Thread t = new Thread(()->writeWaitingList(temp));
-            t.start();
             waitList = new TreeMap<>();//yaniv
+
+            if(numOflistsInCurrrentFolder>19){
+
+                int folderToMerge = waitFolderId;
+                List<Thread> tempThreadList = miniThreadList;
+                Thread bigThread = new Thread(()-> mergeSingleFolder(folderToMerge,tempThreadList));
+                bigThreadList.add(bigThread);
+                bigThread.start();
+                miniThreadList = new ArrayList<>();
+                numOflistsInCurrrentFolder=0;
+                waitFolderId++;
+                createDirectory(path+"/waitingList/w"+waitFolderId);
+            }
+            numOflistsInCurrrentFolder++;
+            System.out.println("waiting list started writting to disk");
+            Thread t = new Thread(()->writeWaitingList(temp,waitFolderId));
+            miniThreadList.add(t);
+            t.start();
 
         }
     }
 
+    private void mergeSingleFolder(int folderId, List<Thread> tList) {
+        try {
+            System.out.println("merging w"+folderId);
+            for (Thread t:tList){
+                t.join();
+            }
+            MergeFile mergeFile = new MergeFile(path+"\\waitingList\\w"+folderId,path+"\\waitingList\\"+folderId);
+            mergeFile.merge();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("error eror mother fucker");
+        }
+
+    }
 
 
-    private void writeWaitingList(Map<Integer, String> CurrentWaitList) {
+    private void writeWaitingList(Map<Integer, String> CurrentWaitList,int folderId) {
 
         try {
             String fName = ""+ tempFileName.incrementAndGet();
-            String tempPath = path+"/waitingList/"+fName+".txt";
+            String tempPath = path+"\\waitingList\\w"+folderId+"\\"+fName+".txt";
             File tempFile = new File(tempPath);
             FileWriter fileWriter = new FileWriter(tempFile, false);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -150,7 +185,7 @@ public class Indexer {
 
 
     public void writeLastWaitingList(){
-        writeWaitingList(waitList);
+        writeWaitingList(waitList,waitFolderId);
     }
     public void printWaitList(){
         for (int ent:waitList.keySet()) {
@@ -212,6 +247,26 @@ public class Indexer {
     private int getGap(String term,int docId){
         int last = dictianary.get(term).getLastDocin();
         return docId-last;
+    }
+
+    private void createDirectory(String dir) {
+        File output = new File(dir);
+        if (!output.exists()) {
+            System.out.println("creating directory: " + dir);
+            boolean result = false;
+
+            try{
+                output.mkdir();
+                result = true;
+            }
+            catch(SecurityException se){
+                //handle it
+            }
+            if(result) {
+                System.out.println("DIR "+dir+" created");
+            }
+        }
+
     }
 
 }
