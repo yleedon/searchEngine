@@ -90,7 +90,10 @@ public class Indexer {
 
             double termPlace = (1-(double)docMap.get(originalTerm).getValue()/doc.getTextTokenCount());
             termPlace = Math.floor(termPlace * 10);
-            String entry = ","+ docMap.get(originalTerm).getKey()+","+(int)termPlace+ "," + doc.isInTitle(originalTerm);
+            String inTitleValue = "";
+            if(doc.isInTitle(originalTerm)==1)
+                inTitleValue = "@";
+            String entry = ","+ docMap.get(originalTerm).getKey()+","+(int)termPlace + inTitleValue ;
             if(!waitList.containsKey(dictianary.get(term).getId())) {
 
                 ///////////////////////////////////////////////////////
@@ -151,6 +154,7 @@ public class Indexer {
             }
             MergeFile mergeFile = new MergeFile(path+"\\waitingList\\w"+folderId,path+"\\waitingList\\"+folderId);
             mergeFile.merge();
+            System.out.println("w"+folderId + "has been merged");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("error eror mother fucker");
