@@ -57,7 +57,7 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       </rowConstraints>
     </GridPane>
-    <CheckBox fx:id="btn_stemmingBox" layoutX="123.0" layoutY="537.0" mnemonicParsing="false" selected="true" text="use stemmer" />
+    <CheckBox fx:id="btn_stemmingBox" layoutX="788.0" layoutY="30.0" mnemonicParsing="false" selected="true" text="use stemmer" />
     <Button fx:id="Btn_ReadFile" layoutX="557.0" layoutY="395.0" mnemonicParsing="false" onAction="#testGetDoc" prefHeight="31.0" prefWidth="150.0" text="get doc" />
       <Button fx:id="btn_reset" layoutX="711.0" layoutY="558.0" mnemonicParsing="false" onAction="#reset" text="reset" />
       <Button fx:id="btn_getDic" layoutX="682.0" layoutY="54.0" mnemonicParsing="false" onAction="#showDictianary" text="show dictionary" />

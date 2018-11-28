@@ -125,7 +125,7 @@ public class Parse {
         ans ="";
         maxFreq=0;
         if(txt==null) {
-            System.out.println("*******************************************************************8 this doc.gettext was empty(null)");
+//            System.out.println("*******************************************************************8 this doc.gettext was empty(null)");
             return;
         }
         tokens = txt.split(" ");
@@ -137,7 +137,6 @@ public class Parse {
             if(tokens[tNum]==null)
                 continue;
             try {
-
                 word = tokenToTerm(tokens[tNum], tNum);
             }
             catch (Exception e){
@@ -794,6 +793,7 @@ public class Parse {
      * @param word - the token
      * @return - the token after stemming
      */
+
     private String stem(String word) {
         if (!word.contains("-")) {
             stemmer.resetStemer();
@@ -982,6 +982,7 @@ public class Parse {
     public void setTxt(String text){
 //        System.out.println("///////////////////////////////////////////////////////////////////////////////////////");
         txt  = text;
+        ans="";
         if(text!=null) {
             txt = text.replace("\n"," ");
         }

@@ -419,9 +419,13 @@ public class View {
      */
     public void runIndex() {
         // Custom dialog
+
         Dialog dialog = new Dialog();
         dialog.setHeaderText("Create DATABASE");
+        dialog.setTitle("Create DATABASE");
         dialog.setResizable(true);
+        dialog.getDialogPane().getStylesheets().add(getClass().getResource("Alert.css").toExternalForm());
+        dialog.getDialogPane().getStyleClass().add("myDialog");
 
         // Widgets
         Label lbl_corpusPath = new Label( "corpus path:");
@@ -439,6 +443,7 @@ public class View {
 
         btn_outBrowse.setText("Browse");
         btn_corpBrows.setText("Browse");
+
 
         // Create layout and add to dialog
         GridPane grid = new GridPane();

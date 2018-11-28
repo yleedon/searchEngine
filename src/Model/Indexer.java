@@ -154,6 +154,7 @@ public class Indexer {
             }
             MergeFile mergeFile = new MergeFile(path+"\\waitingList\\w"+folderId,path+"\\waitingList\\"+folderId);
             mergeFile.merge();
+            System.out.println("w"+folderId + "has been merged");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("error eror mother fucker");
