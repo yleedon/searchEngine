@@ -90,7 +90,10 @@ public class Indexer {
 
             double termPlace = (1-(double)docMap.get(originalTerm).getValue()/doc.getTextTokenCount());
             termPlace = Math.floor(termPlace * 10);
-            String entry = ","+ docMap.get(originalTerm).getKey()+","+(int)termPlace+ "," + doc.isInTitle(originalTerm);
+            String inTitleValue = "";
+            if(doc.isInTitle(originalTerm)==1)
+                inTitleValue = "@";
+            String entry = ","+ docMap.get(originalTerm).getKey()+","+(int)termPlace + inTitleValue ;
             if(!waitList.containsKey(dictianary.get(term).getId())) {
 
                 ///////////////////////////////////////////////////////

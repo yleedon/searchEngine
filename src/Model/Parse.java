@@ -549,20 +549,6 @@ public class Parse {
         if(num.contains("."))
             return num;
 
-//        2 2/4-5 5/2
-//        ********************************************************************************************************
-//        String withoughtMinus = secondToken;
-//        if (secondToken.startsWith("-"))
-//            withoughtMinus = secondToken.substring(1);
-//        if (withoughtMinus.contains("-")){
-//
-//
-//        }
-//        if(secondToken.contains("-")){
-//
-//        }
-//        ********************************************************************************************************8
-
         String[] fraction = secondToken.split("/");
         if (fraction.length != 2)
             return num;
@@ -574,45 +560,20 @@ public class Parse {
                 endWithPercent = true;
                 fraction[1] = fraction[1].substring(0,fraction[1].length()-1);
             }
-
             Integer.valueOf(fraction[0]);
             Integer.valueOf(fraction[1]);
 
-
-//            if (tNum + 2 < tokens.length && tokens[tNum + 2].toLowerCase().equals("dollars")) {
-//                num = num + " " + secondToken + " Dollars";
-//                tokens[tNum + 1] = null;
-//                tokens[tNum + 2] = null;
-//                return num;
-//            }
+            double tempDouble;
             tokens[tNum + 1] = null;
-            double tempDouble = Integer.valueOf(num)+(Double.valueOf(fraction[0])/Double.valueOf(fraction[1]));
+            if(Integer.valueOf(num) < 0)
+                tempDouble = Integer.valueOf(num)-(Double.valueOf(fraction[0])/Double.valueOf(fraction[1]));
+            else  tempDouble = Integer.valueOf(num)+(Double.valueOf(fraction[0])/Double.valueOf(fraction[1]));
+
             tempDouble = Math.floor(tempDouble * 100) / 100;
             if (endWithPercent) {
                 return tempDouble+"%";
             }
-
             return checkAfterNumber(""+tempDouble,tNum+1);
-
-
-
-//            try {
-//                if (tokens[tNum + 2].toLowerCase().equals("percent") || tokens[tNum + 2].toLowerCase().equals("percentage")) {
-//                    tokens[tNum + 1] = null;
-//                    tokens[tNum + 2] = null;
-//                    return num + " " + secondToken + "%";
-//                }
-//            }
-//            catch (Exception e){
-//
-//            }
-
-
-
-            /// just number with fraction
-
-//            numberSet.add(num + " " + secondToken);
-//            return num + " " + secondToken;
 
         } catch (Exception e) {
             /// not a leagal fraction
@@ -702,7 +663,7 @@ public class Parse {
      */
     private void addTerm(String word) {
 
-        if(word!=null && !word.equals("") && !word.equals("-") ) {
+        if(word!=null && !word.equals("") && !word.equals("-") && !stopWords.contains(word.toLowerCase())) {
             word = word.replace(":","").replace(",","").replace("~",""); // makes sure no term contains : or ,
             word = deleteDelimeter(tradeUppercase(word));
 
@@ -824,10 +785,6 @@ public class Parse {
                 word = stem(word);
             else word = stem(word.toLowerCase()).toUpperCase();
         }
-        if (stopWords.contains(word.toLowerCase())) { //remove wanted stop word
-            return "";
-        }
-
 
         return word;
     }
@@ -909,15 +866,22 @@ public class Parse {
 
             for(int i = 0; i < tempTokens.length;i++){
 
-                if(tempTokens[i] != null && !tempTokens[i].equals(""))
-                    temp= tokenToTerm(tempTokens[i],tNum-1);
+                if(tempTokens[i] != null && !tempTokens[i].equals("")) {
+                    if(i ==tempTokens.length -1 )
+                        temp = tokenToTerm(tempTokens[i],tNum);
+                    else temp = tokenToTerm(tempTokens[i], tNum - 1);
+
+
+                }
                 if(temp.equals("")) // stemming (the-the => "" "" the-the
                     temp = orginalTokens[i];
                 if(i!=0)
                     totalTerm = totalTerm + "-" + temp;
                 else totalTerm = totalTerm + temp;
 
-                addTerm(tokenToTerm(tempTokens[i],tNum-1)); // (-1 so that it thinks the next token is num
+                if(i == tempTokens.length -1 )
+                    addTerm(temp); // (-1 so that it thinks the next token is num
+                else addTerm(tokenToTerm(tempTokens[i],tNum-1)); // (-1 so that it thinks the next token is num
             }
 
             addTerm(totalTerm.toLowerCase());
