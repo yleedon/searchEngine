@@ -2,16 +2,23 @@ package View;
 
 
 import Model.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
@@ -38,8 +45,8 @@ public class View {
     private Map<String, DicEntry> dictianary;
 
 
-    public View(){
-        fld_outputPath= new TextField("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data");
+    public View() {
+        fld_outputPath = new TextField("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data");
         fld_corpusPath = new TextField("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data\\corpus");
     }
 
@@ -48,13 +55,13 @@ public class View {
         if ((fld_text.getText().equals("")))
             return;
 
-        Parse parser = new Parse(fld_corpusPath.getText(),fld_text.getText(),btn_stemmingBox.isSelected());
+        Parse parser = new Parse(fld_corpusPath.getText(), fld_text.getText(), btn_stemmingBox.isSelected());
         try {
             parser.parse();
             parser.printIndex();
 //            System.out.println("Number set: ");
 //            parser.printNumberSet();
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         Alert a = new Alert(Alert.AlertType.INFORMATION);
@@ -67,9 +74,9 @@ public class View {
     }
 
     //parser auto test
-    public void runTests(){
+    public void runTests() {
 
-        Map<String,String> tests = new HashMap<>();
+        Map<String, String> tests = new HashMap<>();
         try {
             ClassLoader classLoader = getClass().getClassLoader();
             File file = new File(classLoader.getResource("parseTests.txt").getFile());
@@ -77,15 +84,14 @@ public class View {
             String line;
             String[] cut;
             while ((line = br.readLine()) != null) {
-                if(line.contains("=") && line.charAt(0) != '#') {
+                if (line.contains("=") && line.charAt(0) != '#') {
                     if (line.contains("#"))
-                        line = line.substring(0,line.indexOf("#")-1);
+                        line = line.substring(0, line.indexOf("#") - 1);
                     cut = line.split("=");
                     tests.put(cut[0], cut[1]);
                 }
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println("idiot! the test file is bad!!");
             return;
@@ -94,23 +100,22 @@ public class View {
             String outPut;
             boolean failed = false;
             String ans = "Format: [input] != [wantedOutput] --> [actualOutput]\n\nResults:\n";
-            Parse parser = new Parse(fld_corpusPath.getText(),"",btn_stemmingBox.isSelected());
+            Parse parser = new Parse(fld_corpusPath.getText(), "", btn_stemmingBox.isSelected());
             int i = 0;
-            for (String input:tests.keySet()) {
+            for (String input : tests.keySet()) {
                 i++;
                 parser.setTxt(input);
                 parser.parse();
 
                 if (!parser.toString().equals(""))
-                    outPut = removBraces(parser.toString().substring(0,parser.toString().length()-1));
+                    outPut = removBraces(parser.toString().substring(0, parser.toString().length() - 1));
                 else outPut = "";
-                if(!outPut.equals(tests.get(input))) {
+                if (!outPut.equals(tests.get(input))) {
                     failed = true;
-                    ans +=  "Test(" + i + "): [" + input + "] != [" + tests.get(input)+"] --> [" + outPut+"]\n";
+                    ans += "Test(" + i + "): [" + input + "] != [" + tests.get(input) + "] --> [" + outPut + "]\n";
                 }
 
             }
-
 
 
             Alert a = new Alert(Alert.AlertType.INFORMATION);
@@ -125,8 +130,7 @@ public class View {
                 a.setTitle("FAIL!!!");
                 a.setAlertType(Alert.AlertType.ERROR);
 
-            }
-            else {
+            } else {
                 a.setAlertType(Alert.AlertType.INFORMATION);
                 a.getDialogPane().setMinWidth(300);
                 a.setTitle("SUCCESS!");
@@ -135,14 +139,14 @@ public class View {
 
             }
             a.showAndWait();
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    private String removBraces(String s){
-        s = s.replace("{","");
-        s = s.replace("}","");
+    private String removBraces(String s) {
+        s = s.replace("{", "");
+        s = s.replace("}", "");
         return s;
     }
 
@@ -150,20 +154,20 @@ public class View {
 
     //</editor-fold>
 
-    public void textPress(){
+    public void textPress() {
         fld_text.setOpacity(1);
     }
 
-    public void onSearchPressed(KeyEvent event){
+    public void onSearchPressed(KeyEvent event) {
         fld_text.setOpacity(1);
-        if(event!=null && event.getCode().getName().equals("Enter"))
+        if (event != null && event.getCode().getName().equals("Enter"))
             testParse();
     }
 
-    public void testIndexer(){
+    public void testIndexer() {
         File corpue = new File(fld_corpusPath.getText());
         File output = new File(fld_outputPath.getText());
-        if(!corpue.exists() || !output.exists()){
+        if (!corpue.exists() || !output.exists()) {
             Alert alert = createAlert();
             alert.setAlertType(Alert.AlertType.ERROR);
             alert.setTitle("ILLEGAL PATH");
@@ -178,10 +182,10 @@ public class View {
         int numOfDocsProcessed = testReadFile();
 
         end = System.nanoTime();
-        long time = (end-start)/1000000000;
+        long time = (end - start) / 1000000000;
 
-        showIndexSummary(numOfDocsProcessed,time);
-        System.out.println("total index time:  "+ time);
+        showIndexSummary(numOfDocsProcessed, time);
+        System.out.println("total index time:  " + time);
 //        Indexer indexer = new Indexer(rf);
 //        indexer.parse();
 
@@ -189,12 +193,12 @@ public class View {
 
 
     public int testReadFile() {
-        ReadFile readF = new ReadFile(fld_corpusPath.getText(),fld_outputPath.getText(),btn_stemmingBox.isSelected());
+        ReadFile readF = new ReadFile(fld_corpusPath.getText(), fld_outputPath.getText(), btn_stemmingBox.isSelected());
         System.out.println("Indexing started");
         dictianary = readF.readDirectory();
 //        readF=null;
 //
-        return  readF.numOfDocsProcessed();
+        return readF.numOfDocsProcessed();
     }
 
     private void showIndexSummary(int numOfDocsProcessed, long time) {
@@ -202,71 +206,68 @@ public class View {
         summary.setHeaderText("INDEX SUMMARY");
         summary.setTitle("SUMMARY");
         summary.setHeaderText("INDEX CREATION COMPLETE");
-        summary.setContentText("DOCS PROCESSED: " + numOfDocsProcessed+"\n" +
-                "DICTIANARY SIZE: "+ dictianary.size()+" terms\n" +
-                "INDEXING TIME: " + time+"sec");
+        summary.setContentText("DOCS PROCESSED: " + numOfDocsProcessed + "\n" +
+                "DICTIANARY SIZE: " + dictianary.size() + " terms\n" +
+                "INDEXING TIME: " + time + "sec");
         summary.show();
 
     }
 
 
-
-    public void testGetDoc(){
+    public void testGetDoc() {
         try {
 
 
             ReadFile rf;
-            rf = new ReadFile(fld_corpusPath.getText(),fld_outputPath.getText(),btn_stemmingBox.isSelected());
-            if(!fld_path.getText().equals("")) {
+            rf = new ReadFile(fld_corpusPath.getText(), fld_outputPath.getText(), btn_stemmingBox.isSelected());
+            if (!fld_path.getText().equals("")) {
 
 //            int iDoc = Integer.valueOf(fld_path.getText());
                 MyDocument document = rf.getDocument(fld_path.getText());// ("LA122790-0222");
                 System.out.println(document.getTxt());
 //            testReadFileAlert(document.getDocId(), document.getTxt());
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void browse(ActionEvent event){
+    public void browse(ActionEvent event) {
 //        System.out.println(event.);
 
         DirectoryChooser chooser = new DirectoryChooser();
-        Node node = (Node) event.getSource() ;
+        Node node = (Node) event.getSource();
         String data = (String) node.getUserData();
         int button = Integer.parseInt(data);
-        if(button==1) {// corpusBrowse
+        if (button == 1) {// corpusBrowse
             chooser.setTitle("SELECT CORPUS DIRECTORY");
         }
-        if(button==2) {// outputBrowse
+        if (button == 2) {// outputBrowse
             chooser.setTitle("SELECT OUTPUT DIRECTORY");
         }
 
         File selectedDirectory = chooser.showDialog(new Stage());
-        if(selectedDirectory==null)
+        if (selectedDirectory == null)
             return;
-        if(button==1)
+        if (button == 1)
             fld_corpusPath.setText(selectedDirectory.getPath());
-        if(button==2)
+        if (button == 2)
             fld_outputPath.setText(selectedDirectory.getPath());
     }
 
-    public void showDictianary(){
+    public void showDictianary() {
         String stem = "stemmed";
-        if(!btn_stemmingBox.isSelected())
+        if (!btn_stemmingBox.isSelected())
             stem = "not stemmed";
         try {
-            File f = new File(fld_outputPath.getText()+"/dataBase/"+stem+"/dictionary.txt");
-            if(!f.exists())
+            File f = new File(fld_outputPath.getText() + "/dataBase/" + stem + "/dictionary.txt");
+            if (!f.exists())
                 throw new Exception("error dic not found");
             Process process = Runtime.getRuntime().exec("notepad " + f.getPath());
             process.waitFor();
             System.out.println("finish");
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             Alert alert = createAlert();
             alert.setAlertType(Alert.AlertType.ERROR);
             alert.setTitle("ERROR 123456FO65");
@@ -278,30 +279,30 @@ public class View {
     }
 
 
-    public void loadDictionary(){
+    public void loadDictionary() {
 
         String stemm = "stemmed";
         if (!btn_stemmingBox.isSelected())
             stemm = "not stemmed";
-        File file = new File(fld_outputPath.getText()+"/dataBase/"+stemm+"/dictionary.txt");
-        if (!file.exists()){
+        File file = new File(fld_outputPath.getText() + "/dataBase/" + stemm + "/dictionary.txt");
+        if (!file.exists()) {
             Alert alert = createAlert();
             alert.setHeaderText("dictionary not loaded");
-            alert.setContentText("\""+stemm+"\" dictionary not found");
+            alert.setContentText("\"" + stemm + "\" dictionary not found");
             alert.show();
             return;
         }
         dictianary = new TreeMap<String, DicEntry>();
         Alert a = createAlert();
-        try{
+        try {
 
             BufferedReader br = new BufferedReader(new FileReader(file));
             String st;
             String[] line;
             String[] data;
-            while ((st = br.readLine()) != null){
+            while ((st = br.readLine()) != null) {
 
-                if(st.equals("")){
+                if (st.equals("")) {
                     continue;
                 }
 
@@ -310,28 +311,27 @@ public class View {
                 DicEntry entry = new DicEntry(Integer.valueOf(data[0]));
                 entry.numOfDocs = Integer.valueOf(data[1]);
                 entry.totalTermFrequency = Integer.valueOf(data[2]);
-                dictianary.put(line[0],entry);
+                dictianary.put(line[0], entry);
             }
 
 
             br.close();
             a.setHeaderText("dictionary loaded successful");
-            a.setContentText("total terms loaded: "+dictianary.size());
+            a.setContentText("total terms loaded: " + dictianary.size());
             testLoadDic();
             a.show();
-        }
-
-        catch (Exception e){
-           a.setContentText("dictianary was not loaded");
-           a.show();
+        } catch (Exception e) {
+            a.setContentText("dictianary was not loaded");
+            a.show();
         }
     }
 
     /**
      * creates an alert with colors
+     *
      * @return
      */
-    private Alert createAlert(){
+    private Alert createAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStylesheets().add(getClass().getResource("Alert.css").toExternalForm());
@@ -339,36 +339,24 @@ public class View {
         return alert;
     }
 
-    public void tempTest() throws Exception{
+    public void tempTest() throws Exception {
         long start = System.nanoTime();
 //        fld_outputPath.setText("C:\\Users\\Dan\\Desktop");
 
-
-        File f = new File(fld_outputPath.getText()+"\\dataBase\\stemmed\\postingList.txt");
-        FileReader fr = new FileReader(f);
-        BufferedReader bf = new BufferedReader(fr);
-        int n = 0;
-
-        while (n<221820) {
-            bf.readLine();
-            n++;
-        }
-        String line = bf.readLine();
-        System.out.println(line);
 
 
 
 
         long end = System.nanoTime();
-        double time = (double) (end-start)/1000000000;
-        System.out.println(Math.floor(time*1000)/1000 +" seconds");
+        double time = (double) (end - start) / 1000000000;
+        System.out.println(Math.floor(time * 1000) / 1000 + " seconds");
     }
-    private void testMerge(String path){
+
+    private void testMerge(String path) {
         try {
-            MergeFile m = new MergeFile(path+"\\dataBase\\stemmed\\waitingList",path+"\\dataBase\\stemmed\\postingList");
+            MergeFile m = new MergeFile(path + "\\dataBase\\stemmed\\waitingList", path + "\\dataBase\\stemmed\\postingList");
             m.merge();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
@@ -378,15 +366,15 @@ public class View {
      * delete zv folder "dataBase"
      */
     public void reset() {
-        dictianary=null;
+        dictianary = null;
         Alert alert = createAlert();
         System.out.println("resetPresed");
-        File file = new File(fld_outputPath.getText()+"/dataBase");
+        File file = new File(fld_outputPath.getText() + "/dataBase");
 
         alert.setHeaderText("ERROR");
         alert.setContentText("no files were deleted");
-        if (file.exists()){
-            if(deleteDir(file)) {
+        if (file.exists()) {
+            if (deleteDir(file)) {
                 alert.setContentText("dataBase ase been deleted");
                 alert.setHeaderText("reset succeeded");
             }
@@ -397,6 +385,7 @@ public class View {
 
     /**
      * this function givven a directorry will delete it recursivly
+     *
      * @param dir - directory to be deleted
      * @return true if deleted
      */
@@ -428,7 +417,7 @@ public class View {
         dialog.getDialogPane().getStyleClass().add("myDialog");
 
         // Widgets
-        Label lbl_corpusPath = new Label( "corpus path:");
+        Label lbl_corpusPath = new Label("corpus path:");
         Label lbl_outPath = new Label("output path:");
 
         TextField corpusPath = fld_corpusPath;
@@ -455,10 +444,10 @@ public class View {
         grid.add(corpusPath, 2, 1);
         grid.add(lbl_outPath, 1, 2); // col=1, row=2
         grid.add(outputPath, 2, 2);
-        grid.add(btn_outBrowse,3,2);
-        grid.add(btn_corpBrows,3,1);
-        grid.add(btn_index,1,5);
-        grid.add(cb_useStemmer,1,4);
+        grid.add(btn_outBrowse, 3, 2);
+        grid.add(btn_corpBrows, 3, 1);
+        grid.add(btn_index, 1, 5);
+        grid.add(cb_useStemmer, 1, 4);
         dialog.getDialogPane().setContent(grid);
 
 //        dialog.getDialogPane().getButtonTypes().
@@ -488,8 +477,9 @@ public class View {
         dialog.showAndWait();
     }
 
-    public void testLoadDic(){
+    public void testLoadDic() {
 
-        System.out.println("test result: "+dictianary.get("hotel"));
+        System.out.println("test result: " + dictianary.get("hotel"));
     }
+
 }
