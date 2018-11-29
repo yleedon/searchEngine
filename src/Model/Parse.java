@@ -664,7 +664,7 @@ public class Parse {
 
         if(word!=null && !word.equals("") && !word.equals("-") && !stopWords.contains(word.toLowerCase())) {
             word = word.replace(":","").replace(",","").replace("~",""); // makes sure no term contains : or ,
-            word = deleteDelimeter(tradeUppercase(word));
+            word = tradeUppercase(deleteDelimeter(word));
 
             if(indexMap.containsKey(word)) {
                 indexMap.replace(word, new Pair<>(indexMap.get(word).getKey() + 1,indexMap.get(word).getValue()));
