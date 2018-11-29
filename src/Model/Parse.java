@@ -666,7 +666,8 @@ public class Parse {
             word = deleteDelimeter(word);
             if(word.equals(""))
                 return;
-            word = makeCaputalIfNeeded(word);
+            if(!word.contains("-"))
+            word = Capitalize(word);
             word = tradeUppercase(word);
 
             if(indexMap.containsKey(word)) {
