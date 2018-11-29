@@ -661,10 +661,13 @@ public class Parse {
      * @param word
      */
     private void addTerm(String word) {
-
         if(word!=null && !word.equals("") && !word.equals("-") && !stopWords.contains(word.toLowerCase())) {
             word = word.replace(":","").replace(",","").replace("~",""); // makes sure no term contains : or ,
-            word = tradeUppercase(deleteDelimeter(word));
+            word = deleteDelimeter(word);
+            if(word.equals(""))
+                return;
+            word = makeCaputalIfNeeded(word);
+            word = tradeUppercase(word);
 
             if(indexMap.containsKey(word)) {
                 indexMap.replace(word, new Pair<>(indexMap.get(word).getKey() + 1,indexMap.get(word).getValue()));
@@ -681,6 +684,16 @@ public class Parse {
         }
     }
 
+    private String makeCaputalIfNeeded(String word) {
+        if(word != null && !word.equals("") && !word.toLowerCase().contains(" ") && !word.contains("-")){
+            for(int i = 0 ; i < word.length();i++){
+                if(word.charAt(i) >= 'A' && word.charAt(i) <= 'Z') //has big letter
+                    return word.toUpperCase();
+            }
+        }
+        return word;
+    }
+
     /**
      * if a upperCase term arrives - checks if a lower exists.. if so changes it to lower case
      * if a lowerCase term arrives, checks if an Upper case exists, if so deletes the upper case
@@ -689,13 +702,13 @@ public class Parse {
      * @return - the term
      */
     private String tradeUppercase(String word) {
-        if(word.charAt(0) >= 'A' && word.charAt(0) <= 'Z'){
+        if(word.toUpperCase().equals(word)) {
             if(indexMap.containsKey(word.toLowerCase())){
                 return word.toLowerCase();
             }
         }
 
-        if(word.charAt(0) >= 'a' && word.charAt(0) <= 'z'){
+        if(word.toLowerCase().equals(word)){
             if(indexMap.containsKey(word.toUpperCase())){
                 String upperCase = word.toUpperCase();
                 Pair<Integer,Integer> bigLetterCount = indexMap.get(upperCase);
