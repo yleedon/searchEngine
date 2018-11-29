@@ -49,6 +49,7 @@ public class Indexer {
     public void addDoc(MyDocument doc){
         if(doc==null)
             return;
+
         Map<String, Pair<Integer,Integer>> docMap = doc.getTerms();
         for (Object t:docMap.keySet()) {
             if(t.toString().equals(""))
@@ -61,18 +62,16 @@ public class Indexer {
                 if(term.toLowerCase().equals(term)) { // is lower case
 
                     if (dictianary.containsKey(term.toUpperCase())) {
-                        ///// a bigger allready exists
                         DicEntry oldEntry = dictianary.get(term.toUpperCase());
-//                        int line = dictianary.get(term.toUpperCase());
                         dictianary.remove(term.toUpperCase());
                         dictianary.put(term, oldEntry);
                     }
                 }
                 else{
-                    // is upper case
-                    if (dictianary.containsKey(term.toLowerCase())){
-                        term = term.toLowerCase();
-                    }
+                    if(term.toUpperCase().equals(term)) // is upper case
+                        if (dictianary.containsKey(term.toLowerCase())){
+                            term = term.toLowerCase();
+                        }
                 }
             }
             if(!dictianary.containsKey(term)){
@@ -108,6 +107,19 @@ public class Indexer {
                 int gap = doc.getDocId();
                 if(doc.getDocId()!=dictianary.get(term).getLastDocin())
                     gap = getGap(term,gap);
+                else {
+
+                    //yaniv ****************************************
+                    int id = doc.getDocId();
+                    int termId = dictianary.get(term).getId();
+                    String ttt = term;
+                    System.out.println("333");
+//                    ************************************************
+
+
+
+
+                }
                 entry = gap + entry;
                 waitlistSize+=entry.length()+1;//(~)
                 entry = waitList.get(dictianary.get(term).getId())+"~"+entry;
