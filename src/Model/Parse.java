@@ -664,10 +664,10 @@ public class Parse {
         if(word!=null && !word.equals("") && !word.equals("-") && !stopWords.contains(word.toLowerCase())) {
             word = word.replace(":","").replace(",","").replace("~",""); // makes sure no term contains : or ,
             word = deleteDelimeter(word);
-            if(word.equals(""))
+            if(word.equals("") || stopWords.contains(word.toLowerCase()))
                 return;
             if(!word.contains("-"))
-            word = Capitalize(word);
+                word = Capitalize(word);
             word = tradeUppercase(word);
 
             if(indexMap.containsKey(word)) {
