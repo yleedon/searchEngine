@@ -57,7 +57,7 @@ public class DicEntry implements Comparable{
     public void setLastDocin(int num){
         lastDocin=num;
     }
-    
+
     /**
      * compares DicEntries by the Tf
      * @param o - a DicEntry to compare with

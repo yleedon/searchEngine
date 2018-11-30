@@ -185,7 +185,6 @@ public class ReadFile {
             System.out.println("wtf?! mergeFinalePostingList thread exception");
         }
 
-
         writer.close();
         return indexer.getDictianary();
     }
