@@ -340,16 +340,13 @@ public class View {
     }
 
     public void tempTest() throws Exception {
+        System.out.println("Beginning...");
         long start = System.nanoTime();
-//        fld_outputPath.setText("C:\\Users\\Dan\\Desktop");
-
-
-
-
-
+        testMerge("C:\\Users\\Dan\\Desktop");
         long end = System.nanoTime();
-        double time = (double) (end - start) / 1000000000;
-        System.out.println(Math.floor(time * 1000) / 1000 + " seconds");
+        System.out.println(String.format("testMerge: %d milliseconds", (end-start)/1000000));
+        System.out.println("Done!");
+
     }
 
     private void testMerge(String path) {

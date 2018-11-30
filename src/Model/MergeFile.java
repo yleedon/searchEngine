@@ -13,10 +13,8 @@ public class MergeFile {
     //<editor-fold desc="Constructor">
     /**
      * Constructor for MergeFile
-     * @param dir - the directory which in there's directory named "waitingList" that needed to be merged
-     *
-     * @param input
-     * @param output
+     * @param input - the directory that contains only the files to merge
+     * @param output - the path (name included) to the file that will be written
      * @throws Exception
      */
     public MergeFile(String input, String output) throws Exception{
@@ -151,7 +149,7 @@ public class MergeFile {
      */
     private String lineUnition(PriorityQueue<String> lines){
         StringBuilder ans = new StringBuilder();
-        int currentIdx=0, lastIdx=0;
+        int currentIdx, lastIdx;
         String line = lines.poll();
         ans.append(line);
         String[] brokenLine;
