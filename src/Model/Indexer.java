@@ -26,10 +26,12 @@ public class Indexer {
 
 
 
+
     public Indexer(String outPath, double size) {
 
         miniThreadList = new ArrayList<>();
         bigThreadList = new ArrayList<>();
+
 
 
 
@@ -300,6 +302,47 @@ public class Indexer {
         } catch (Exception e) {
 
             System.out.println("error thrown from mergeFile - function in indexer \"mergeFinalPostingList\"");
+        }
+    }
+
+    public void creatReportData(){
+        TreeSet<DicEntry> heap = new TreeSet<>();
+        HashMap<Integer,String> idToTerm = new HashMap<>();
+        for (String s:dictianary.keySet()) {
+            heap.add(dictianary.get(s));
+            idToTerm.put(dictianary.get(s).getId(),s);
+        }
+        print10MostFreqTerms(heap,idToTerm);
+//        showThatZipIsAFuckingLiyer(heap,idToTerm);
+
+
+
+    }
+
+    public void print10MostFreqTerms(TreeSet<DicEntry> heap, HashMap<Integer, String> idToTerm){
+        System.out.println("top 10 most frequent terms: ");
+        int n =1;
+        for(DicEntry entry:heap) {
+            System.out.println(n+")  " + idToTerm.get(entry.getId())+"   "+ entry );
+            n++;
+            if(n>10)
+                return;
+
+        }
+    }
+    public void showThatZipIsAFuckingLiyer(TreeSet<DicEntry> heap, HashMap<Integer, String> idToTerm){
+        try{
+            File zipf = new File (path+"\\zipf.csv");
+            FileWriter fw = new FileWriter(zipf);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.flush();
+            for(DicEntry entry: heap){
+                bw.write(idToTerm.get(entry.getId())+","+entry.totalTermFrequency+"\n");
+            }
+            bw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("error zipf");
         }
     }
 
