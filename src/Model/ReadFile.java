@@ -167,9 +167,16 @@ public class ReadFile {
 
         Thread t = new Thread(()->indexer.saveDictinary());
         t.start();
+
         indexer.writeLastWaitingList();
         indexer.mergeLastMiniFolded();
         indexer.mergeFinalePostingList();
+        System.out.println("\n***************************************************************************");
+        System.out.println("total files processed: "+ numOdfiles);
+        System.out.println("total documents parsed: "+ (docNumber));
+        indexer.creatReportData();
+        System.out.println("amount of numbers: "+ parser.getNumberSet().size());
+        System.out.println("document indexing complete");
 
         try {
             t.join();
@@ -177,18 +184,7 @@ public class ReadFile {
             e.printStackTrace();
             System.out.println("wtf?! mergeFinalePostingList thread exception");
         }
-//        indexer.printTermlist();
-//        indexer.printWaitList();
-//        indexer.printWaitListSize();
-        System.out.println("\n***************************************************************************");
-        System.out.println("total files processed: "+ numOdfiles);
-        System.out.println("total documents parsed: "+ (docNumber));
 
-
-        System.out.println("amount of numbers: "+ parser.getNumberSet().size());
-//        System.out.println(parser.getNumberSet());
-//        indexer.test();
-        System.out.println("document indexing complete");
         writer.close();
         return indexer.getDictianary();
     }

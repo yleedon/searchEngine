@@ -14,7 +14,7 @@ public class Indexer {
 
     private double tempFileSize;
     private int waitlistSize;
-    private Map<String,DicEntry> dictianary;// term:[id,numOfDocs,totalFrequancy]
+    private Map<String,DicEntry> dictianary;
     private int nextLineNum;
     private Map<Integer,String> waitList;
     private AtomicInteger tempFileName;
@@ -25,31 +25,33 @@ public class Indexer {
     private List<Thread> bigThreadList;
 
 
-
+    /**
+     * Constructor: createsall needed feilds including the first temp posting directory "w1"
+     * @param outPath - the output path were the data is to be saved
+     * @param size - the size of the temporary posting lists
+     */
     public Indexer(String outPath, double size) {
-
         miniThreadList = new ArrayList<>();
         bigThreadList = new ArrayList<>();
-
-
-
         tempFileName = new AtomicInteger(0);
         path = outPath;
         waitlistSize=0;
         this.dictianary =  new TreeMap<>();
         nextLineNum = 0;
-        waitList = new TreeMap<>();/////yaniv
+        waitList = new TreeMap<>();
         tempFileSize = size*1000000;
         waitFolderId = 1;
         createDirectory(path+"\\waitingList\\w1");
 
     }
 
-
+    /**
+     * adds the doc terms to the dictionary and updates the terms data, also creates posting lists and writes them to the disk
+     * @param doc - the doc that is to be added.
+     */
     public void addDoc(MyDocument doc){
         if(doc==null)
             return;
-
         Map<String, Pair<Integer,Integer>> docMap = doc.getTerms();
         for (Object t:docMap.keySet()) {
             if(t.toString().equals(""))
@@ -57,6 +59,7 @@ public class Indexer {
 
             String term = t.toString();
             String originalTerm = term;
+            //deal with capital or lowerCase if allready exists in dic
             if(!term.toLowerCase().equals(term.toUpperCase())) { // big and small are different
 
                 if(term.toLowerCase().equals(term)) { // is lower case
@@ -155,9 +158,18 @@ public class Indexer {
         }
     }
 
+    /**
+     * merges the last temp directory with posting lists
+     */
     public void mergeLastMiniFolded(){
         mergeSingleFolder(waitFolderId,miniThreadList);
     }
+
+    /**
+     * merges a mini posting lists in a given directory
+     * @param folderId - the folerId that is to be merged
+     * @param tList - the thread list of all the threads that have been writing to the Directory ("W"+foldierId)
+     */
     private void mergeSingleFolder(int folderId, List<Thread> tList) {
         try {
             System.out.println("merging w"+folderId);
@@ -174,9 +186,12 @@ public class Indexer {
 
     }
 
-
+    /**
+     * writes the current waiting list to the disk
+     * @param CurrentWaitList - the current waiting list that is to be saved to the disk (not used any more)
+     * @param folderId - the directory in which the waiting list is to be saved.
+     */
     private void writeWaitingList(Map<Integer, String> CurrentWaitList,int folderId) {
-
         try {
             String fName = ""+ tempFileName.incrementAndGet();
             String tempPath = path+"\\waitingList\\w"+folderId+"\\"+fName+".txt";
@@ -192,35 +207,23 @@ public class Indexer {
                 writer.println(CurrentWaitList.get(line));
             }
             writer.close();
-
         }
         catch (Exception e){
             System.out.println("error index "+e.getMessage());
         }
         System.out.println("finished writing waitlist to disk");
-
-
     }
 
-
+    /**
+     * writes the last waiting list to the disk - file size may range between 0 to "waitListSize"
+     */
     public void writeLastWaitingList(){
         writeWaitingList(waitList,waitFolderId);
     }
-    public void printWaitList(){
-        for (int ent:waitList.keySet()) {
-            System.out.println(waitList.get(ent));
-        }
-    }
-    public void printTermlist(){
-        for (String ent:dictianary.keySet()) {
-            System.out.println("term: ["+ent+"] line: "+ dictianary.get(ent));
-        }
-    }
-    public void printWaitListSize(){
-        System.out.println("waitlist size = "+ (double)waitlistSize/1000000+"MB");
-    }
 
-
+    /**
+     * saves the dictionary to the disk.
+     */
     public void saveDictinary() {
         try {
             System.out.println("started writing dictionary");
@@ -245,31 +248,29 @@ public class Indexer {
         }
     }
 
-    public void reset() {
-        dictianary.clear();
-        dictianary=null;
-
-        waitList.clear();
-        waitList = null;
-
-    }
-
+    /**
+     *
+     * @return - the dictionary
+     */
     public Map<String,DicEntry> getDictianary(){
         return dictianary;
     }
 
-
-
-
-
-
-
-
+    /**
+     * calculates and returns the gap between the current doc to the last doc
+     * @param term - the term that is in session
+     * @param docId - the new docId
+     * @return
+     */
     private int getGap(String term,int docId){
         int last = dictianary.get(term).getLastDocin();
         return docId-last;
     }
 
+    /**
+     * creates a directory
+     * @param dir - the directory that is to be created
+     */
     private void createDirectory(String dir) {
         File output = new File(dir);
         if (!output.exists()) {
@@ -287,9 +288,11 @@ public class Indexer {
                 System.out.println("DIR "+dir+" created");
             }
         }
-
     }
 
+    /**
+     * merges the final temp osting lists to one file: "postingList.txt"
+     */
     public void mergeFinalePostingList(){
 
         try {
@@ -303,4 +306,73 @@ public class Indexer {
         }
     }
 
+
+    //********************************* dont need in final project submission..?*********************************************************
+
+    /**
+     * data for the search engine report
+     * creates a data set needed and then calls the needed data functions
+     */
+    public void creatReportData(){
+        TreeSet<DicEntry> heap = new TreeSet<>();
+        HashMap<Integer,String> idToTerm = new HashMap<>();
+        for (String s:dictianary.keySet()) {
+            heap.add(dictianary.get(s));
+            idToTerm.put(dictianary.get(s).getId(),s);
+        }
+        print10MostFreqTerms(heap,idToTerm);
+//        showThatZipIsAFuckingLiyer(heap,idToTerm);
+    }
+
+    //for report
+    private void print10MostFreqTerms(TreeSet<DicEntry> heap, HashMap<Integer, String> idToTerm){
+        System.out.println("top 10 most frequent terms: ");
+        int n =1;
+        for(DicEntry entry:heap) {
+            System.out.println(n+")  " + idToTerm.get(entry.getId())+"   "+ entry );
+            n++;
+            if(n>10)
+                return;
+
+        }
+    }
+
+    //for report
+    private void showThatZipIsAFuckingLiyer(TreeSet<DicEntry> heap, HashMap<Integer, String> idToTerm){
+        try{
+            File zipf = new File (path+"\\zipf.csv");
+            FileWriter fw = new FileWriter(zipf);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.flush();
+            for(DicEntry entry: heap){
+                bw.write(idToTerm.get(entry.getId())+","+entry.totalTermFrequency+"\n");
+            }
+            bw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("error zipf");
+        }
+    }
+
+    public void reset() {
+        dictianary.clear();
+        dictianary=null;
+
+        waitList.clear();
+        waitList = null;
+
+    }
+    public void printWaitList(){
+        for (int ent:waitList.keySet()) {
+            System.out.println(waitList.get(ent));
+        }
+    }
+    public void printTermlist(){
+        for (String ent:dictianary.keySet()) {
+            System.out.println("term: ["+ent+"] line: "+ dictianary.get(ent));
+        }
+    }
+    public void printWaitListSize(){
+        System.out.println("waitlist size = "+ (double)waitlistSize/1000000+"MB");
+    }
 }
