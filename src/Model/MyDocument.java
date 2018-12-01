@@ -162,21 +162,26 @@ public class MyDocument {
      * @return - the same given string without '\n' in the beginning and in the end.
      */
     private String cleanEdges(String s) {
-        if (s == null)
-            return null;
+        try {
+            if (s == null)
+                return null;
 //        while(s.startsWith("\n") || s.startsWith(" ") || s.startsWith("(")){
 //            s = s.substring(1);
 //        }
-        while (delimiters.contains(""+s.charAt(0))){
-            s = s.substring(1);
-        }
-        while (delimiters.contains(""+s.charAt(s.length()-1))){
-            s = s.substring(0, s.length()-1);
-        }
+            while (s.length()>0 && delimiters.contains("" + s.charAt(0))) {
+                s = s.substring(1);
+            }
+            while (s.length()>0 && delimiters.contains("" + s.charAt(s.length() - 1))) {
+                s = s.substring(0, s.length() - 1);
+            }
 //        while(s.endsWith("\n") || s.endsWith(" ") || s.endsWith(")")){
 //            s = s.substring(0, s.length()-1);
 //        }
-        return s;
+            return s;
+        }catch (Exception e){
+            System.out.println();
+            return "";
+        }
     }
 
     /**

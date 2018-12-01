@@ -680,7 +680,7 @@ public class Parse {
      * @param term - the term that may be a city
      */
     private void checkCityPosition(String term){
-        if(term.toUpperCase().equals(cityName)){
+        if(!term.equals("") && term.toUpperCase().equals(cityName)){
             if(cityPositionList.equals(""))
                 cityPositionList = termPosition+"";
             else cityPositionList += ","+termPosition;
