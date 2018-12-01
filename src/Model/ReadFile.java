@@ -1,7 +1,4 @@
 package Model;
-
-import javafx.util.Pair;
-
 import java.io.*;
 import java.util.Map;
 
@@ -38,6 +35,11 @@ public class ReadFile {
 
     }
 
+    /**
+     * sets the output destination in accordance to "stemmed" or "not stemmed" and also initializes the indexer
+     * @param outputPath - the dataBase destination
+     * @param stemmer - true if stemmed is to be used
+     */
     private void setOutputDestination(String outputPath, boolean stemmer) {
         String masterDir = "\\dataBase";
         createDirectory(outputPath+masterDir);
@@ -54,6 +56,10 @@ public class ReadFile {
 
     }
 
+    /**
+     * creates a directory
+     * @param dir - the path of the new directory
+     */
     private void createDirectory(String dir) {
         File output = new File(dir);
         if (!output.exists()) {
@@ -311,6 +317,7 @@ public class ReadFile {
         return "<" + tag + ">";
     }
 
+
     public void reset() {
         path = null; /////////////////////////////////////////**********//the path to the corpus should be in config!!!!!!
         docIdxFile = null;; //the file ReadFile writes into. AKA doocumentIdx.txt
@@ -320,6 +327,10 @@ public class ReadFile {
         numOdfiles = 0;;
     }
 
+    /**
+     * returns the number of docs processed
+     * @return
+     */
     public int numOfDocsProcessed(){return  docNumber;}
     //</editor-fold>
 

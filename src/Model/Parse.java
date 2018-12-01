@@ -1,8 +1,6 @@
 package Model;
 
-import javafx.beans.property.DoubleProperty;
 import javafx.util.Pair;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -26,8 +24,8 @@ public class Parse {
     private String[] tokens;
     private Map<String,Pair<Integer,Integer>> indexMap; //pair: frequency,first appearance
     int maxFreq;
-    private String quote;
-    private boolean quoteInProgress;
+//    private String quote;
+//    private boolean quoteInProgress;
     private Stemmer stemmer;
 
     /**
@@ -35,7 +33,6 @@ public class Parse {
      * @param text - the string to work on
      */
     public Parse(String stopWordPath, String text,boolean stemmerStatus) {
-//        System.out.println(text);
         this.txt = text.replace("\n", " ");
         this.useStemming = stemmerStatus;
         initializeMaps(stopWordPath);
@@ -43,6 +40,40 @@ public class Parse {
         stemmer = new Stemmer();
 
     }
+
+    /**
+     * this will take the textt and change the word formats.
+     * @throws Exception
+     */
+    public void parse() throws Exception{
+        indexMap = new HashMap<>();
+//        quote="\"";
+//        quoteInProgress = false;
+        ans ="";
+        maxFreq=0;
+        if(txt==null) {
+            return;
+        }
+        tokens = txt.split(" ");
+        if (tokens==null || tokens.length==0)
+            return;
+        String word = "";
+        for (int tNum = 0;tNum < tokens.length;tNum++ ) {
+            if(tokens[tNum]==null)
+                continue;
+            try {
+                word = tokenToTerm(tokens[tNum], tNum);
+            }
+            catch (Exception e){
+                System.out.println("error something went terribly wrong - this should never happen ) (PARSE: parse():");
+                System.out.println(e.getMessage());
+            }
+            termPosition = tNum;
+            addTerm(word);
+        }
+    }
+
+    //<editor-fold desc="Private Functions">
 
     /**
      * initializes the Hash Maps
@@ -113,50 +144,6 @@ public class Parse {
             System.out.println("stop words were not used!!");
         }
     }
-
-    /**
-     * this will take the textt and change the word formats.
-     * @throws Exception
-     */
-    public void parse() throws Exception{
-        indexMap = new HashMap<>();
-//        quote="\"";
-//        quoteInProgress = false;
-        ans ="";
-        maxFreq=0;
-        if(txt==null) {
-//            System.out.println("*******************************************************************8 this doc.gettext was empty(null)");
-            return;
-        }
-        tokens = txt.split(" ");
-        if (tokens==null || tokens.length==0)
-            return;
-
-        String word = "";
-        for (int tNum = 0;tNum < tokens.length;tNum++ ) {
-            if(tokens[tNum]==null)
-                continue;
-            try {
-                word = tokenToTerm(tokens[tNum], tNum);
-            }
-            catch (Exception e){
-                System.out.println("something went terribly wrong - this should never happen ) (PARSE: parse():");
-                System.out.println(e.getMessage());
-            }
-            termPosition = tNum;
-            addTerm(word);
-        }
-    }
-
-    /**
-     * return the string of the parser (for tests)
-     * @return the parsed text.
-     */
-    public String toString(){
-        return ans;
-    }
-
-    //<editor-fold desc="Private Functions">
 
     //<editor-fold desc="Classifying Types Related">
     /**
@@ -355,32 +342,24 @@ public class Parse {
      */
     private String dealWithSimpleNumber(String word,int tNum) {
         try {
-            double dan = 2.07;
-            dan = 100*dan;
             double number = Double.parseDouble(word);
             number = number*100;
             number = Math.floor(number);
             number = number/100;
-//            number =  Math.floor(number * 100) / 100;
 
             if((Math.abs(number) >= 1000 && Math.abs(number) < 1000000)){
 //                number = (int)number;
-                number=number/1000;
+                number=Math.floor((number/1000)*100)/100;
                 if(number % 1 == 0) {
                     numberSet.add((int) number + "K");
                     return (int) number + "K";
                 }
-//
+
                 numberSet.add(number + "K");
                 return number + "K";
             }
 
             if ((Math.abs(number) >= 1000000 && Math.abs(number) < 1000000000) ){
-
-                double fraction;
-                if(number%1 != 0){
-                    fraction = number % 1000000;
-                }
 
                 number=(int)number;
                 number=number/1000000;
@@ -413,7 +392,6 @@ public class Parse {
         catch(Exception e) {
             return word; // not a number
         }
-
     }
 
     /**
@@ -434,10 +412,10 @@ public class Parse {
     }
 
     /**
-     * num
-     * @param num
-     * @param tNum
-     * @return
+     * checks after a number the next tokens and deals with it
+     * @param num - the token
+     * @param tNum - the token number
+     * @return - term
      */
     private String checkAfterNumber(String num, int tNum) {
         if (tNum+1 >= tokens.length || tokens[tNum+1] == null)
@@ -453,9 +431,6 @@ public class Parse {
             tokens[tNum+1] = null;
             return num + "%";
         }
-
-        //checks for numberSizeword
-
 
         //checks for "Dollars"
         if(secondWord.toLowerCase().equals("dollars")){
@@ -509,6 +484,12 @@ public class Parse {
         return num;
     }
 
+    /**
+     * checks if is a number fraction
+     * changes the fraction to decimal point with 2 numbers after the zero
+     * @param word - the token
+     * @return - the fraction or token
+     */
     private String dealWithFraction(String word) {
         String[] fraction = word.split("/");
         if (fraction.length != 2)
@@ -658,7 +639,7 @@ public class Parse {
     //<editor-fold desc="Parser Actions">
     /**
      * adds the term to the table
-     * @param word
+     * @param word - the trm that is to be added
      */
     private void addTerm(String word) {
         if(word!=null && !word.equals("") && !word.equals("-") && !stopWords.contains(word.toLowerCase())) {
@@ -683,16 +664,6 @@ public class Parse {
             ans = ans + "{" + word + "} "; // yaniv
 
         }
-    }
-
-    private String makeCaputalIfNeeded(String word) {
-        if(word != null && !word.equals("") && !word.toLowerCase().contains(" ") && !word.contains("-")){
-            for(int i = 0 ; i < word.length();i++){
-                if(word.charAt(i) >= 'A' && word.charAt(i) <= 'Z') //has big letter
-                    return word.toUpperCase();
-            }
-        }
-        return word;
     }
 
     /**
@@ -808,6 +779,11 @@ public class Parse {
      * @return - the token after stemming
      */
 
+    /**
+     * stemmes a token
+     * @param word - the token
+     * @return the stemmed token
+     */
     private String stem(String word) {
         if (!word.contains("-")) {
             stemmer.resetStemer();
@@ -994,13 +970,11 @@ public class Parse {
      * @param text - the String to parse
      */
     public void setTxt(String text){
-//        System.out.println("///////////////////////////////////////////////////////////////////////////////////////");
         txt  = text;
         ans="";
         if(text!=null) {
             txt = text.replace("\n"," ");
         }
-//        System.out.println(text);
     }
 
     /**
@@ -1027,6 +1001,10 @@ public class Parse {
     }
     //</editor-fold>
 
+    /**
+     * returns the indexMap (term --> (tr,token Number)
+     * @return
+     */
     public Map<String,Pair<Integer,Integer>> getDocMap(){
         return indexMap;
     }
@@ -1036,7 +1014,19 @@ public class Parse {
             System.out.println(num);
         }
     }
+
+    /**
+     * @return - the token list length
+     */
     public int getTokenSize(){
         return tokens.length;
+    }
+
+    /**
+     * return the string of the parser (for tests)
+     * @return the parsed text.
+     */
+    public String toString(){
+        return ans;
     }
 }

@@ -1,10 +1,9 @@
 #add test format: "term"="term"  you can add notes with "#". make sure only one space after term: term=term #bla bla
-10,123=10.123K
+10,123=10.12K
 123 Thousand=123K
-1010.56=1.01056K
+1010.56=1.01K
 10,123,000=10.12M
 55 Million=55M
-1010.56=1.01056K
 10,123,000,000=10.12B
 55 Billion=55B
 7 Trillion=7000B
@@ -14,7 +13,7 @@
 1.7320 Dollars=1.73 Dollars
 22 3/4 Dollars=22.75 Dollars
 22 3/4=22.75
-$450,000=450,000 Dollars
+$450,000=450000 Dollars
 1,000,000 Dollars=1 M Dollars
 $450,000,000=450 M Dollars
 $100 million=100 M Dollars
@@ -72,6 +71,8 @@ The $7.5-million,=7.5 Dollars million 7.5 dollars-million
 The $7.5-million=7.5 Dollars million 7.5 dollars-million
 4-7 6/12=4 7.5 4-7.5
 -4 1/4=-4.25
+8,434.9=8.43K
+123456=123.45K
 
 
 

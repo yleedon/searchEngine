@@ -69,7 +69,7 @@
           <MenuItem mnemonicParsing="false" text="English" />
           <MenuItem mnemonicParsing="false" text="Hebrew" />
             <MenuItem mnemonicParsing="false" text="Mokish" />
-            <MenuItem mnemonicParsing="false" text="Elfish" />
+            <MenuItem mnemonicParsing="false" text="Elvish" />
         </items>
       </MenuButton>
   </children>
