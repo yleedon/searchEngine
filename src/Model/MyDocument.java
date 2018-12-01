@@ -8,7 +8,7 @@ import java.util.Set;
 public class MyDocument {
 
     //<editor-fold desc="Fields">
-    private String delimiters = " $%'\",?!\\/:;()[]{}\n#&|*�+=^@_~";
+    private String delimiters = " $%'\",?!\\/:;()[]{}\n#&|*�+=^@_~-";
     private String doc, txt, city, date, title;
     private int textTokenCount;
     private Map<String, Pair<Integer, Integer>> terms;
@@ -215,7 +215,7 @@ public class MyDocument {
     }
 
     private boolean isNumber(char c){
-        if (c > '0' && c<'9')
+        if (c >= '0' && c <= '9')
             return true;
         return false;
     }
