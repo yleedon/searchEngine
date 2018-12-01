@@ -1,20 +1,18 @@
 package Model;
 
 import javafx.util.Pair;
-
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 public class MyDocument {
 
     //<editor-fold desc="Fields">
-    String doc, txt, city, date, title;
-    int textTokenCount;
-    Map<String, Pair<Integer,Integer>> terms;
-    Set<String> titleSet;
-    int docNo;
+    private String delimiters = "$%'\",?!\\/:;()[]{}\n#&|*�+=^@_~";
+    private String doc, txt, city, date, title;
+    private int textTokenCount;
+    private Map<String, Pair<Integer,Integer>> terms;
+    private Set<String> titleSet;
+    private int docNo;
     private String cityData;
     //</editor-fold>
 
@@ -120,8 +118,6 @@ public class MyDocument {
         doc = cleanEdges(doc);
         if(doc != null && ((doc.startsWith("<Doc>") && doc.endsWith("</Doc>")) || (doc.startsWith("<DOC>") && doc.endsWith("</DOC>")))) {
             this.doc = doc;
-//            this.docNo = create("<DocNo>");
-//            this.txt = create("<Text>");
         }
         else
             this.doc = null;
@@ -168,13 +164,28 @@ public class MyDocument {
     private String cleanEdges(String s) {
         if (s == null)
             return null;
-        while(s.startsWith("\n") || s.startsWith(" ") || s.startsWith("(")){
+//        while(s.startsWith("\n") || s.startsWith(" ") || s.startsWith("(")){
+//            s = s.substring(1);
+//        }
+        while (delimiters.contains(""+s.charAt(0))){
             s = s.substring(1);
         }
-        while(s.endsWith("\n") || s.endsWith(" ") || s.endsWith(")")){
+        while (delimiters.contains(""+s.charAt(s.length()-1))){
             s = s.substring(0, s.length()-1);
         }
+//        while(s.endsWith("\n") || s.endsWith(" ") || s.endsWith(")")){
+//            s = s.substring(0, s.length()-1);
+//        }
         return s;
+    }
+
+    /**
+     * replacing = , @ * ~ to empty string
+     * @param s - the string to change
+     * @return same string without these signs
+     */
+    private String replaceDelimiters(String s){
+        return s.replace("=", "").replace(",", "").replace("@", "").replace("*", "").replace("~", "");
     }
 
     public void setDocId(int docNumber){
@@ -201,7 +212,7 @@ public class MyDocument {
     }
 
     public void setCityData(String cityPositions) {
-        cityData ="D"+cityPositions+"~";
+        cityData ="*"+cityPositions+"~";
     }
 
     public String getCityData(int gap) {
