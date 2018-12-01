@@ -6,11 +6,13 @@ public class CityEntry {
     private String coin;
     private String population;
     private String docAndPositions;
+    private int lastDocIn;
 
 
     public CityEntry(String city){
         cityName = city;
         docAndPositions = "";
+        lastDocIn = 0;
     }
 
     public void setState(String state) {
@@ -28,8 +30,19 @@ public class CityEntry {
     public void addDoc(String newDoc) {
         docAndPositions += newDoc;
     }
+
+
+
     public String toString(){
-        return cityName+":"+state+","+coin+","+population+"~"+docAndPositions;
+        return cityName+"="+state+","+coin+","+population+"@"+docAndPositions;
+    }
+
+    public int getLastDocIn() {
+        return lastDocIn;
+    }
+
+    public void setLastDocIn(int lastDocIn) {
+        this.lastDocIn = lastDocIn;
     }
 }
 

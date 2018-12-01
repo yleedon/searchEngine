@@ -14,6 +14,7 @@ public class ReadFile {
     Indexer indexer;
     int numOdfiles;
     private Map<String,CityEntry> cityDick;
+    String outPath;
 
     //</editor-fold>
 
@@ -27,6 +28,7 @@ public class ReadFile {
      */
     public ReadFile(String corpusPath,String outputPath, boolean stemmer) {
 
+        outPath = outputPath;
         cityDick = new TreeMap<>();
         this.path = corpusPath;
         docNumber=0;
@@ -174,8 +176,10 @@ public class ReadFile {
             n++;
         }
 
-        Thread t = new Thread(()->indexer.saveDictinary());
-        t.start();
+        Thread t1 = new Thread(()->indexer.saveDictinary());
+        t1.start();
+        Thread t2 = new Thread(()->saveCityIndex());
+        t2.start();
 
         indexer.writeLastWaitingList();
         indexer.mergeLastMiniFolded();
@@ -188,7 +192,8 @@ public class ReadFile {
         System.out.println("document indexing complete");
 
         try {
-            t.join();
+            t1.join();
+            t2.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
             System.out.println("wtf?! mergeFinalePostingList thread exception");
@@ -301,11 +306,19 @@ public class ReadFile {
 
     private void addDocToCity(MyDocument document) {
         String city = document.getCity();
+        CityEntry entry;
         if(!cityDick.containsKey(city)){
-            cityDick.put(city,new CityEntry(city));
+            entry = new CityEntry(city);
+            cityDick.put(city,entry);
             //api
         }
-        cityDick.get(city).addDoc(document.getCityData());
+        else
+            entry = cityDick.get(city);
+
+        int gap = document.getDocId() - entry.getLastDocIn();
+        entry.addDoc(document.getCityData(gap));
+        entry.setLastDocIn(document.getDocId());
+
     }
 
     /**
@@ -352,6 +365,22 @@ public class ReadFile {
      * @return
      */
     public int numOfDocsProcessed(){return  docNumber;}
+
+    private void saveCityIndex(){
+        try {
+
+            File cityIndex = new File(outPath + "\\cityIndex.txt");
+            FileWriter fw = new FileWriter(cityIndex);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.flush();
+            for (String city : cityDick.keySet()) {
+                bw.write(cityDick.get(city)+"\n");
+            }
+        }
+        catch (Exception e){
+            System.out.println("error readFile save cityIndex ");
+        }
+    }
     //</editor-fold>
 
 }
