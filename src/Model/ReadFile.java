@@ -15,6 +15,7 @@ public class ReadFile {
     int numOdfiles;
     private Map<String,CityEntry> cityDick;
     String outPath;
+    boolean stem;
 
     //</editor-fold>
 
@@ -28,6 +29,7 @@ public class ReadFile {
      */
     public ReadFile(String corpusPath,String outputPath, boolean stemmer) {
 
+        stem = stemmer;
         outPath = outputPath;
         cityDick = new TreeMap<>();
         this.path = corpusPath;
@@ -368,14 +370,18 @@ public class ReadFile {
 
     private void saveCityIndex(){
         try {
+            String isStemmed = "\\stemmed";
+            if(!stem)
+                isStemmed = "\\not stemmed";
 
-            File cityIndex = new File(outPath + "\\cityIndex.txt");
+            File cityIndex = new File(outPath +"\\dataBase"+isStemmed+ "\\cityIndex.txt");
             FileWriter fw = new FileWriter(cityIndex);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.flush();
             for (String city : cityDick.keySet()) {
                 bw.write(cityDick.get(city)+"\n");
             }
+            bw.close();
         }
         catch (Exception e){
             System.out.println("error readFile save cityIndex ");
