@@ -24,9 +24,13 @@ public class Parse {
     private String[] tokens;
     private Map<String,Pair<Integer,Integer>> indexMap; //pair: frequency,first appearance
     int maxFreq;
+    private Stemmer stemmer;
+    String cityName;
+    String cityPositionList;
+
 //    private String quote;
 //    private boolean quoteInProgress;
-    private Stemmer stemmer;
+
 
     /**
      * Constructer - recieves a string to work on
@@ -642,10 +646,15 @@ public class Parse {
      * @param word - the trm that is to be added
      */
     private void addTerm(String word) {
+
+
+
         if(word!=null && !word.equals("") && !word.equals("-") && !stopWords.contains(word.toLowerCase())) {
             word = word.replace(":","").replace(",","").replace("~",""); // makes sure no term contains : or ,
             word = deleteDelimeter(word);
-            if(word.equals("") || stopWords.contains(word.toLowerCase()))
+            checkCityPosition(word);
+
+            if(word == null || word.equals("") || stopWords.contains(word.toLowerCase()))
                 return;
             if(!word.contains("-"))
                 word = Capitalize(word);
@@ -663,6 +672,18 @@ public class Parse {
             }
             ans = ans + "{" + word + "} "; // yaniv
 
+        }
+    }
+
+    /**
+     * cecks if the term is a the city term and ads its position to th data
+     * @param term - the term that may be a city
+     */
+    private void checkCityPosition(String term){
+        if(term.toUpperCase().equals(cityName)){
+            if(cityPositionList.equals(""))
+                cityPositionList = termPosition+"";
+            else cityPositionList += ","+termPosition;
         }
     }
 
@@ -969,12 +990,14 @@ public class Parse {
      * sets the text to work on
      * @param text - the String to parse
      */
-    public void setTxt(String text){
+    public void setTxt(String text, String city){
         txt  = text;
         ans="";
         if(text!=null) {
             txt = text.replace("\n"," ");
         }
+        cityName = city;
+        cityPositionList = "";
     }
 
     /**
@@ -1028,5 +1051,9 @@ public class Parse {
      */
     public String toString(){
         return ans;
+    }
+
+    public String getCityPositions() {
+        return cityPositionList;
     }
 }

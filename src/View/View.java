@@ -104,7 +104,7 @@ public class View {
             int i = 0;
             for (String input : tests.keySet()) {
                 i++;
-                parser.setTxt(input);
+                parser.setTxt(input,"");
                 parser.parse();
 
                 if (!parser.toString().equals(""))

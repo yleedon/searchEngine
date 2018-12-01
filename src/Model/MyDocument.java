@@ -15,6 +15,7 @@ public class MyDocument {
     Map<String, Pair<Integer,Integer>> terms;
     Set<String> titleSet;
     int docNo;
+    private String cityData;
     //</editor-fold>
 
     //<editor-fold desc="Constructor">
@@ -47,7 +48,7 @@ public class MyDocument {
                 city = cleanEdges(city.split(" ")[0].toUpperCase());
             }
         }
-        return ","+city;
+        return city;
     }
 
     /**
@@ -197,5 +198,13 @@ public class MyDocument {
     public int isInTitle(String term){
         if (titleSet == null) return 0;
         return titleSet.contains(term)?1:0;
+    }
+
+    public void setCityData(String cityPositions) {
+        cityData = docNo+"D"+cityPositions+"~";
+    }
+
+    public String getCityData() {
+        return cityData;
     }
 }
