@@ -224,7 +224,7 @@ public class View {
 
 //            int iDoc = Integer.valueOf(fld_path.getText());
                 MyDocument document = rf.getDocument(fld_path.getText());// ("LA122790-0222");
-                System.out.println(document.getTxt());
+                System.out.println(document.getDoc());
 //            testReadFileAlert(document.getDocId(), document.getTxt());
             }
         } catch (Exception e) {

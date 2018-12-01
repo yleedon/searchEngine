@@ -201,10 +201,10 @@ public class MyDocument {
     }
 
     public void setCityData(String cityPositions) {
-        cityData = docNo+"D"+cityPositions+"~";
+        cityData ="D"+cityPositions+"~";
     }
 
-    public String getCityData() {
-        return cityData;
+    public String getCityData(int gap) {
+        return gap+cityData;
     }
 }
