@@ -189,7 +189,7 @@ public class ReadFile {
         System.out.println("\n***************************************************************************");
         System.out.println("total files processed: "+ numOdfiles);
         System.out.println("total documents parsed: "+ (docNumber));
-        indexer.creatReportData();
+//        indexer.creatReportData();
         System.out.println("amount of numbers: "+ parser.getNumberSet().size());
         System.out.println("document indexing complete");
 
