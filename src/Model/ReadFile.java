@@ -1,6 +1,7 @@
 package Model;
 import java.io.*;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class ReadFile {
     //<editor-fold desc="Fields">
@@ -12,6 +13,7 @@ public class ReadFile {
     Parse parser;
     Indexer indexer;
     int numOdfiles;
+    private Map<String,CityEntry> cityDick;
 
     //</editor-fold>
 
@@ -25,6 +27,7 @@ public class ReadFile {
      */
     public ReadFile(String corpusPath,String outputPath, boolean stemmer) {
 
+        cityDick = new TreeMap<>();
         this.path = corpusPath;
         docNumber=0;
         numOdfiles = 0;
@@ -245,16 +248,21 @@ public class ReadFile {
                     MyDocument document = new MyDocument(docBuilder.toString());
                     document.setDocId(++docNumber);
 
-                    parser.setTxt(document.getTxt());
+                    parser.setTxt(document.getTxt(),document.getCity());
                     int maxFreq = -1;
                     try {
                         parser.parse();
 
                         maxFreq = parser.maxFreq;
+                        document.setCityData(parser.getCityPositions());
+                        if(!document.getCity().equals("")){
+                            addDocToCity(document);
+                        }
+
                         document.setTerms(parser.getDocMap());
                         document.setTextTokenCount(parser.getTokenSize());
 
-                        parser.setTxt(document.getTitle());
+                        parser.setTxt(document.getTitle(),document.getCity());
                         parser.parse();
                         document.setTitleSet(parser.getDocMap());
 
@@ -268,7 +276,10 @@ public class ReadFile {
                     }
                     //entry: doxId,startLine,endLine,path,termsCount,MaxFrequency,City(if needed)\n
                     int termsCount = document.getTerms()!=null?document.getTerms().size():0;
-                    entry = new StringBuilder().append(docNumber).append(",").append(startIdx).append(",").append(endIdx).append(",").append(file.getPath().replace(path+"\\","")).append(",").append(termsCount).append(",").append(maxFreq).append(document.getCity()).append("\n").toString();
+                    String city = ","+document.getCity();
+                    if(city.length()==1)
+                        city = "";
+                    entry = new StringBuilder().append(docNumber).append(",").append(startIdx).append(",").append(endIdx).append(",").append(file.getPath().replace(path+"\\","")).append(",").append(termsCount).append(",").append(maxFreq).append(city).append("\n").toString();
 
                     docBuilder.delete(0,docBuilder.length());
                     writer.append(entry);
@@ -286,6 +297,15 @@ public class ReadFile {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    private void addDocToCity(MyDocument document) {
+        String city = document.getCity();
+        if(!cityDick.containsKey(city)){
+            cityDick.put(city,new CityEntry(city));
+            //api
+        }
+        cityDick.get(city).addDoc(document.getCityData());
     }
 
     /**
