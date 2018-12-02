@@ -11,11 +11,19 @@ public class CityInfo {
     CountryService service;
 
     public CityInfo(String city) {
+        if (city.length() == 0){
+            this.city = "";
+            population = "";
+            currency = "";
+            country = "";
+            return;
+        }
+
         this.city = city;
+        service = eu.fayder.restcountries.v1.rest.CountryService.getInstance();
         setCountryData();
         population = null;
         currency = null;
-        service = eu.fayder.restcountries.v1.rest.CountryService.getInstance();
     }
 
     private void setCountryData() {

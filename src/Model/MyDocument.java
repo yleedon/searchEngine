@@ -44,15 +44,15 @@ public class MyDocument {
     public String getCity() {
         if (city == null) {
             city = create("<F P=104>");
-            if (city == null || city.length() == 0) return "";
+            if (city == null || city.length() == 0) {
+                city = "";
+                return city;
+            }
             city = cleanNumerialEdges(city);
             if (city.contains(" ")) {
-                city = cleanEdges(city.split(" ")[0].toUpperCase());
+                city = city.split(" ")[0];
             }
-            else {
-                cleanEdges(city.toUpperCase());
-            }
-
+            city = cleanNumerialEdges(city.toUpperCase());
             city = replaceDelimiters(city);
         }
         return city;
@@ -203,18 +203,19 @@ public class MyDocument {
     }
 
     private String cleanNumerialEdges(String s) {
+        String delimetersWithNumbers = delimiters + "1234567890";
         if (s == null)
             return null;
-        while (s.length() > 0 && isNumber(s.charAt(0))) {
+        while (s.length() > 0 && delimetersWithNumbers.contains("" + s.charAt(0))) {
             s = s.substring((1));
         }
-        while (s.length() > 0 && isNumber(s.charAt(s.length() - 1))) {
+        while (s.length() > 0 && delimetersWithNumbers.contains("" + s.charAt(s.length() - 1))) {
             s = s.substring(0, s.length() - 1);
         }
         return s;
     }
 
-    private boolean isNumber(char c){
+    private boolean isNumber(char c) {
         if (c >= '0' && c <= '9')
             return true;
         return false;
