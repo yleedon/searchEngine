@@ -44,5 +44,9 @@ public class CityEntry {
     public void setLastDocIn(int lastDocIn) {
         this.lastDocIn = lastDocIn;
     }
+
+    public  String getCityName(){
+        return cityName;
+    }
 }
 

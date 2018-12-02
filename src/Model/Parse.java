@@ -134,7 +134,7 @@ public class Parse {
 
         try{
 
-            File file = new File(path+"/StopWords");
+            File file = new File(path+"\\stop_words.txt");
             BufferedReader br = new BufferedReader(new FileReader(file));
             String st;
             while ((st = br.readLine()) != null)
@@ -670,7 +670,7 @@ public class Parse {
                 if (maxFreq<1)
                     maxFreq = 1;
             }
-            ans = ans + "{" + word + "} "; // yaniv
+            ans = ans  + word ; // yaniv
 
         }
     }
