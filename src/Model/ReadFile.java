@@ -18,7 +18,7 @@ public class ReadFile {
     String outPath;
     boolean stem;
     List<Thread> apiThreadList;
-    Mutex mutex;
+//    Mutex mutex;
     Parse cityParser;
 
     //</editor-fold>
@@ -34,7 +34,7 @@ public class ReadFile {
     public ReadFile(String corpusPath,String outputPath, boolean stemmer) {
 
         cityParser = new Parse(corpusPath,"", stemmer);
-        mutex = new Mutex();
+//        mutex = new Mutex();
         apiThreadList = new ArrayList<>();
         stem = stemmer;
         outPath = outputPath;
@@ -157,7 +157,7 @@ public class ReadFile {
     //<editor-fold desc="Read Files">
 
     /**
-     * reads all the files in the corpus and writes to the documentIdx the relevant details
+     * reads all the files in the corpus calls the parser and indexer on every doc,  and writes to the documentIdx and cityIdx the relevant details
      */
     public Map<String,DicEntry>  readDirectory(){
         try {
@@ -177,8 +177,6 @@ public class ReadFile {
         double  n = 1;
         double size = list.length;
         for(File directory: list){
-
-
             if(!directory.getPath().endsWith("stop_words.txt"))
                 readDirectory(directory);
             System.out.println((int)Math.floor((n/size)*100)+"%");
@@ -189,6 +187,8 @@ public class ReadFile {
         t1.start();
         Thread t2 = new Thread(()->saveCityIndex());
         t2.start();
+        Thread t3 = new Thread(()-> indexer.writePresentedDictionary());
+        t3.start();
 
         indexer.writeLastWaitingList();
         indexer.mergeLastMiniFolded();
@@ -207,6 +207,7 @@ public class ReadFile {
 
             t1.join();
             t2.join();
+            t3.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
             System.out.println("wtf?! mergeFinalePostingList thread exception");
@@ -402,7 +403,7 @@ public class ReadFile {
         writer.close(); // the object that writes to the file
         parser = null;;
         indexer.reset();
-        numOdfiles = 0;;
+        numOdfiles = 0;
     }
 
     /**

@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -46,8 +47,8 @@ public class View {
 
 
     public View() {
-        fld_outputPath = new TextField("d:\\documents\\users\\danavra\\Documents\\IR - output");
-        fld_corpusPath = new TextField("d:\\documents\\users\\danavra\\Documents\\corpus");
+        fld_outputPath = new TextField("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data");
+        fld_corpusPath = new TextField("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data\\corpus");
     }
 
     public void testParse() {
@@ -260,11 +261,11 @@ public class View {
         if (!btn_stemmingBox.isSelected())
             stem = "not stemmed";
         try {
-            File f = new File(fld_outputPath.getText() + "/dataBase/" + stem + "/dictionary.txt");
+            File f = new File(fld_outputPath.getText() + "\\dataBase\\" + stem + "\\dicToShow.txt");
             if (!f.exists())
                 throw new Exception("error dic not found");
             Process process = Runtime.getRuntime().exec("notepad " + f.getPath());
-            process.waitFor();
+//            process.waitFor();
             System.out.println("finish");
 
         } catch (Exception e) {
@@ -477,6 +478,26 @@ public class View {
     public void testLoadDic() {
 
         System.out.println("test result: " + dictianary.get("hotel"));
+    }
+
+    public void helpPressed(){
+        try {
+            File f = new File("././readMe.txt");
+            if (!f.exists())
+                throw new Exception("error readMe.txt not found");
+            Process process = Runtime.getRuntime().exec("notepad " + f.getPath());
+//            process.;
+            System.out.println("finish");
+
+        } catch (Exception e) {
+            Alert alert = createAlert();
+            alert.setAlertType(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR 123456FO65 - 2");
+            alert.setContentText("readme not found");
+            alert.show();
+            return;
+        }
+
     }
 
 }
