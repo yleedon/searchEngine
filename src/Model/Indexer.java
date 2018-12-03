@@ -218,6 +218,7 @@ public class Indexer {
      * writes the last waiting list to the disk - file size may range between 0 to "waitListSize"
      */
     public void writeLastWaitingList(){
+        if(!waitList.isEmpty())
         writeWaitingList(waitList,waitFolderId);
     }
 
@@ -322,7 +323,44 @@ public class Indexer {
         }
 //        print10MostFreqTerms(heap,idToTerm);
         showThatZipIsAFuckingLiyer(heap,idToTerm);
+
+
     }
+    public void writePresentedDictionary(){
+
+        try{
+
+
+
+
+
+
+
+            File dicFile = new File (path+"\\dicToShow.txt");
+            FileWriter fw = new FileWriter(dicFile);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter writer = new PrintWriter(bw);
+            writer.flush();
+
+            writer.println("**************DICTIONARY**************");
+            writer.println("           TERM = FREQUENCY");
+            writer.println();
+
+            for(String term:dictianary.keySet()){
+                writer.println(term + " = "+ dictianary.get(term).totalTermFrequency);
+            }
+
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("error zipf");
+        }
+    }
+
+
+
+
+
 
     //for report
     private void print10MostFreqTerms(TreeSet<DicEntry> heap, HashMap<Integer, String> idToTerm){
