@@ -177,7 +177,7 @@ public class ReadFile {
         double  n = 1;
         double size = list.length;
         for(File directory: list){
-            if(!directory.getPath().endsWith("stop_words.txt"))
+            if(directory.isDirectory())
                 readDirectory(directory);
             System.out.println((int)Math.floor((n/size)*100)+"%");
             n++;
