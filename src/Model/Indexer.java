@@ -137,7 +137,7 @@ public class Indexer {
             Map temp = waitList;
             waitList = new TreeMap<>();//yaniv
 
-            if(numOflistsInCurrrentFolder>19){
+            if(numOflistsInCurrrentFolder>99){
 
                 int folderToMerge = waitFolderId;
                 List<Thread> tempThreadList = miniThreadList;
@@ -320,8 +320,8 @@ public class Indexer {
             heap.add(dictianary.get(s));
             idToTerm.put(dictianary.get(s).getId(),s);
         }
-        print10MostFreqTerms(heap,idToTerm);
-//        showThatZipIsAFuckingLiyer(heap,idToTerm);
+//        print10MostFreqTerms(heap,idToTerm);
+        showThatZipIsAFuckingLiyer(heap,idToTerm);
     }
 
     //for report

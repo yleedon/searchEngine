@@ -46,8 +46,8 @@ public class View {
 
 
     public View() {
-        fld_outputPath = new TextField("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data");
-        fld_corpusPath = new TextField("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data\\corpus");
+        fld_outputPath = new TextField("d:\\documents\\users\\danavra\\Documents\\IR - output");
+        fld_corpusPath = new TextField("d:\\documents\\users\\danavra\\Documents\\corpus");
     }
 
     public void testParse() {

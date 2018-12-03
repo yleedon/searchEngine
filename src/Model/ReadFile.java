@@ -1,7 +1,8 @@
 package Model;
+import sun.awt.Mutex;
+
 import java.io.*;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class ReadFile {
     //<editor-fold desc="Fields">
@@ -16,6 +17,9 @@ public class ReadFile {
     private Map<String,CityEntry> cityDick;
     String outPath;
     boolean stem;
+    List<Thread> apiThreadList;
+    Mutex mutex;
+    Parse cityParser;
 
     //</editor-fold>
 
@@ -29,6 +33,9 @@ public class ReadFile {
      */
     public ReadFile(String corpusPath,String outputPath, boolean stemmer) {
 
+        cityParser = new Parse(corpusPath,"", stemmer);
+        mutex = new Mutex();
+        apiThreadList = new ArrayList<>();
         stem = stemmer;
         outPath = outputPath;
         cityDick = new TreeMap<>();
@@ -59,7 +66,7 @@ public class ReadFile {
         docIdxFile = new File(outputPath + masterDir + stemType+"\\docIdx.txt");
         createDirectory(outputPath+masterDir+stemType+"\\waitingList");
 
-        indexer = new Indexer(outputPath + masterDir + stemType,0.5);
+        indexer = new Indexer(outputPath + masterDir + stemType,1);
 
     }
 
@@ -172,7 +179,7 @@ public class ReadFile {
         for(File directory: list){
 
 
-            if(!directory.getPath().endsWith("StopWords"))
+            if(!directory.getPath().endsWith("stop_words.txt"))
                 readDirectory(directory);
             System.out.println((int)Math.floor((n/size)*100)+"%");
             n++;
@@ -194,6 +201,10 @@ public class ReadFile {
         System.out.println("document indexing complete");
 
         try {
+            for (Thread t:apiThreadList){
+                t.join();
+            }
+
             t1.join();
             t2.join();
         } catch (InterruptedException e) {
@@ -307,19 +318,51 @@ public class ReadFile {
     }
 
     private void addDocToCity(MyDocument document) {
-        String city = document.getCity();
-        CityEntry entry;
-        if(!cityDick.containsKey(city)){
-            entry = new CityEntry(city);
-            cityDick.put(city,entry);
-            //api
-        }
-        else
-            entry = cityDick.get(city);
+        try {
+            String city = document.getCity();
+            CityEntry entry;
+            if (!cityDick.containsKey(city)) {
+//                mutex.lock();
+                entry = new CityEntry(city);
+                cityDick.put(city, entry);
+                if (!city.equals("")) {
+//                    getApi(entry);
+                    //api
+                    CityEntry finalEntry = entry;
+                    Thread t = new Thread(() -> getApi(finalEntry));
+                    t.start();
+                    apiThreadList.add(t);
 
-        int gap = document.getDocId() - entry.getLastDocIn();
-        entry.addDoc(document.getCityData(gap));
-        entry.setLastDocIn(document.getDocId());
+                } else
+                    entry = cityDick.get(city);
+
+                int gap = document.getDocId() - entry.getLastDocIn();
+                entry.addDoc(document.getCityData(gap));
+                entry.setLastDocIn(document.getDocId());
+            }
+        }
+        catch (Exception e){
+            System.out.println();
+        }
+
+
+    }
+
+    private void getApi(CityEntry entry) {
+        String dan = entry.getCityName();
+        CityInfo cityInfo = new CityInfo(entry.getCityName());
+        entry.setState(cityInfo.getCountry());
+        entry.setCoin(cityInfo.getCurrency());
+        cityParser.setTxt(cityInfo.getPopulation(),"");
+        try {
+            cityParser.parse();
+//            System.out.println(cityInfo.getPopulation() + " -->  "+ cityParser.toString() );
+            entry.setPopulation(cityParser.toString());
+        }
+        catch (Exception e){
+            System.out.println("error read file cityApi");;
+        }
+
 
     }
 
