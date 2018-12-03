@@ -233,7 +233,7 @@ public class View {
         }
     }
 
-    public void browse(ActionEvent event) {
+    private void browse(ActionEvent event) {
 //        System.out.println(event.);
 
         DirectoryChooser chooser = new DirectoryChooser();
@@ -319,7 +319,6 @@ public class View {
             br.close();
             a.setHeaderText("dictionary loaded successful");
             a.setContentText("total terms loaded: " + dictianary.size());
-            testLoadDic();
             a.show();
         } catch (Exception e) {
             a.setContentText("dictianary was not loaded");
@@ -475,10 +474,7 @@ public class View {
         dialog.showAndWait();
     }
 
-    public void testLoadDic() {
 
-        System.out.println("test result: " + dictianary.get("hotel"));
-    }
 
     public void helpPressed(){
         try {
