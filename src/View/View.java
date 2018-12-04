@@ -44,11 +44,13 @@ public class View {
     public TextField fld_corpusPath;
     public Button btn_reset;
     private Map<String, DicEntry> dictianary;
+    public Button btn_corpusBrowse;
+    public Button btn_outPutPath;
 
 
     public View() {
-        fld_outputPath = new TextField("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data");
-        fld_corpusPath = new TextField("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data\\corpus");
+//        fld_outputPath = new TextField("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data");
+//        fld_corpusPath = new TextField("C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data\\corpus");
     }
 
     public void testParse() {
@@ -233,7 +235,7 @@ public class View {
         }
     }
 
-    private void browse(ActionEvent event) {
+    public void browse(ActionEvent event) {
 //        System.out.println(event.);
 
         DirectoryChooser chooser = new DirectoryChooser();
