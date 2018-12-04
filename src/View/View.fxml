@@ -2,10 +2,12 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.View">
@@ -29,11 +31,11 @@
           </Menu>
         </menus>
       </MenuBar>
-    <CheckBox fx:id="btn_stemmingBox" layoutX="657.0" layoutY="399.0" mnemonicParsing="false" selected="true" text="load Stemmed dictionary" />
-      <Button fx:id="btn_reset" layoutX="346.0" layoutY="433.0" mnemonicParsing="false" onAction="#reset" text="reset" />
-      <Button fx:id="btn_getDic" layoutX="551.0" layoutY="433.0" mnemonicParsing="false" onAction="#showDictianary" text="show dictionary" />
-      <Button fx:id="btn_loadDic" layoutX="553.0" layoutY="395.0" mnemonicParsing="false" onAction="#loadDictionary" text="load dictionary" />
-      <Button layoutX="323.0" layoutY="395.0" mnemonicParsing="false" onAction="#runIndex" text="start indexing" />
+    <CheckBox fx:id="btn_stemmingBox" layoutX="433.0" layoutY="514.0" mnemonicParsing="false" selected="true" text="use stemmer" />
+      <Button fx:id="btn_reset" layoutX="346.0" layoutY="550.0" mnemonicParsing="false" onAction="#reset" text="reset" />
+      <Button fx:id="btn_getDic" layoutX="551.0" layoutY="550.0" mnemonicParsing="false" onAction="#showDictianary" text="show dictionary" />
+      <Button fx:id="btn_loadDic" layoutX="553.0" layoutY="510.0" mnemonicParsing="false" onAction="#loadDictionary" text="load dictionary" />
+      <Button layoutX="328.0" layoutY="510.0" mnemonicParsing="false" onAction="#testIndexer" text="start indexing" />
       <MenuButton layoutX="153.0" layoutY="1.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" style="-fx-background-color: transparent;" text="Language Selection">
         <items>
           <MenuItem mnemonicParsing="false" text="English" />
@@ -42,5 +44,11 @@
             <MenuItem mnemonicParsing="false" text="Elvish" />
         </items>
       </MenuButton>
+      <TextField fx:id="fld_outputPath" layoutX="194.0" layoutY="468.0" prefHeight="25.0" prefWidth="545.0" text="C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data" />
+      <TextField fx:id="fld_corpusPath" layoutX="194.0" layoutY="431.0" prefHeight="25.0" prefWidth="545.0" text="C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data\\corpus" />
+      <Button fx:id="btn_corpusBrowse" layoutX="750.0" layoutY="431.0" mnemonicParsing="false" onAction="#browse" text="browse" userData="1" />
+      <Button fx:id="btn_outPutPath" layoutX="750.0" layoutY="468.0" mnemonicParsing="false" onAction="#browse" text="browse" userData="2" />
+      <Label layoutX="94.0" layoutY="431.0" prefHeight="25.0" prefWidth="80.0" text="corpus path" />
+      <Label layoutX="94.0" layoutY="468.0" prefHeight="25.0" prefWidth="80.0" text="output path" />
   </children>
 </AnchorPane>

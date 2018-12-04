@@ -330,12 +330,6 @@ public class Indexer {
 
         try{
 
-
-
-
-
-
-
             File dicFile = new File (path+"\\dicToShow.txt");
             FileWriter fw = new FileWriter(dicFile);
             BufferedWriter bw = new BufferedWriter(fw);
@@ -343,8 +337,11 @@ public class Indexer {
             writer.flush();
 
             writer.println("**************DICTIONARY**************");
+            if(path.endsWith("not stemmed"))
+                writer.println("           not stemmed");
+            else writer.println("            stemmed");
             writer.println("           TERM = FREQUENCY");
-            writer.println();
+
 
             for(String term:dictianary.keySet()){
                 writer.println(term + " = "+ dictianary.get(term).totalTermFrequency);
