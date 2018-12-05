@@ -216,7 +216,6 @@ public class View {
 
     }
 
-
     public void testGetDoc() {
         try {
 
@@ -280,7 +279,6 @@ public class View {
         }
 
     }
-
 
     public void loadDictionary() {
 
@@ -405,7 +403,7 @@ public class View {
     /**
      * opens a window where user enters corpus path and output path
      */
-    public void runIndex() {
+    public void runIndex() { //pop up view - not needed
         // Custom dialog
 
         Dialog dialog = new Dialog();
@@ -475,8 +473,6 @@ public class View {
         // Show dialog
         dialog.showAndWait();
     }
-
-
 
     public void helpPressed(){
         try {

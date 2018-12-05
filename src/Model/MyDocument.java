@@ -228,7 +228,7 @@ public class MyDocument {
      * @return same string without these signs
      */
     private String replaceDelimiters(String s) {
-        return s.replace("=", "").replace(",", "").replace("@", "").replace("*", "").replace("~", "");
+        return s.replace("=", "").replace(",", "").replace("@", "").replace("*", "").replace("~", "").replace("'","");
     }
 
     public void setDocId(int docNumber) {
