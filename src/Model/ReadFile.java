@@ -334,14 +334,14 @@ public class ReadFile {
                     t.start();
                     apiThreadList.add(t);
 
-                } else
+                }}
+                else
                     entry = cityDick.get(city);
 
                 int gap = document.getDocId() - entry.getLastDocIn();
                 entry.addDoc(document.getCityData(gap));
                 entry.setLastDocIn(document.getDocId());
             }
-        }
         catch (Exception e){
             System.out.println();
         }
