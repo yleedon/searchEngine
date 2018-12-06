@@ -1,16 +1,14 @@
-package Model;
+package Merge;
 
 import java.io.*;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class MergeFile {
-    //<editor-fold desc="Fields">
-    File merged, waitingList;
-    File[] files;
-    //</editor-fold>
+    private File merged, waitingList;
+    private File[] files;
 
-    //<editor-fold desc="Constructor">
+
     /**
      * Constructor for MergeFile
      * @param input - the directory that contains only the files to merge
@@ -26,7 +24,6 @@ public class MergeFile {
         files = waitingList.listFiles();
         merged = new File(output);
     }
-    //</editor-fold>
 
     /**
      * merging all the directory to 1 file
@@ -69,7 +66,7 @@ public class MergeFile {
             //adding lines to the q
             for(String line: lines){
                 if(line!=null)//yaniv
-                qLines.add(line);
+                    qLines.add(line);
             }
 
             //init q for the unition of the same term
@@ -122,7 +119,6 @@ public class MergeFile {
         }
     }
 
-    //<editor-fold desc="Private Methods">
     /**
      * get the index of the line in the lines
      * @param lines - array of lines
@@ -209,6 +205,5 @@ public class MergeFile {
         }
         return dir.delete();
     }
-    //</editor-fold>
 
 }

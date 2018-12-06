@@ -1,4 +1,4 @@
-package Model;
+package Parser;
 
 import javafx.util.Pair;
 import java.io.BufferedReader;
@@ -23,13 +23,10 @@ public class Parse {
     private Set<String> stopWords;
     private String[] tokens;
     private Map<String,Pair<Integer,Integer>> indexMap; //pair: frequency,first appearance
-    int maxFreq;
+    public int maxFreq;
     private Stemmer stemmer;
     String cityName;
     String cityPositionList;
-
-//    private String quote;
-//    private boolean quoteInProgress;
 
 
     /**
@@ -51,8 +48,6 @@ public class Parse {
      */
     public void parse() throws Exception{
         indexMap = new HashMap<>();
-//        quote="\"";
-//        quoteInProgress = false;
         ans ="";
         maxFreq=0;
         if(txt==null) {
@@ -245,7 +240,6 @@ public class Parse {
                 }
                 else return numValue+"%";
 
-
             }
 
             if (isNormalledNumber){
@@ -254,18 +248,11 @@ public class Parse {
                 else  word=numValue+end;
                 numberSet.add(word.toUpperCase());
                 return word.toUpperCase();
-
-
             }
-
-
             if (startsWithDoller)
                 return DealWithDollerSign(tNum,numValue,originalWord);
         }
         catch(Exception e){
-
-
-
 
             if(tNum+1 < tokens.length && tokens[tNum+1]!=null && tokens[tNum+1].toLowerCase().equals("dollars"))  // takes care of 123bn and 123m
                 return checknumberAndSize(word,tNum,originalWord);
@@ -274,10 +261,9 @@ public class Parse {
         }
         ////////////////////////it is a number!!//////////////////////////
         word = checkAfterNumber(word,tNum);
-//        if((tNum+1 < tokens.length && tokens[tNum+1]!=null) || tNum+1 >=tokens.length) {// has not been changed
+
         return dealWithSimpleNumber(word,tNum);
-//        }
-//        return word;
+
     }
 
     /**
@@ -518,10 +504,8 @@ public class Parse {
         if(endWithPercent)
             return tempDouble+"%";
         else return ""+tempDouble;
-
-
-
     }
+
     /**
      * checks if the second token is a fraction
      * @param num - the first number
@@ -632,8 +616,6 @@ public class Parse {
             }
         }
         catch (Exception e){
-//            System.out.println("number date term exception ");
-//            System.out.println(e.getMessage());
             return day;
         }
         return day;
@@ -646,9 +628,6 @@ public class Parse {
      * @param word - the trm that is to be added
      */
     private void addTerm(String word) {
-
-
-
         if(word!=null && !word.equals("") && !word.equals("-") && !stopWords.contains(word.toLowerCase())) {
             word = word.replace(":","").replace(",","").replace("~",""); // makes sure no term contains : or ,
             word = deleteDelimeter(word);
@@ -732,36 +711,9 @@ public class Parse {
     private String tokenToTerm(String word, int tNum) {
         String originalWord =deleteDelimeter(word);
 
-//        if (word.startsWith("\"") && !quoteInProgress){
-//            quoteInProgress = true;
-//            if(word.endsWith("\"")) {
-//                quoteInProgress = false;
-//                addTerm(word);
-//            }
-//        }
-
         word = deleteDelimeter(word); // deletes delimiters
         if(word.equals(""))
             return"";
-
-//        if (originalWord.endsWith("\"") && quoteInProgress){
-//            quoteInProgress = false;
-//            quote += " " + word+"\"";
-//            addTerm(quote);
-//            quote = "\"";
-//        }
-
-//
-//        if(quoteInProgress){
-//            if (originalWord.startsWith("\""))
-//                quote += word;
-//            else quote += " " + word;
-//            if(quote.length() > 30){// cancel long qoutes
-//                quoteInProgress =false;
-//                quote = "\"";
-//
-//            }
-//        }
 
         if(containsNumber(word)) { // deals with numbers in String
             word = numberEvaluation(word, tNum);
@@ -906,9 +858,7 @@ public class Parse {
                 if(tokens[tNum+2].toLowerCase().equals("and"))
                     num2 = tokens[tNum+3];
                 else  num2 = tokens[tNum+4];
-                //test its numbers
-//                num1 = dealWithFraction(num1);
-//                num2 = dealWithFraction(num2);
+
                 num1 = numberEvaluation(num1,tNum+1);
                 if(!containsNumber(num1))
                     return false;
@@ -919,8 +869,6 @@ public class Parse {
                 }
                 else num2 = numberEvaluation(num2,tNum+3);
 
-//                Double.valueOf(deleteDelimeter(num1));
-//                Double.valueOf(deleteDelimeter(num2)); //are numbers
                 tokens[tNum] = null;  tokens[tNum+1] = null;  tokens[tNum+2] = null;  tokens[tNum+3] = null;
                 if (isLong)
                     tokens[tNum+4] = null;
@@ -1008,20 +956,6 @@ public class Parse {
         useStemming = use;
     }
 
-    public Set<String> getNumberSet() {
-        return numberSet;
-    }
-
-    public void printIndex(){
-        System.out.println("IndexTable:");
-        for (String term:indexMap.keySet()) {
-            System.out.println("{"+term + " , "+ indexMap.get(term).getKey()+","+indexMap.get(term).getValue()+"}");
-        }
-        System.out.println("total unique terms: "+ indexMap.size());
-        System.out.println("num of numbers: "+numberSet.size());
-        System.out.println("Max frequency: " + maxFreq);
-        System.out.println("end.\n\n\n");
-    }
     //</editor-fold>
 
     /**
@@ -1030,12 +964,6 @@ public class Parse {
      */
     public Map<String,Pair<Integer,Integer>> getDocMap(){
         return indexMap;
-    }
-
-    public void printNumberSet(){
-        for(String num:numberSet){
-            System.out.println(num);
-        }
     }
 
     /**

@@ -1,9 +1,10 @@
-﻿הוראות הפעלה - מנוע חיפוש:
+﻿Search Engine instructions:
 
+1. make sure the stop_words.txt file is in the corpus directory
+(next to all the directories that contain the files)
 
-1) יש לוודא כי קובץ ה stop_words.txt נמצא בתוך תיקיית הקורפוס (לצד כל התיקייות המכילות את קבצי המסמכים)
+2. in order to create the data base, enter the corpus path and the output path in the designated area.
+(if stemming is not needed, uncheck the check box)
 
-הרצת הוכנית:
-על מנת להתחיל את תהליך העיבוד, יש ללחוץ על start indexing, לאחר מכן ייפתח חלון חדש ובו יש להזין את נתיב הקרפוס, ואת נתיב הoutput, יש לסמן את הצ'ק בוקס במידה
-ורוצים שימוש ב stemmer. ולאחר מכן יש ללחוץ על הכפור start indexing.
-
+3. press the "start indexing button" - this will start the indexing process.
+a popup alert will appear when the creation is complete
