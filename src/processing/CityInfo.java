@@ -3,7 +3,6 @@ package processing;
 
 import eu.fayder.restcountries.v1.domain.Country;
 import eu.fayder.restcountries.v1.rest.CountryService;
-
 import java.util.List;
 
 public class CityInfo {
