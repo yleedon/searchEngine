@@ -1,4 +1,5 @@
-package Model;
+package Indexer;
+
 /**
  * this Class represents an Entry for the Dictionary which includes the termID, docIdf, and TF.
  */
@@ -6,7 +7,7 @@ public class DicEntry implements Comparable{
     private  int id;
     public int numOfDocs;
     public int totalTermFrequency;
-    int lastDocin;
+    public int lastDocin;
 
     /**
      * Constructer:

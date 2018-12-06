@@ -1,5 +1,7 @@
-package Model;
-import sun.awt.Mutex;
+package processing;
+
+import Indexer.*;
+import Parser.Parse;
 
 import java.io.*;
 import java.util.*;
@@ -7,19 +9,18 @@ import java.util.*;
 public class ReadFile {
     //<editor-fold desc="Fields">
 
-    int docNumber;
-    String path;
-    File docIdxFile; //the file ReadFile writes into. AKA doocumentIdx.txt
-    PrintWriter writer; // the object that writes to the file
-    Parse parser;
-    Indexer indexer;
-    int numOdfiles;
+    private int docNumber;
+    private String path;
+    private File docIdxFile; //the file ReadFile writes into. AKA doocumentIdx.txt
+    private PrintWriter writer; // the object that writes to the file
+    private Parse parser;
+    private Indexer indexer;
+    private int numOdfiles;
     private Map<String,CityEntry> cityDick;
-    String outPath;
-    boolean stem;
-    List<Thread> apiThreadList;
-//    Mutex mutex;
-    Parse cityParser;
+    private String outPath;
+    private boolean stem;
+    private List<Thread> apiThreadList;
+    private Parse cityParser;
 
     //</editor-fold>
 
@@ -45,8 +46,6 @@ public class ReadFile {
         parser = new Parse(corpusPath,"", stemmer);
 
         setOutputDestination(outputPath,stemmer);
-
-
     }
 
     /**
@@ -67,7 +66,6 @@ public class ReadFile {
         createDirectory(outputPath+masterDir+stemType+"\\waitingList");
 
         indexer = new Indexer(outputPath + masterDir + stemType,1);
-
     }
 
     /**
@@ -77,7 +75,7 @@ public class ReadFile {
     private void createDirectory(String dir) {
         File output = new File(dir);
         if (!output.exists()) {
-            System.out.println("creating directory: " + dir);
+//            System.out.println("creating directory: " + dir);
             boolean result = false;
 
             try{
@@ -88,7 +86,7 @@ public class ReadFile {
                 //handle it
             }
             if(result) {
-                System.out.println("DIR "+dir+" created");
+//                System.out.println("DIR "+dir+" created");
             }
         }
 
@@ -159,7 +157,7 @@ public class ReadFile {
     /**
      * reads all the files in the corpus calls the parser and indexer on every doc,  and writes to the documentIdx and cityIdx the relevant details
      */
-    public Map<String,DicEntry>  readDirectory(){
+    public Map<String, DicEntry>  readDirectory(){
         try {
             FileWriter fileWriter = new FileWriter(docIdxFile, false);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -174,13 +172,13 @@ public class ReadFile {
         File[] list = mainDir.listFiles();
         writer.flush();
 
-        double  n = 1;
-        double size = list.length;
+//        double  n = 1;
+//        double size = list.length;
         for(File directory: list){
             if(directory.isDirectory())
                 readDirectory(directory);
-            System.out.println((int)Math.floor((n/size)*100)+"%");
-            n++;
+//            System.out.println((int)Math.floor((n/size)*100)+"%");
+//            n++;
         }
 
         Thread t1 = new Thread(()->indexer.saveDictinary());
@@ -193,12 +191,12 @@ public class ReadFile {
         indexer.writeLastWaitingList();
         indexer.mergeLastMiniFolded();
         indexer.mergeFinalePostingList();
-        System.out.println("\n***************************************************************************");
-        System.out.println("total files processed: "+ numOdfiles);
-        System.out.println("total documents parsed: "+ (docNumber));
+//        System.out.println("\n***************************************************************************");
+//        System.out.println("total files processed: "+ numOdfiles);
+//        System.out.println("total documents parsed: "+ (docNumber));
 //        indexer.creatReportData();
-        System.out.println("amount of numbers: "+ parser.getNumberSet().size());
-        System.out.println("document indexing complete");
+//        System.out.println("amount of numbers: "+ parser.getNumberSet().size());
+//        System.out.println("document indexing complete");
 
         try {
             for (Thread t:apiThreadList){
@@ -210,7 +208,7 @@ public class ReadFile {
             t3.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
-            System.out.println("wtf?! mergeFinalePostingList thread exception");
+            System.out.println("error mergeFinalePostingList thread exception");
         }
 
         writer.close();
@@ -227,9 +225,7 @@ public class ReadFile {
         if(list!=null)
             for (File file: list) {
                 dismember2Docs(file);
-//                System.out.println("finished working on file: "+ file.getName());
             }
-
     }
 
     /**
@@ -305,13 +301,8 @@ public class ReadFile {
                     writer.flush();
                 }
             }
-//            reader.close();
-//            fileReader.close();
-//            reader.close();//yaniv
-//            writer.close();//yaniv
         }
         catch (IOException e){
-//            writer.close();//yaniv
             System.out.println("error read file");
             System.out.println(e.getMessage());
         }
@@ -327,7 +318,6 @@ public class ReadFile {
                 entry = new CityEntry(city);
                 cityDick.put(city, entry);
                 if (!city.equals("")) {
-//                    getApi(entry);
                     //api
                     CityEntry finalEntry = entry;
                     Thread t = new Thread(() -> getApi(finalEntry));
@@ -335,13 +325,13 @@ public class ReadFile {
                     apiThreadList.add(t);
 
                 }}
-                else
-                    entry = cityDick.get(city);
+            else
+                entry = cityDick.get(city);
 
-                int gap = document.getDocId() - entry.getLastDocIn();
-                entry.addDoc(document.getCityData(gap));
-                entry.setLastDocIn(document.getDocId());
-            }
+            int gap = document.getDocId() - entry.getLastDocIn();
+            entry.addDoc(document.getCityData(gap));
+            entry.setLastDocIn(document.getDocId());
+        }
         catch (Exception e){
             System.out.println();
         }
@@ -349,6 +339,10 @@ public class ReadFile {
 
     }
 
+    /**
+     * gets the data from the API DATABASE and sets the entry accordingly
+     * @param entry
+     */
     private void getApi(CityEntry entry) {
         String dan = entry.getCityName();
         CityInfo cityInfo = new CityInfo(entry.getCityName());
@@ -363,8 +357,6 @@ public class ReadFile {
         catch (Exception e){
             System.out.println("error read file cityApi");;
         }
-
-
     }
 
     /**
@@ -396,22 +388,15 @@ public class ReadFile {
         return "<" + tag + ">";
     }
 
-
-    public void reset() {
-        path = null; /////////////////////////////////////////**********//the path to the corpus should be in config!!!!!!
-        docIdxFile = null;; //the file ReadFile writes into. AKA doocumentIdx.txt
-        writer.close(); // the object that writes to the file
-        parser = null;;
-        indexer.reset();
-        numOdfiles = 0;
-    }
-
     /**
      * returns the number of docs processed
      * @return
      */
     public int numOfDocsProcessed(){return  docNumber;}
 
+    /**
+     * saves the city index to the disk
+     */
     private void saveCityIndex(){
         try {
             String isStemmed = "\\stemmed";

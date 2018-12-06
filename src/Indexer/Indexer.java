@@ -1,20 +1,19 @@
-package Model;
+package Indexer;
 
 
+import Merge.MergeFile;
+import processing.MyDocument;
 import javafx.util.Pair;
-import sun.awt.Mutex;
-import sun.nio.ch.ThreadPool;
 
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Indexer {
 
     private double tempFileSize;
     private int waitlistSize;
-    private Map<String,DicEntry> dictianary;
+    private Map<String, DicEntry> dictianary;
     private int nextLineNum;
     private Map<Integer,String> waitList;
     private AtomicInteger tempFileName;
@@ -119,9 +118,6 @@ public class Indexer {
                     System.out.println("333");
 //                    ************************************************
 
-
-
-
                 }
                 entry = gap + entry;
                 waitlistSize+=entry.length()+1;//(~)
@@ -150,7 +146,7 @@ public class Indexer {
                 createDirectory(path+"/waitingList/w"+waitFolderId);
             }
             numOflistsInCurrrentFolder++;
-            System.out.println("waiting list started writting to disk");
+//            System.out.println("waiting list started writting to disk");
             Thread t = new Thread(()->writeWaitingList(temp,waitFolderId));
             miniThreadList.add(t);
             t.start();
@@ -172,13 +168,13 @@ public class Indexer {
      */
     private void mergeSingleFolder(int folderId, List<Thread> tList) {
         try {
-            System.out.println("merging w"+folderId);
+//            System.out.println("merging w"+folderId);
             for (Thread t:tList){
                 t.join();
             }
             MergeFile mergeFile = new MergeFile(path+"\\waitingList\\w"+folderId,path+"\\waitingList\\"+folderId);
             mergeFile.merge();
-            System.out.println("w"+folderId + "has been merged");
+//            System.out.println("w"+folderId + "has been merged");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("error eror mother fucker");
@@ -211,7 +207,7 @@ public class Indexer {
         catch (Exception e){
             System.out.println("error index "+e.getMessage());
         }
-        System.out.println("finished writing waitlist to disk");
+//        System.out.println("finished writing waitlist to disk");
     }
 
     /**
@@ -227,7 +223,7 @@ public class Indexer {
      */
     public void saveDictinary() {
         try {
-            System.out.println("started writing dictionary");
+//            System.out.println("started writing dictionary");
             ClassLoader classLoader = getClass().getClassLoader();
             String tempPath = path+"/dictionary.txt";
             File tempFile = new File(tempPath);
@@ -241,7 +237,7 @@ public class Indexer {
                 writer.println(term+":"+dictianary.get(term));
             }
             writer.close();
-            System.out.println("finished writing dictionary");
+//            System.out.println("finished writing dictionary");
 
         } catch (Exception e) {
             System.out.println("error indexer");
@@ -253,7 +249,7 @@ public class Indexer {
      *
      * @return - the dictionary
      */
-    public Map<String,DicEntry> getDictianary(){
+    public Map<String, DicEntry> getDictianary(){
         return dictianary;
     }
 
@@ -275,7 +271,7 @@ public class Indexer {
     private void createDirectory(String dir) {
         File output = new File(dir);
         if (!output.exists()) {
-            System.out.println("creating directory: " + dir);
+//            System.out.println("creating directory: " + dir);
             boolean result = false;
 
             try{
@@ -286,7 +282,7 @@ public class Indexer {
                 //handle it
             }
             if(result) {
-                System.out.println("DIR "+dir+" created");
+//                System.out.println("DIR "+dir+" created");
             }
         }
     }
@@ -297,37 +293,20 @@ public class Indexer {
     public void mergeFinalePostingList(){
 
         try {
-            System.out.println("Creating Final PostingList");
+//            System.out.println("Creating Final PostingList");
             MergeFile mg = new MergeFile(path+"\\waitingList",path+"\\postingList.txt");
             mg.merge();
-            System.out.println("Final PostingList created");
+//            System.out.println("Final PostingList created");
         } catch (Exception e) {
 
             System.out.println("error thrown from mergeFile - function in indexer \"mergeFinalPostingList\"");
         }
     }
 
-
-    //********************************* dont need in final project submission..?*********************************************************
-
     /**
-     * data for the search engine report
-     * creates a data set needed and then calls the needed data functions
+     * writes a dictionary (term, tf) for the user to view
      */
-    public void creatReportData(){
-        TreeSet<DicEntry> heap = new TreeSet<>();
-        HashMap<Integer,String> idToTerm = new HashMap<>();
-        for (String s:dictianary.keySet()) {
-            heap.add(dictianary.get(s));
-            idToTerm.put(dictianary.get(s).getId(),s);
-        }
-//        print10MostFreqTerms(heap,idToTerm);
-        showThatZipIsAFuckingLiyer(heap,idToTerm);
-
-
-    }
     public void writePresentedDictionary(){
-
         try{
 
             File dicFile = new File (path+"\\dicToShow.txt");
@@ -350,64 +329,8 @@ public class Indexer {
             writer.close();
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("error zipf");
+            System.out.println("error writePresentDic");
         }
     }
 
-
-
-
-
-
-    //for report
-    private void print10MostFreqTerms(TreeSet<DicEntry> heap, HashMap<Integer, String> idToTerm){
-        System.out.println("top 10 most frequent terms: ");
-        int n =1;
-        for(DicEntry entry:heap) {
-            System.out.println(n+")  " + idToTerm.get(entry.getId())+"   "+ entry );
-            n++;
-            if(n>10)
-                return;
-
-        }
-    }
-
-    //for report
-    private void showThatZipIsAFuckingLiyer(TreeSet<DicEntry> heap, HashMap<Integer, String> idToTerm){
-        try{
-            File zipf = new File (path+"\\zipf.csv");
-            FileWriter fw = new FileWriter(zipf);
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.flush();
-            for(DicEntry entry: heap){
-                bw.write(idToTerm.get(entry.getId())+","+entry.totalTermFrequency+"\n");
-            }
-            bw.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("error zipf");
-        }
-    }
-
-    public void reset() {
-        dictianary.clear();
-        dictianary=null;
-
-        waitList.clear();
-        waitList = null;
-
-    }
-    public void printWaitList(){
-        for (int ent:waitList.keySet()) {
-            System.out.println(waitList.get(ent));
-        }
-    }
-    public void printTermlist(){
-        for (String ent:dictianary.keySet()) {
-            System.out.println("term: ["+ent+"] line: "+ dictianary.get(ent));
-        }
-    }
-    public void printWaitListSize(){
-        System.out.println("waitlist size = "+ (double)waitlistSize/1000000+"MB");
-    }
 }

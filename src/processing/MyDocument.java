@@ -1,4 +1,4 @@
-package Model;
+package processing;
 
 import javafx.util.Pair;
 
@@ -17,7 +17,6 @@ public class MyDocument {
     private String cityData;
     //</editor-fold>
 
-    //<editor-fold desc="Constructor">
 
     /**
      * Constructor. by the document string(have to be between the tags <Doc> and </Doc>) dismember the documentID and the Text inside.
@@ -32,7 +31,7 @@ public class MyDocument {
 //        this.txt = create("<Text>");
 
     }
-    //</editor-fold>
+
 
     //<editor-fold desc="Getters">
 
@@ -202,6 +201,11 @@ public class MyDocument {
         return s;
     }
 
+    /**
+     * cleans numbers and selimiters from the edges
+     * @param s - the string to be cleaned
+     * @return the cleaned string
+     */
     private String cleanNumerialEdges(String s) {
         String delimetersWithNumbers = delimiters + "1234567890";
         if (s == null)
@@ -215,12 +219,6 @@ public class MyDocument {
         return s;
     }
 
-    private boolean isNumber(char c) {
-        if (c >= '0' && c <= '9')
-            return true;
-        return false;
-    }
-
     /**
      * replacing = , @ * ~ to empty string
      *
@@ -231,14 +229,26 @@ public class MyDocument {
         return s.replace("=", "").replace(",", "").replace("@", "").replace("*", "").replace("~", "").replace("'","");
     }
 
+    /**
+     * srts the id of the document
+     * @param docNumber - the doc ID
+     */
     public void setDocId(int docNumber) {
         docNo = docNumber;
     }
 
+    /**
+     *
+     * @return - the number of tokens in the document
+     */
     public int getTextTokenCount() {
         return textTokenCount;
     }
 
+    /**
+     * sets the total number of tokens in the document
+     * @param count -  the total number of tokens in the document
+     */
     public void setTextTokenCount(int count) {
         textTokenCount = count;
     }
@@ -255,10 +265,19 @@ public class MyDocument {
         return titleSet.contains(term) ? 1 : 0;
     }
 
+    /**
+     * sets the positions where the city is found in the text
+     * @param cityPositions - the positions where the city is found in the text
+     */
     public void setCityData(String cityPositions) {
         cityData = "*" + cityPositions + "~";
     }
 
+    /**
+     *
+     * @param gap - the gap betwwen this docID and the last entered docID
+     * @return -  the positions where the city is found in the text
+     */
     public String getCityData(int gap) {
         return gap + cityData;
     }
