@@ -317,9 +317,11 @@ public class Indexer {
 
             writer.println("**************DICTIONARY**************");
             if(path.endsWith("not stemmed"))
-                writer.println("           not stemmed");
-            else writer.println("            stemmed");
+                writer.println("             not stemmed");
+            else writer.println("               stemmed");
             writer.println("           TERM = FREQUENCY");
+            writer.println("**************************************");
+            writer.println();
 
 
             for(String term:dictianary.keySet()){
