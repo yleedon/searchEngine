@@ -13,18 +13,23 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        primaryStage.setTitle("Search Engine");
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        Parent root = fxmlLoader.load(getClass().getResource("View.fxml").openStream());
-        Scene scene = new Scene(root, 600*1.5, 400*1.5);
+        try {
+            primaryStage.setTitle("Search Engine");
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            Parent root = fxmlLoader.load(getClass().getResource("View.fxml").openStream());
+            Scene scene = new Scene(root, 600 * 1.5, 400 * 1.5);
 
         scene.getStylesheets().clear();
         scene.getStylesheets().add(getClass().getResource("View.css").toExternalForm());
-        primaryStage.setScene(scene);
-        //--------------
+            primaryStage.setScene(scene);
+            //--------------
 
-        //--------------
-        primaryStage.show();
+            //--------------
+            primaryStage.show();
+        }
+        catch (Exception e){
+            System.out.println("Bye");
+        }
     }
 
 

@@ -246,7 +246,7 @@ public class View {
      */
     public void helpPressed(){
         try {
-            File f = new File("././readMe.txt");
+            File f = new File("readMe.txt");
             if (!f.exists())
                 throw new Exception("error readMe.txt not found");
             Process process = Runtime.getRuntime().exec("notepad " + f.getPath());
