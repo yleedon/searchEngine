@@ -34,8 +34,8 @@
             <MenuItem mnemonicParsing="false" text="Elvish" />
         </items>
       </MenuButton>
-      <TextField fx:id="fld_outputPath" layoutX="194.0" layoutY="468.0" prefHeight="25.0" prefWidth="545.0" text="C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data" />
-      <TextField fx:id="fld_corpusPath" layoutX="194.0" layoutY="431.0" prefHeight="25.0" prefWidth="545.0" text="C:\\Users\\Yaniv\\Desktop\\searchproject\\searchEngine\\data\\corpus" />
+      <TextField fx:id="fld_outputPath" layoutX="194.0" layoutY="468.0" prefHeight="25.0" prefWidth="545.0"  />
+      <TextField fx:id="fld_corpusPath" layoutX="194.0" layoutY="431.0" prefHeight="25.0" prefWidth="545.0"  />
       <Button fx:id="btn_corpusBrowse" layoutX="750.0" layoutY="431.0" mnemonicParsing="false" onAction="#browse" text="browse" userData="1" />
       <Button fx:id="btn_outPutPath" layoutX="750.0" layoutY="468.0" mnemonicParsing="false" onAction="#browse" text="browse" userData="2" />
       <Label layoutX="94.0" layoutY="431.0" prefHeight="25.0" prefWidth="80.0" text="corpus path" />
