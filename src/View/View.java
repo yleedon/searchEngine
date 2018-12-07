@@ -37,8 +37,8 @@ public class View {
             }
         }
         processingAlert.setTitle("Processing");
-        processingAlert.setHeaderText("Please wait...");
-        processingAlert.setContentText("Analyzing corpus");
+        processingAlert.setHeaderText("Analyzing corpus");
+        processingAlert.setContentText("Please wait...");
 
 
         File corpue = new File(fld_corpusPath.getText());
