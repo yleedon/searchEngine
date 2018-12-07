@@ -17,6 +17,7 @@ import java.util.TreeMap;
 
 public class View {
 
+    public static  Alert processingAlert;
     public CheckBox btn_stemmingBox;
     public TextField fld_outputPath;
     public TextField fld_corpusPath;
@@ -29,7 +30,7 @@ public class View {
      * starts indexing the corpus - activated by the user (start indexing button)
      */
     public void startIndexing() {
-        Alert processingAlert  =createAlert();
+        processingAlert  =createAlert();
         processingAlert.setAlertType(Alert.AlertType.INFORMATION);
         for(Node node:processingAlert.getDialogPane().getChildren()){
             if(node instanceof ButtonBar){
@@ -57,7 +58,7 @@ public class View {
         long end;
         long start = System.nanoTime();
 
-        int numOfDocsProcessed = createDataBase(processingAlert);
+        int numOfDocsProcessed = createDataBase();
 
         end = System.nanoTime();
         long time = (end - start) / 1000000000;
@@ -71,8 +72,8 @@ public class View {
      * creates ReadFile and starts indexing the dataBAse
      * @return - number of documents processed
      */
-    private int createDataBase(Alert processingAlert) {
-        ReadFile readF = new ReadFile(fld_corpusPath.getText(), fld_outputPath.getText(), btn_stemmingBox.isSelected(), processingAlert);
+    private int createDataBase() {
+        ReadFile readF = new ReadFile(fld_corpusPath.getText(), fld_outputPath.getText(), btn_stemmingBox.isSelected());
         System.out.println("Indexing started");
         dictianary = readF.readDirectory();
         return readF.numOfDocsProcessed();
