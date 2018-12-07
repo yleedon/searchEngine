@@ -178,7 +178,7 @@ public class ReadFile {
         double  n = 1;
         int progress = 0;
         double last = 0;
-        double size = list.length;
+        double size = list.length+1;
         for(File directory: list){
             if(directory.isDirectory())
                 readDirectory(directory);
@@ -194,6 +194,8 @@ public class ReadFile {
 //            System.out.println((int)Math.floor((n/size)*100)+"%");
 //            n++;
         }
+
+        processingAlert.setTitle("99%");
 
         Thread t1 = new Thread(()->indexer.saveDictinary());
         t1.start();
