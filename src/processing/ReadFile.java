@@ -172,13 +172,22 @@ public class ReadFile {
         File[] list = mainDir.listFiles();
         writer.flush();
 
-//        double  n = 1;
-//        double size = list.length+1;
+        double  n = 1;
+        double size = list.length+1;
+        int progress = 0;
+        int last = -1;
         for(File directory: list){
-            if(directory.isDirectory())
+            if(directory.isDirectory()) {
+                progress = (int)Math.floor((n / size) * 100);
                 readDirectory(directory);
-//            System.out.println((int)Math.floor((n/size)*100)+"%");
-//            n++;
+
+                if(last!=progress){
+                    System.out.println(progress+"%");
+                    last = progress;
+                }
+            }
+
+            n++;
         }
 
         Thread t1 = new Thread(()->indexer.saveDictinary());
