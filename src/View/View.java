@@ -29,6 +29,18 @@ public class View {
      * starts indexing the corpus - activated by the user (start indexing button)
      */
     public void startIndexing() {
+        Alert processingAlert  =createAlert();
+        processingAlert.setAlertType(Alert.AlertType.INFORMATION);
+        for(Node node:processingAlert.getDialogPane().getChildren()){
+            if(node instanceof ButtonBar){
+                node.setVisible(false);
+            }
+        }
+        processingAlert.setTitle("Processing");
+        processingAlert.setHeaderText("Please wait...");
+        processingAlert.setContentText("Analyzing corpus");
+
+
         File corpue = new File(fld_corpusPath.getText());
         File output = new File(fld_outputPath.getText());
         if (!corpue.exists() || !output.exists()) {
@@ -40,14 +52,17 @@ public class View {
             alert.show();
             return;
         }
+
+        processingAlert.show();
         long end;
         long start = System.nanoTime();
 
-        int numOfDocsProcessed = createDataBase();
+        int numOfDocsProcessed = createDataBase(processingAlert);
 
         end = System.nanoTime();
         long time = (end - start) / 1000000000;
 
+        processingAlert.close();
         showIndexSummary(numOfDocsProcessed, time);
 
     }
@@ -56,8 +71,8 @@ public class View {
      * creates ReadFile and starts indexing the dataBAse
      * @return - number of documents processed
      */
-    private int createDataBase() {
-        ReadFile readF = new ReadFile(fld_corpusPath.getText(), fld_outputPath.getText(), btn_stemmingBox.isSelected());
+    private int createDataBase(Alert processingAlert) {
+        ReadFile readF = new ReadFile(fld_corpusPath.getText(), fld_outputPath.getText(), btn_stemmingBox.isSelected(), processingAlert);
         System.out.println("Indexing started");
         dictianary = readF.readDirectory();
         return readF.numOfDocsProcessed();
@@ -217,6 +232,7 @@ public class View {
                 alert.setHeaderText("reset succeeded");
             }
         }
+        System.gc();
         alert.show();
 //        System.out.println("finished");
     }
