@@ -2,8 +2,6 @@ package processing;
 
 import Indexer.*;
 import Parser.Parse;
-import View.View;
-import javafx.scene.control.Alert;
 
 import java.io.*;
 import java.util.*;
@@ -174,28 +172,14 @@ public class ReadFile {
         File[] list = mainDir.listFiles();
         writer.flush();
 
-        double  n = 1;
-        int progress = 0;
-        double last = 0;
-        double size = list.length+1;
+//        double  n = 1;
+//        double size = list.length+1;
         for(File directory: list){
             if(directory.isDirectory())
                 readDirectory(directory);
-            progress = (int)Math.floor((n/size)*100);
-            if(progress!=last) {
-
-                View.processingAlert.setTitle(progress + "%");
-                last=progress;
-
-            }
-//            processingAlert.setContentText(progress+"%");
-//            processingAlert.setTitle((int)(Math.floor(n/size)*100)+"%");
-            n++;
 //            System.out.println((int)Math.floor((n/size)*100)+"%");
 //            n++;
         }
-
-        View.processingAlert.setTitle("99%");
 
         Thread t1 = new Thread(()->indexer.saveDictinary());
         t1.start();
