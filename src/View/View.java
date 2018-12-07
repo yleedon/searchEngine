@@ -17,7 +17,6 @@ import java.util.TreeMap;
 
 public class View {
 
-    public static  Alert processingAlert;
     public CheckBox btn_stemmingBox;
     public TextField fld_outputPath;
     public TextField fld_corpusPath;
@@ -30,7 +29,7 @@ public class View {
      * starts indexing the corpus - activated by the user (start indexing button)
      */
     public void startIndexing() {
-        processingAlert  =createAlert();
+        Alert processingAlert  =createAlert();
         processingAlert.setAlertType(Alert.AlertType.INFORMATION);
         for(Node node:processingAlert.getDialogPane().getChildren()){
             if(node instanceof ButtonBar){
