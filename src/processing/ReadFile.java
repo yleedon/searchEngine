@@ -2,6 +2,7 @@ package processing;
 
 import Indexer.*;
 import Parser.Parse;
+import View.View;
 import javafx.scene.control.Alert;
 
 import java.io.*;
@@ -10,7 +11,6 @@ import java.util.*;
 public class ReadFile {
     //<editor-fold desc="Fields">
 
-    private Alert processingAlert;
     private int docNumber;
     private String path;
     private File docIdxFile; //the file ReadFile writes into. AKA doocumentIdx.txt
@@ -34,9 +34,8 @@ public class ReadFile {
      * @param outputPath - path of the outPut
      * @param stemmer - us stemming or not
      */
-    public ReadFile(String corpusPath,String outputPath, boolean stemmer, Alert processingAlert) {
+    public ReadFile(String corpusPath,String outputPath, boolean stemmer) {
 
-        this.processingAlert = processingAlert;
         cityParser = new Parse(corpusPath,"", stemmer);
 //        mutex = new Mutex();
         apiThreadList = new ArrayList<>();
@@ -184,7 +183,8 @@ public class ReadFile {
                 readDirectory(directory);
             progress = (int)Math.floor((n/size)*100);
             if(progress!=last) {
-                processingAlert.setTitle(progress + "%");
+
+                View.processingAlert.setTitle(progress + "%");
                 last=progress;
 
             }
@@ -195,7 +195,7 @@ public class ReadFile {
 //            n++;
         }
 
-        processingAlert.setTitle("99%");
+        View.processingAlert.setTitle("99%");
 
         Thread t1 = new Thread(()->indexer.saveDictinary());
         t1.start();
