@@ -2,6 +2,7 @@ package processing;
 
 import Indexer.*;
 import Parser.Parse;
+import javafx.scene.control.Alert;
 
 import java.io.*;
 import java.util.*;
@@ -9,6 +10,7 @@ import java.util.*;
 public class ReadFile {
     //<editor-fold desc="Fields">
 
+    private Alert processingAlert;
     private int docNumber;
     private String path;
     private File docIdxFile; //the file ReadFile writes into. AKA doocumentIdx.txt
@@ -32,8 +34,9 @@ public class ReadFile {
      * @param outputPath - path of the outPut
      * @param stemmer - us stemming or not
      */
-    public ReadFile(String corpusPath,String outputPath, boolean stemmer) {
+    public ReadFile(String corpusPath,String outputPath, boolean stemmer, Alert processingAlert) {
 
+        this.processingAlert = processingAlert;
         cityParser = new Parse(corpusPath,"", stemmer);
 //        mutex = new Mutex();
         apiThreadList = new ArrayList<>();
@@ -172,11 +175,22 @@ public class ReadFile {
         File[] list = mainDir.listFiles();
         writer.flush();
 
-//        double  n = 1;
-//        double size = list.length;
+        double  n = 1;
+        int progress = 0;
+        double last = 0;
+        double size = list.length;
         for(File directory: list){
             if(directory.isDirectory())
                 readDirectory(directory);
+            progress = (int)Math.floor((n/size)*100);
+            if(progress!=last) {
+                processingAlert.setTitle(progress + "%");
+                last=progress;
+
+            }
+//            processingAlert.setContentText(progress+"%");
+//            processingAlert.setTitle((int)(Math.floor(n/size)*100)+"%");
+            n++;
 //            System.out.println((int)Math.floor((n/size)*100)+"%");
 //            n++;
         }
