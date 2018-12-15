@@ -2,6 +2,7 @@ package View;
 
 
 import Indexer.DicEntry;
+import Searcher.Searcher;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -9,10 +10,9 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import processing.ReadFile;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.Map;
+import java.util.Properties;
 import java.util.TreeMap;
 
 public class View {
@@ -24,7 +24,10 @@ public class View {
     private Map<String, DicEntry> dictianary;
     public Button btn_corpusBrowse;
     public Button btn_outPutPath;
+    public Button btn_search;
+    public TextField fld_searchQuary;
 
+    //<editor-fold desc="part A">
     /**
      * starts indexing the corpus - activated by the user (start indexing button)
      */
@@ -278,6 +281,72 @@ public class View {
             return;
         }
 
+    }
+    //</editor-fold>
+
+
+    public View(){
+        try {
+            FileReader configFile = new FileReader("config");
+        }
+        catch (Exception e){
+            System.out.println("config file not found");
+            try {
+                PrintWriter pw = new PrintWriter("config");
+//                FileWriter fw = new FileWriter("config");
+
+                pw.println("corpus=");
+                pw.println("outPut=");
+                pw.println("stemmer=true");
+                pw.close();
+                System.out.println("default config file created");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
+    public void searchPressed(){
+        if (dictianary==null)
+            loadDictionary();
+
+        Searcher searcher = new Searcher(fld_searchQuary.getText(),fld_corpusPath.getText(),btn_stemmingBox.isSelected(),fld_outputPath.getText());
+        System.out.println("unimplemented searchPressed");
+
+    }
+
+    public void getConfig(){
+        try {
+            FileReader configFile = new FileReader("config");
+            Properties properties = new Properties();
+            properties.load(configFile);
+            String s = properties.getProperty("corpus");
+            fld_corpusPath.setText(properties.getProperty("corpus"));
+            fld_outputPath.setText(properties.getProperty("outPut"));
+            boolean stemmer = false;
+            if(properties.getProperty("stemmer").equals("true"))
+                stemmer = true;
+            btn_stemmingBox.setSelected(stemmer);
+        }
+        catch (Exception e){
+            System.out.println("wtf get conig error");
+        }
+    }
+
+
+    public void setConfig(){
+        try {
+            PrintWriter pw = new PrintWriter("config");
+//                FileWriter fw = new FileWriter("config");
+
+            pw.println("corpus="+ fld_corpusPath.getText().replace("\\","\\\\"));
+            pw.println("outPut="+fld_outputPath.getText());
+            pw.println("stemmer="+btn_stemmingBox.isSelected());
+            pw.close();
+            System.out.println("default config file created");
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
     }
 
 }
