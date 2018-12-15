@@ -2,6 +2,7 @@ package View;
 
 
 import Indexer.DicEntry;
+import Searcher.Searcher;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -24,7 +25,10 @@ public class View {
     private Map<String, DicEntry> dictianary;
     public Button btn_corpusBrowse;
     public Button btn_outPutPath;
+    public Button btn_search;
+    public TextField fld_searchQuary;
 
+    //<editor-fold desc="part A">
     /**
      * starts indexing the corpus - activated by the user (start indexing button)
      */
@@ -277,6 +281,16 @@ public class View {
             alert.show();
             return;
         }
+
+    }
+    //</editor-fold>
+
+    public void searchPressed(){
+        if (dictianary==null)
+            loadDictionary();
+
+        Searcher searcher = new Searcher(fld_searchQuary.getText(),fld_corpusPath.getText(),btn_stemmingBox.isSelected(),fld_outputPath.getText());
+        System.out.println("unimplemented searchPressed");
 
     }
 
