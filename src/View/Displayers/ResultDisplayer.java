@@ -1,4 +1,12 @@
 package View.Displayers;
 
-public class ResultDisplayer {
+import javafx.scene.control.ListView;
+import processing.MyDocument;
+
+import java.util.Collection;
+
+public class ResultDisplayer extends ListView {
+    Collection<MyDocument> docs;
+
+
 }

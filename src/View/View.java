@@ -3,17 +3,22 @@ package View;
 
 import Indexer.DicEntry;
 import Searcher.Searcher;
+import View.Displayers.CitiesFilterDisplayer;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import processing.ReadFile;
 
 import java.io.*;
-import java.util.Map;
-import java.util.Properties;
-import java.util.TreeMap;
+import java.util.*;
 
 public class View {
 
@@ -68,6 +73,47 @@ public class View {
         processingAlert.close();
         showIndexSummary(numOfDocsProcessed, time);
 
+    }
+
+    public void buttonTestPressed(){
+        onClickedCityFilter();
+    }
+
+    private void onClickedCityFilter(){
+        Collection<String> sCities = new ArrayList<>();
+        for (int i=0; i<200; i++){
+            ((ArrayList<String>) sCities).add("aaa___"+i);
+        }
+        CitiesFilterDisplayer cities = new CitiesFilterDisplayer(sCities);
+
+        //opens popup
+        final Stage dialog = new Stage();
+        dialog.initModality(Modality.NONE);
+        VBox dialogVbox = new VBox(20);
+        dialogVbox.getChildren().add(cities);
+
+        GridPane gp_btns =  new GridPane();
+//        gp_btns.getColumnConstraints().add(new ColumnConstraints(100));
+//        gp_btns.getColumnConstraints().add(new ColumnConstraints(100));
+        Button btn_cancel = new Button("Cancel");
+        Button btn_select = new Button("Select");
+        btn_cancel.setOnAction(event -> {
+            dialog.close();
+        });
+        btn_select.setOnAction(event -> {
+            Collection<String> selectedCities = cities.getSelectedCities();
+            for (String s: selectedCities){
+                System.out.println(s);
+            }
+        });
+        gp_btns.add(btn_cancel, 0, 0);
+        gp_btns.add(btn_select, 1, 0);
+
+        dialogVbox.getChildren().add(gp_btns);
+
+        Scene dialogScene = new Scene(dialogVbox, 500, 500);
+        dialog.setScene(dialogScene);
+        dialog.showAndWait();
     }
 
     /**
@@ -340,10 +386,10 @@ public class View {
 //                FileWriter fw = new FileWriter("config");
 
             pw.println("corpus="+ fld_corpusPath.getText().replace("\\","\\\\"));
-            pw.println("outPut="+fld_outputPath.getText());
+            pw.println("outPut="+fld_outputPath.getText().replace("\\","\\\\"));
             pw.println("stemmer="+btn_stemmingBox.isSelected());
             pw.close();
-            System.out.println("default config file created");
+            System.out.println("config file updated");
         } catch (IOException e1) {
             e1.printStackTrace();
         }
