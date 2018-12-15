@@ -9,7 +9,7 @@ public class MyDocument {
 
     //<editor-fold desc="Fields">
     private String delimiters = " $%'\",?!\\/:;()[]{}\n#&|*�+=^@_~-";
-    private String doc, txt, city, date, title;
+    private String doc, txt, city, date, title, name;
     private int textTokenCount;
     private Map<String, Pair<Integer, Integer>> terms;
     private Set<String> titleSet;
@@ -69,6 +69,16 @@ public class MyDocument {
                 date = create("<Date1>");
         }
         return date;
+    }
+
+    /**
+     * getter for the doc's name
+     * @return the name of the document (between the tag <DOCNO>). if not found returns null.
+     */
+    public String getDocumentName(){
+        if (name == null)
+            name = create("<DocNo");
+        return name;
     }
 
     /**
