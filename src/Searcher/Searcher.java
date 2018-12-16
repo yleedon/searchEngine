@@ -36,13 +36,6 @@ public class Searcher {
         useSemantics = cb_semantics;
         cityFilters = citysFilter;
 
-        ///////////////////////////
-        HashSet<String> test = new HashSet<>();
-        test.add("JAMBA");
-        cityFilters = test;
-
-        ///////////////////////////
-
         filteredDocs = new TreeSet<>();
 
         if(stemmer)
