@@ -33,14 +33,15 @@ public class View {
     private HashSet<String> selectedCitiesFilter;
 
     //<editor-fold desc="part A">
+
     /**
      * starts indexing the corpus - activated by the user (start indexing button)
      */
     public void startIndexing() {
-        Alert processingAlert  =createAlert();
+        Alert processingAlert = createAlert();
         processingAlert.setAlertType(Alert.AlertType.INFORMATION);
-        for(Node node:processingAlert.getDialogPane().getChildren()){
-            if(node instanceof ButtonBar){
+        for (Node node : processingAlert.getDialogPane().getChildren()) {
+            if (node instanceof ButtonBar) {
                 node.setVisible(false);
             }
         }
@@ -77,6 +78,7 @@ public class View {
 
     /**
      * creates ReadFile and starts indexing the dataBAse
+     *
      * @return - number of documents processed
      */
     private int createDataBase() {
@@ -91,8 +93,9 @@ public class View {
      * number of documents processed
      * number of terms in dictionary
      * total elapsed time
+     *
      * @param numOfDocsProcessed - number of documents processed
-     * @param time - total indexing time
+     * @param time               - total indexing time
      */
     private void showIndexSummary(int numOfDocsProcessed, long time) {
         Alert summary = createAlert();
@@ -108,6 +111,7 @@ public class View {
 
     /**
      * allows the oser to pick a folder with fileChooser
+     *
      * @param event - which button called the function
      */
     public void browse(ActionEvent event) {
@@ -268,7 +272,7 @@ public class View {
     /**
      * opens the readme file
      */
-    public void helpPressed(){
+    public void helpPressed() {
         try {
             File f = new File("readMe.txt");
             if (!f.exists())
@@ -290,11 +294,10 @@ public class View {
     //</editor-fold>
 
 
-    public View(){
+    public View() {
         try {
             FileReader configFile = new FileReader("config");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println("config file not found");
             try {
                 PrintWriter pw = new PrintWriter("config");
@@ -311,15 +314,22 @@ public class View {
         }
     }
 
-    public void searchPressed(){
+    public void searchPressed() {
 
 
-        Searcher searcher = new Searcher(fld_searchQuary.getText(),fld_corpusPath.getText(),btn_stemmingBox.isSelected(),fld_outputPath.getText(),cb_semantics.isSelected(), selectedCitiesFilter);
-        System.out.println("unimplemented searchPressed");
+        try {
+            Searcher searcher = new Searcher(fld_searchQuary.getText(), fld_corpusPath.getText(), btn_stemmingBox.isSelected(), fld_outputPath.getText(), cb_semantics.isSelected(), selectedCitiesFilter);
+            System.out.println("unimplemented searchPressed");
+        } catch (Exception e) {
+            Alert alert = createAlert();
+            alert.setAlertType(Alert.AlertType.ERROR);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
 
     }
 
-    public void getConfig(){
+    public void getConfig() {
         try {
             FileReader configFile = new FileReader("config");
             Properties properties = new Properties();
@@ -328,23 +338,22 @@ public class View {
             fld_corpusPath.setText(properties.getProperty("corpus"));
             fld_outputPath.setText(properties.getProperty("outPut"));
             boolean stemmer = false;
-            if(properties.getProperty("stemmer").equals("true"))
+            if (properties.getProperty("stemmer").equals("true"))
                 stemmer = true;
             btn_stemmingBox.setSelected(stemmer);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println("wtf get conig error");
         }
     }
 
-    public void setConfig(){
+    public void setConfig() {
         try {
             PrintWriter pw = new PrintWriter("config");
 //                FileWriter fw = new FileWriter("config");
 
-            pw.println("corpus="+ fld_corpusPath.getText().replace("\\","\\\\"));
-            pw.println("outPut="+fld_outputPath.getText().replace("\\","\\\\"));
-            pw.println("stemmer="+btn_stemmingBox.isSelected());
+            pw.println("corpus=" + fld_corpusPath.getText().replace("\\", "\\\\"));
+            pw.println("outPut=" + fld_outputPath.getText().replace("\\", "\\\\"));
+            pw.println("stemmer=" + btn_stemmingBox.isSelected());
             pw.close();
             System.out.println("config file updated");
         } catch (IOException e1) {
@@ -352,15 +361,18 @@ public class View {
         }
     }
 
-    public void buttonTestPressed(){
+    public void buttonTestPressed() {
         onClickedCityFilter();
     }
 
     /**
      * open popup and let the user choose the cities for filtering the query
      */
-    public void onClickedCityFilter(){
-        CitiesFilterDisplayer cities = new CitiesFilterDisplayer(getCitiesFromIndex());
+    public void onClickedCityFilter() {
+        Collection<String> sCities = getCitiesFromIndex();
+        if (sCities == null || sCities.size() == 0)
+            return;
+        CitiesFilterDisplayer cities = new CitiesFilterDisplayer(sCities, selectedCitiesFilter);
 
         //opens popup
         final Stage dialog = new Stage();
@@ -368,19 +380,30 @@ public class View {
         VBox dialogVbox = new VBox(20);
         dialogVbox.getChildren().add(cities);
 
-        GridPane gp_btns =  new GridPane();
+        GridPane gp_btns = new GridPane();
 //        gp_btns.getColumnConstraints().add(new ColumnConstraints(100));
 //        gp_btns.getColumnConstraints().add(new ColumnConstraints(100));
         Button btn_cancel = new Button("Cancel");
+        Button btn_resetSelection = new Button("Reset");
+        Button btn_selectAll = new Button("Select All");
         Button btn_select = new Button("Select");
         btn_cancel.setOnAction(event -> {
             dialog.close();
         });
-        btn_select.setOnAction(event -> {
-           selectedCitiesFilter = cities.getSelectedCities();
+        btn_resetSelection.setOnAction(event -> {
+            cities.setSelectionToAll(false);
         });
-        gp_btns.add(btn_cancel, 0, 0);
-        gp_btns.add(btn_select, 1, 0);
+        btn_select.setOnAction(event -> {
+            selectedCitiesFilter = cities.getSelectedCities();
+            dialog.close();
+        });
+        btn_selectAll.setOnAction(event -> {
+            cities.setSelectionToAll(true);
+        });
+        gp_btns.add(btn_select, 0, 0);
+        gp_btns.add(btn_selectAll, 1, 0);
+        gp_btns.add(btn_resetSelection, 2, 0);
+        gp_btns.add(btn_cancel, 3, 0);
 
         dialogVbox.getChildren().add(gp_btns);
 
@@ -391,11 +414,12 @@ public class View {
 
     /**
      * read the cities from the cityIndex
+     *
      * @return a collection of cities (as a String) from the cityIndex
      */
     private Collection<String> getCitiesFromIndex() {
         String sCityIdx = fld_outputPath.getText();
-        sCityIdx += btn_stemmingBox.isSelected()?"\\dataBase\\stemmed\\cityIndex.txt":"\\dataBase\\not stemmed\\cityIndex.txt";
+        sCityIdx += btn_stemmingBox.isSelected() ? "\\dataBase\\stemmed\\cityIndex.txt" : "\\dataBase\\not stemmed\\cityIndex.txt";
 
         //read file
         try {
@@ -404,15 +428,18 @@ public class View {
             BufferedReader reader = new BufferedReader(fr);
 
             //create the collection
-            Collection<String> ans = new ArrayList<>();
+            Collection<String> ans = new TreeSet<>();
             String city;
-            while (reader.ready()){
+            while (reader.ready()) {
                 city = reader.readLine().split("=")[0];
                 ans.add(city);
             }
             return ans;
-        }catch (Exception e){
-            System.out.println("error: View.getCitiesFromIndex()");
+        } catch (Exception e) {
+            Alert alert = createAlert();
+            alert.setAlertType(Alert.AlertType.ERROR);
+            alert.setContentText("could not find path!\n" + sCityIdx);
+            alert.showAndWait();
             return null;
 
         }

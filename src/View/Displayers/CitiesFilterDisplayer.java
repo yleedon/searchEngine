@@ -20,6 +20,21 @@ public class CitiesFilterDisplayer extends GridPane {
         setCities(cities);
     }
 
+    public CitiesFilterDisplayer(Collection<String> cities, HashSet<String> selectedCities){
+        setCities(cities);
+        if(selectedCities != null) {
+            for (String city : selectedCities) {
+                checkBoxMap.get(city).setSelected(true);
+            }
+        }
+    }
+
+    public void setSelectionToAll(boolean select){
+        for(String city:checkBoxMap.keySet()){
+            checkBoxMap.get(city).setSelected(select);
+        }
+    }
+
     /**
      * get the selected cities to filter with
      *
