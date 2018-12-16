@@ -5,7 +5,7 @@ import javafx.util.Pair;
 import java.util.Map;
 import java.util.Set;
 
-public class MyDocument {
+public class MyDocument implements Comparable{
 
     //<editor-fold desc="Fields">
     private String delimiters = " $%'\",?!\\/:;()[]{}\n#&|*�+=^@_~-";
@@ -15,6 +15,7 @@ public class MyDocument {
     private Set<String> titleSet;
     private int docNo;
     private String cityData;
+    private double rank;
     //</editor-fold>
 
 
@@ -26,6 +27,7 @@ public class MyDocument {
      */
     public MyDocument(String doc) {
         setDoc(doc);
+        rank = 0;
 
 //        this.docNo = create("<DocNo>");
 //        this.txt = create("<Text>");
@@ -290,5 +292,13 @@ public class MyDocument {
      */
     public String getCityData(int gap) {
         return gap + cityData;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(o instanceof MyDocument){
+            return (int)(rank-((MyDocument)o).rank);
+        }
+        return 0;
     }
 }
