@@ -54,7 +54,7 @@
         </rowConstraints>
          <children>
             <TextField fx:id="fld_searchQuary" prefHeight="25.0" prefWidth="520.0" GridPane.columnIndex="1" />
-            <Label text="enter quary" />
+            <Label text="enter query" />
          </children>
       </GridPane>
       <Button fx:id="btn_search" layoutX="751.0" layoutY="389.0" mnemonicParsing="false" onAction="#searchPressed" text="search" />
@@ -62,5 +62,6 @@
       <Button layoutX="82.0" layoutY="361.0" mnemonicParsing="false" onAction="#setConfig" prefHeight="25.0" prefWidth="76.0" text="set config" />
       <Button fx:id="btn_tst" layoutX="391.0" layoutY="197.0" mnemonicParsing="false" onAction="#buttonTestPressed" text="Test" />
       <CheckBox fx:id="cb_semantics" layoutX="192.0" layoutY="353.0" mnemonicParsing="false" text="use semantics" />
+      <Button fx:id="btn_cityFilter" layoutX="87.0" layoutY="287.0" mnemonicParsing="false" onAction="#onClickedCityFilter" text="City Filter" />
   </children>
 </AnchorPane>
