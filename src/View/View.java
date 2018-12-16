@@ -31,6 +31,8 @@ public class View {
     public Button btn_outPutPath;
     public Button btn_search;
     public TextField fld_searchQuary;
+    public CheckBox cb_semantics;
+    private Collection<String> citysFilter;
 
     //<editor-fold desc="part A">
     /**
@@ -73,47 +75,6 @@ public class View {
         processingAlert.close();
         showIndexSummary(numOfDocsProcessed, time);
 
-    }
-
-    public void buttonTestPressed(){
-        onClickedCityFilter();
-    }
-
-    private void onClickedCityFilter(){
-        Collection<String> sCities = new ArrayList<>();
-        for (int i=0; i<200; i++){
-            ((ArrayList<String>) sCities).add("aaa___"+i);
-        }
-        CitiesFilterDisplayer cities = new CitiesFilterDisplayer(sCities);
-
-        //opens popup
-        final Stage dialog = new Stage();
-        dialog.initModality(Modality.NONE);
-        VBox dialogVbox = new VBox(20);
-        dialogVbox.getChildren().add(cities);
-
-        GridPane gp_btns =  new GridPane();
-//        gp_btns.getColumnConstraints().add(new ColumnConstraints(100));
-//        gp_btns.getColumnConstraints().add(new ColumnConstraints(100));
-        Button btn_cancel = new Button("Cancel");
-        Button btn_select = new Button("Select");
-        btn_cancel.setOnAction(event -> {
-            dialog.close();
-        });
-        btn_select.setOnAction(event -> {
-            Collection<String> selectedCities = cities.getSelectedCities();
-            for (String s: selectedCities){
-                System.out.println(s);
-            }
-        });
-        gp_btns.add(btn_cancel, 0, 0);
-        gp_btns.add(btn_select, 1, 0);
-
-        dialogVbox.getChildren().add(gp_btns);
-
-        Scene dialogScene = new Scene(dialogVbox, 500, 500);
-        dialog.setScene(dialogScene);
-        dialog.showAndWait();
     }
 
     /**
@@ -353,10 +314,9 @@ public class View {
     }
 
     public void searchPressed(){
-        if (dictianary==null)
-            loadDictionary();
 
-        Searcher searcher = new Searcher(fld_searchQuary.getText(),fld_corpusPath.getText(),btn_stemmingBox.isSelected(),fld_outputPath.getText());
+
+        Searcher searcher = new Searcher(fld_searchQuary.getText(),fld_corpusPath.getText(),btn_stemmingBox.isSelected(),fld_outputPath.getText(),cb_semantics.isSelected(),citysFilter);
         System.out.println("unimplemented searchPressed");
 
     }
@@ -379,7 +339,6 @@ public class View {
         }
     }
 
-
     public void setConfig(){
         try {
             PrintWriter pw = new PrintWriter("config");
@@ -394,5 +353,44 @@ public class View {
             e1.printStackTrace();
         }
     }
+
+    public void buttonTestPressed(){
+        onClickedCityFilter();
+    }
+
+    public void onClickedCityFilter(){
+        Collection<String> sCities = new ArrayList<>();
+        for (int i=0; i<200; i++){
+            ((ArrayList<String>) sCities).add("aaa___"+i);
+        }
+        CitiesFilterDisplayer cities = new CitiesFilterDisplayer(sCities);
+
+        //opens popup
+        final Stage dialog = new Stage();
+        dialog.initModality(Modality.NONE);
+        VBox dialogVbox = new VBox(20);
+        dialogVbox.getChildren().add(cities);
+
+        GridPane gp_btns =  new GridPane();
+//        gp_btns.getColumnConstraints().add(new ColumnConstraints(100));
+//        gp_btns.getColumnConstraints().add(new ColumnConstraints(100));
+        Button btn_cancel = new Button("Cancel");
+        Button btn_select = new Button("Select");
+        btn_cancel.setOnAction(event -> {
+            dialog.close();
+        });
+        btn_select.setOnAction(event -> {
+           citysFilter = cities.getSelectedCities();
+        });
+        gp_btns.add(btn_cancel, 0, 0);
+        gp_btns.add(btn_select, 1, 0);
+
+        dialogVbox.getChildren().add(gp_btns);
+
+        Scene dialogScene = new Scene(dialogVbox, 500, 500);
+        dialog.setScene(dialogScene);
+        dialog.showAndWait();
+    }
+
 
 }
