@@ -293,6 +293,9 @@ public class MyDocument implements Comparable{
     public String getCityData(int gap) {
         return gap + cityData;
     }
+    public double getRank(){
+        return rank;
+    }
 
     @Override
     public int compareTo(Object o) {

@@ -4,12 +4,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import processing.MyDocument;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class ResultDisplayer extends VBox {
     private Collection<Label> docs;
+    private Map<String, Integer> documentMap;
 
     /**
      * Constructor
@@ -27,10 +26,22 @@ public class ResultDisplayer extends VBox {
         if (documents == null)
             return;
         init();
+        MyDocument current;
         while (!documents.isEmpty()){
-            docs.add(new Label(documents.poll().getDocumentName()));
+            current = documents.poll();
+            docs.add(new Label(current.getDocumentName()));
+            documentMap.put(current.getDocumentName(), current.getDocId());
         }
         getChildren().addAll(docs);
+    }
+
+    /**
+     * gets the id of the document
+     * @param documentName - the real name of the document
+     * @return the unique id of the document
+     */
+    public int getDocumentID(String documentName){
+        return documentMap.get(documentName);
     }
 
     /**
@@ -38,6 +49,7 @@ public class ResultDisplayer extends VBox {
      */
     private void init(){
         docs = new ArrayList<>();
+        documentMap = new HashMap<>();
     }
 
     /**

@@ -20,6 +20,11 @@ public class CitiesFilterDisplayer extends GridPane {
         setCities(cities);
     }
 
+    /**
+     * Constructor - check the checkboxes the selectedCities contains
+     * @param cities - the collection of the cities to display
+     * @param selectedCities - the cities to mark as selected
+     */
     public CitiesFilterDisplayer(Collection<String> cities, HashSet<String> selectedCities){
         setCities(cities);
         if(selectedCities != null) {
@@ -29,6 +34,10 @@ public class CitiesFilterDisplayer extends GridPane {
         }
     }
 
+    /**
+     * select or reset all the checkBoxes by the selection parameter
+     * @param select - if true, selects all. else clean all selections in the checkboxes
+     */
     public void setSelectionToAll(boolean select){
         for(String city:checkBoxMap.keySet()){
             checkBoxMap.get(city).setSelected(select);

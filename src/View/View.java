@@ -4,6 +4,7 @@ package View;
 import Indexer.DicEntry;
 import Searcher.Searcher;
 import View.Displayers.CitiesFilterDisplayer;
+import View.Displayers.ResultDisplayer;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -13,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import processing.MyDocument;
 import processing.ReadFile;
 
 import java.io.*;
@@ -362,7 +364,7 @@ public class View {
     }
 
     public void buttonTestPressed() {
-        onClickedCityFilter();
+        testResult();
     }
 
     /**
@@ -444,6 +446,73 @@ public class View {
 
         }
     }
+
+    private void testResult(){
+        PriorityQueue<MyDocument> documents = new PriorityQueue<>((o1, o2) -> (int)(o1.getRank()-o2.getRank()));
+        ReadFile rf = new ReadFile(fld_corpusPath.getText(), fld_outputPath.getText(), btn_stemmingBox.isSelected());
+        MyDocument md;
+        for (int i=1; i<=25; i++) {
+            md = rf.getDocument(i+"");
+            documents.add(md);
+        }
+        showResults(documents);
+    }
+
+    private void showResults(PriorityQueue<MyDocument> documents){
+        ResultDisplayer result = new ResultDisplayer(documents);
+
+//        //sets the context menu
+//        ContextMenu contextMenu = new ContextMenu();
+//        MenuItem showEntities = new MenuItem("Show Entities");
+//        MenuItem showDocument = new MenuItem("Show Document");
+//        showEntities.setOnAction(event -> {
+//            showEntities(result.getDocumentID(lbl.getText()));
+//        });
+//        showDocument.setOnAction(event -> {
+//            showDocument(result.getDocumentID(lbl.getText()));
+//        });
+//        contextMenu.getItems().addAll(showEntities, showDocument);
+
+        //sets the result displayer
+        for(Label lbl: result.getDocs()){
+            lbl.setOnContextMenuRequested(event -> {
+                getContextMenu(result.getDocumentID(lbl.getText())).show(lbl, event.getScreenX(), event.getScreenY());
+            });
+        }
+
+        //opens popup
+        final Stage dialog = new Stage();
+        dialog.initModality(Modality.NONE);
+        VBox dialogVbox = new VBox(20);
+        dialogVbox.getChildren().add(result);
+        Scene dialogScene = new Scene(dialogVbox, 500, 500);
+        dialog.setScene(dialogScene);
+        dialog.showAndWait();
+
+    }
+
+    private ContextMenu getContextMenu(int documentID){
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem showEntities = new MenuItem("Show Entities");
+        MenuItem showDocument = new MenuItem("Show Document");
+        showEntities.setOnAction(event -> {
+            showEntities(documentID);
+        });
+        showDocument.setOnAction(event -> {
+            showDocument(documentID);
+        });
+        contextMenu.getItems().addAll(showEntities, showDocument);
+        return contextMenu;
+    }
+
+    private void showEntities(int docID){
+        System.out.println("The Entities of DocumentID: "+docID);
+    }
+
+    private void showDocument(int docID){
+        System.out.println("The Document of DocumentID: "+docID);
+    }
+
 
 
 }
