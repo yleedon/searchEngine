@@ -61,5 +61,6 @@
       <Button layoutX="82.0" layoutY="326.0" mnemonicParsing="false" onAction="#getConfig" text="load config" />
       <Button layoutX="82.0" layoutY="361.0" mnemonicParsing="false" onAction="#setConfig" prefHeight="25.0" prefWidth="76.0" text="set config" />
       <Button fx:id="btn_tst" layoutX="391.0" layoutY="197.0" mnemonicParsing="false" onAction="#buttonTestPressed" text="Test" />
+      <CheckBox fx:id="cb_semantics" layoutX="192.0" layoutY="353.0" mnemonicParsing="false" text="use semantics" />
   </children>
 </AnchorPane>
