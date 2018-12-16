@@ -1,4 +1,4 @@
 package Ranker;
 
-public class Ranker {
+public class Ranker implements IRanker {
 }
