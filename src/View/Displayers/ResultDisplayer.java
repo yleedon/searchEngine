@@ -1,15 +1,14 @@
 package View.Displayers;
 
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import processing.MyDocument;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.PriorityQueue;
 
-public class ResultDisplayer extends GridPane {
+public class ResultDisplayer extends VBox {
     private Collection<Label> docs;
 
     /**
@@ -31,6 +30,7 @@ public class ResultDisplayer extends GridPane {
         while (!documents.isEmpty()){
             docs.add(new Label(documents.poll().getDocumentName()));
         }
+        getChildren().addAll(docs);
     }
 
     /**

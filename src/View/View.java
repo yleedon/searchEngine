@@ -8,9 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
@@ -32,7 +30,7 @@ public class View {
     public Button btn_search;
     public TextField fld_searchQuary;
     public CheckBox cb_semantics;
-    private Collection<String> citysFilter;
+    private HashSet<String> selectedCitiesFilter;
 
     //<editor-fold desc="part A">
     /**
@@ -316,7 +314,7 @@ public class View {
     public void searchPressed(){
 
 
-        Searcher searcher = new Searcher(fld_searchQuary.getText(),fld_corpusPath.getText(),btn_stemmingBox.isSelected(),fld_outputPath.getText(),cb_semantics.isSelected(),citysFilter);
+        Searcher searcher = new Searcher(fld_searchQuary.getText(),fld_corpusPath.getText(),btn_stemmingBox.isSelected(),fld_outputPath.getText(),cb_semantics.isSelected(), selectedCitiesFilter);
         System.out.println("unimplemented searchPressed");
 
     }
@@ -358,12 +356,11 @@ public class View {
         onClickedCityFilter();
     }
 
+    /**
+     * open popup and let the user choose the cities for filtering the query
+     */
     public void onClickedCityFilter(){
-        Collection<String> sCities = new ArrayList<>();
-        for (int i=0; i<200; i++){
-            ((ArrayList<String>) sCities).add("aaa___"+i);
-        }
-        CitiesFilterDisplayer cities = new CitiesFilterDisplayer(sCities);
+        CitiesFilterDisplayer cities = new CitiesFilterDisplayer(getCitiesFromIndex());
 
         //opens popup
         final Stage dialog = new Stage();
@@ -380,7 +377,7 @@ public class View {
             dialog.close();
         });
         btn_select.setOnAction(event -> {
-           citysFilter = cities.getSelectedCities();
+           selectedCitiesFilter = cities.getSelectedCities();
         });
         gp_btns.add(btn_cancel, 0, 0);
         gp_btns.add(btn_select, 1, 0);
@@ -390,6 +387,35 @@ public class View {
         Scene dialogScene = new Scene(dialogVbox, 500, 500);
         dialog.setScene(dialogScene);
         dialog.showAndWait();
+    }
+
+    /**
+     * read the cities from the cityIndex
+     * @return a collection of cities (as a String) from the cityIndex
+     */
+    private Collection<String> getCitiesFromIndex() {
+        String sCityIdx = fld_outputPath.getText();
+        sCityIdx += btn_stemmingBox.isSelected()?"\\dataBase\\stemmed\\cityIndex.txt":"\\dataBase\\not stemmed\\cityIndex.txt";
+
+        //read file
+        try {
+            File fCityIdx = new File(sCityIdx);
+            FileReader fr = new FileReader(fCityIdx);
+            BufferedReader reader = new BufferedReader(fr);
+
+            //create the collection
+            Collection<String> ans = new ArrayList<>();
+            String city;
+            while (reader.ready()){
+                city = reader.readLine().split("=")[0];
+                ans.add(city);
+            }
+            return ans;
+        }catch (Exception e){
+            System.out.println("error: View.getCitiesFromIndex()");
+            return null;
+
+        }
     }
 
 

@@ -6,31 +6,30 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class CitiesFilterDisplayer extends GridPane {
     private Map<String, CheckBox> checkBoxMap;
 
     /**
      * Constructor
+     *
      * @param cities - the collection of cities to display, if null the displayer will be empty
      */
-    public CitiesFilterDisplayer(Collection<String> cities){
+    public CitiesFilterDisplayer(Collection<String> cities) {
         setCities(cities);
     }
 
     /**
      * get the selected cities to filter with
+     *
      * @return a Collection of cities(as a String) that the user selected
      */
-    public Collection<String> getSelectedCities(){
-        Collection<String> ans = new ArrayList<>();
-        for (String city: checkBoxMap.keySet()){
-            if (checkBoxMap.get(city).isSelected()){
-                ((ArrayList<String>) ans).add(city);
+    public HashSet<String> getSelectedCities() {
+        HashSet<String> ans = new HashSet<>();
+        for (String city : checkBoxMap.keySet()) {
+            if (checkBoxMap.get(city).isSelected()) {
+                ans.add(city);
             }
         }
         return ans;
@@ -38,19 +37,20 @@ public class CitiesFilterDisplayer extends GridPane {
 
     /**
      * set the displayer's fields by the given collection of cities
+     *
      * @param cities - the given collection of cities(as a String)
      */
     private void setCities(Collection<String> cities) {
-        if(cities == null)
+        if (cities == null)
             return;
         init();
-        for (String city: cities){
+        for (String city : cities) {
             checkBoxMap.put(city, new CheckBox());
         }
 
         GridPane entry;
         Collection<GridPane> entries = new ArrayList<>();
-        for (String city: checkBoxMap.keySet()){
+        for (String city : checkBoxMap.keySet()) {
             entry = new GridPane();
 //            entry.getColumnConstraints().add(new ColumnConstraints(50));
 //            entry.getColumnConstraints().add(new ColumnConstraints(150));
@@ -70,8 +70,8 @@ public class CitiesFilterDisplayer extends GridPane {
     /**
      * initialize all fields and the displayer
      */
-    private void init(){
-        checkBoxMap = new HashMap<>();
+    private void init() {
+        checkBoxMap = new TreeMap<>();
         getRowConstraints().add(new RowConstraints(40));
         getRowConstraints().add(new RowConstraints(400));
 
