@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
@@ -347,6 +348,12 @@ public class View {
             btn_stemmingBox.setSelected(stemmer);
         } catch (Exception e) {
             System.out.println("wtf get conig error");
+        }
+    }
+
+    public void getConfigMainWindow(MouseEvent event){
+        if(event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
+            getConfig();
         }
     }
 
