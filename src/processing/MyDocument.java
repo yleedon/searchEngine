@@ -33,6 +33,16 @@ public class MyDocument implements Comparable{
 
     }
 
+    /**
+     * Constructor for id and rank
+     * @param docID - the unique id of this document
+     * @param rank - the rank of this document
+     */
+    public MyDocument(int docID, double rank){
+        docNo = docID;
+        this.rank = rank;
+    }
+
     //<editor-fold desc="Getters">
 
     /**
