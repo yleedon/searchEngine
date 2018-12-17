@@ -1,12 +1,12 @@
 package View.Displayers;
 
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.ListView;
 import processing.MyDocument;
 
 import java.util.*;
 
-public class ResultDisplayer extends VBox {
+public class ResultDisplayer extends ListView {
     private Collection<Label> docs;
     private Map<String, Integer> documentMap;
 
@@ -32,7 +32,8 @@ public class ResultDisplayer extends VBox {
             docs.add(new Label(current.getDocumentName()));
             documentMap.put(current.getDocumentName(), current.getDocId());
         }
-        getChildren().addAll(docs);
+//        getChildren().addAll(docs);
+        getItems().addAll(docs);
     }
 
     /**
@@ -41,7 +42,8 @@ public class ResultDisplayer extends VBox {
      * @return the unique id of the document
      */
     public int getDocumentID(String documentName){
-        return documentMap.get(documentName);
+        int ans = documentMap.get(documentName);
+        return ans;
     }
 
     /**

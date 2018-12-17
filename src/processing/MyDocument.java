@@ -18,7 +18,6 @@ public class MyDocument implements Comparable{
     private double rank;
     //</editor-fold>
 
-
     /**
      * Constructor. by the document string(have to be between the tags <Doc> and </Doc>) dismember the documentID and the Text inside.
      * if there is no tags (<DocNo> - for docID, and <Text> for txt) it makes them null;
@@ -33,7 +32,6 @@ public class MyDocument implements Comparable{
 //        this.txt = create("<Text>");
 
     }
-
 
     //<editor-fold desc="Getters">
 
@@ -79,7 +77,7 @@ public class MyDocument implements Comparable{
      */
     public String getDocumentName(){
         if (name == null)
-            name = create("<DocNo");
+            name = create("<DocNo>");
         return name;
     }
 
@@ -93,7 +91,6 @@ public class MyDocument implements Comparable{
             txt = create("<Text>");
         return txt;
     }
-
 
     /**
      * Getter for all the terms and their frequency in this document
@@ -132,6 +129,23 @@ public class MyDocument implements Comparable{
             this.title = create(("<TI>"));
         return (title != null ? title : "");
     }
+
+    /**
+     *
+     * @return - the number of tokens in the document
+     */
+    public int getTextTokenCount() {
+        return textTokenCount;
+    }
+
+    /**
+     * getter for the document's rank
+     * @return the rank of the document (as double). if hasn't been set, returns 0
+     */
+    public double getRank(){
+        return rank;
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="Setters">
@@ -160,6 +174,26 @@ public class MyDocument implements Comparable{
 
     public void setTitleSet(Map<String, Pair<Integer, Integer>> titleMap) {
         titleSet = titleMap.keySet();
+    }
+
+    /**
+     * srts the id of the document
+     * @param docNumber - the doc ID
+     */
+    public void setDocId(int docNumber) {
+        docNo = docNumber;
+    }
+
+    /**
+     * sets the total number of tokens in the document
+     * @param count -  the total number of tokens in the document
+     */
+    public void setTextTokenCount(int count) {
+        textTokenCount = count;
+    }
+
+    public void setRank(double rank){
+        this.rank = rank;
     }
 
     //</editor-fold>
@@ -241,29 +275,6 @@ public class MyDocument implements Comparable{
         return s.replace("=", "").replace(",", "").replace("@", "").replace("*", "").replace("~", "").replace("'","");
     }
 
-    /**
-     * srts the id of the document
-     * @param docNumber - the doc ID
-     */
-    public void setDocId(int docNumber) {
-        docNo = docNumber;
-    }
-
-    /**
-     *
-     * @return - the number of tokens in the document
-     */
-    public int getTextTokenCount() {
-        return textTokenCount;
-    }
-
-    /**
-     * sets the total number of tokens in the document
-     * @param count -  the total number of tokens in the document
-     */
-    public void setTextTokenCount(int count) {
-        textTokenCount = count;
-    }
     //</editor-fold>
 
     /**
@@ -292,9 +303,6 @@ public class MyDocument implements Comparable{
      */
     public String getCityData(int gap) {
         return gap + cityData;
-    }
-    public double getRank(){
-        return rank;
     }
 
     @Override
