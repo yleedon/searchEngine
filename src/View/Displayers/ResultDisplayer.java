@@ -41,7 +41,8 @@ public class ResultDisplayer extends VBox {
      * @return the unique id of the document
      */
     public int getDocumentID(String documentName){
-        return documentMap.get(documentName);
+        int ans = documentMap.get(documentName);
+        return ans;
     }
 
     /**

@@ -448,11 +448,13 @@ public class View {
     }
 
     private void testResult(){
-        PriorityQueue<MyDocument> documents = new PriorityQueue<>((o1, o2) -> (int)(o1.getRank()-o2.getRank()));
+        PriorityQueue<MyDocument> documents = new PriorityQueue<>((o1, o2) -> (int)(o2.getRank()-o1.getRank()));
         ReadFile rf = new ReadFile(fld_corpusPath.getText(), fld_outputPath.getText(), btn_stemmingBox.isSelected());
         MyDocument md;
         for (int i=1; i<=25; i++) {
             md = rf.getDocument(i+"");
+            md.setDocId(i);
+            md.setRank(Math.random());
             documents.add(md);
         }
         showResults(documents);
@@ -461,19 +463,6 @@ public class View {
     private void showResults(PriorityQueue<MyDocument> documents){
         ResultDisplayer result = new ResultDisplayer(documents);
 
-//        //sets the context menu
-//        ContextMenu contextMenu = new ContextMenu();
-//        MenuItem showEntities = new MenuItem("Show Entities");
-//        MenuItem showDocument = new MenuItem("Show Document");
-//        showEntities.setOnAction(event -> {
-//            showEntities(result.getDocumentID(lbl.getText()));
-//        });
-//        showDocument.setOnAction(event -> {
-//            showDocument(result.getDocumentID(lbl.getText()));
-//        });
-//        contextMenu.getItems().addAll(showEntities, showDocument);
-
-        //sets the result displayer
         for(Label lbl: result.getDocs()){
             lbl.setOnContextMenuRequested(event -> {
                 getContextMenu(result.getDocumentID(lbl.getText())).show(lbl, event.getScreenX(), event.getScreenY());
