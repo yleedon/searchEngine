@@ -4,11 +4,13 @@ package View;
 import Indexer.DicEntry;
 import Searcher.Searcher;
 import View.Displayers.CitiesFilterDisplayer;
+import View.Displayers.MyDocumentDisplayer;
 import View.Displayers.ResultDisplayer;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
@@ -461,19 +463,48 @@ public class View {
     }
 
     private void showResults(PriorityQueue<MyDocument> documents){
+        //sets the result diplayer
         ResultDisplayer result = new ResultDisplayer(documents);
 
+        //set the context menu for each label
         for(Label lbl: result.getDocs()){
             lbl.setOnContextMenuRequested(event -> {
                 getContextMenu(result.getDocumentID(lbl.getText())).show(lbl, event.getScreenX(), event.getScreenY());
             });
+            lbl.setOnMouseClicked(event -> {
+                if (event.getButton().equals(MouseButton.PRIMARY)){
+                    if (event.getClickCount() == 2){
+                        showDocument(result.getDocumentID(lbl.getText()));
+                    }
+                }
+            });
         }
+
+        //sets Buttons
+        Button btn_showDoc = new Button("Show Document");
+        Button btn_showEntitis = new Button("Show Entities");
+        Button btn_cancel = new Button("Cancel");
 
         //opens popup
         final Stage dialog = new Stage();
         dialog.initModality(Modality.NONE);
         VBox dialogVbox = new VBox(20);
         dialogVbox.getChildren().add(result);
+
+        //sets the button bar
+        btn_showDoc.setOnAction(event -> {
+            showDocument(result.getDocumentID(((Label)result.getSelectionModel().getSelectedItem()).getText()));
+        });
+        btn_showEntitis.setOnAction(event -> {
+            showEntities(result.getDocumentID(((Label)result.getSelectionModel().getSelectedItem()).getText()));
+        });
+        btn_cancel.setOnAction(event -> {
+            dialog.close();
+        });
+        ButtonBar bb = new ButtonBar();
+        bb.getButtons().addAll(btn_showDoc, btn_showEntitis, btn_cancel);
+        dialogVbox.getChildren().add(bb);
+
         Scene dialogScene = new Scene(dialogVbox, 500, 500);
         dialog.setScene(dialogScene);
         dialog.showAndWait();
@@ -500,6 +531,33 @@ public class View {
 
     private void showDocument(int docID){
         System.out.println("The Document of DocumentID: "+docID);
+        ReadFile rf = new ReadFile(fld_corpusPath.getText(), fld_outputPath.getText(), btn_stemmingBox.isSelected());
+        MyDocument document = rf.getDocument(""+docID);
+        MyDocumentDisplayer docDisplayer = new MyDocumentDisplayer(document);
+
+        //opens popup
+        final Stage dialog = new Stage();
+        dialog.initModality(Modality.NONE);
+        VBox dialogVbox = new VBox(20);
+        dialogVbox.getChildren().add(docDisplayer);
+
+        //sets the button bar
+        Button btn_showEntities = new Button("Show Entities");
+        Button btn_cancel = new Button("Cancel");
+        btn_showEntities.setOnAction(event -> {
+            showEntities(docID);
+        });
+        btn_cancel.setOnAction(event -> {
+            dialog.close();
+        });
+        ButtonBar bb = new ButtonBar();
+        bb.getButtons().addAll(btn_showEntities, btn_cancel);
+        dialogVbox.getChildren().add(bb);
+
+
+        Scene dialogScene = new Scene(dialogVbox, 500, 500);
+        dialog.setScene(dialogScene);
+        dialog.showAndWait();
     }
 
 
