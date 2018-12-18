@@ -28,12 +28,12 @@ public class Searcher {
 
 
 
-    public Searcher(String quaryText, String corpPath, boolean stemmer, String outPath, boolean cb_semantics, HashSet<String> citysFilter) throws Exception {
+    public Searcher(String quaryText, String corpPath, boolean stemmer, String outPath, boolean semantics, HashSet<String> citysFilter) throws Exception {
         quary = quaryText;
         corpusPath = corpPath;
         outPutPath = outPath;
         usestemmer=stemmer;
-        useSemantics = cb_semantics;
+        useSemantics = semantics;
         cityFilters = citysFilter;
 
         filteredDocs = new TreeSet<>();
@@ -43,14 +43,6 @@ public class Searcher {
         else dataPath = outPutPath+"\\dataBase\\not stemmed\\";
 
         getFilteredDocs();
-        for (String doc : filteredDocs)
-            System.out.println("doc num:" + doc);
-
-
-
-
-
-
 
         Parse parser = new Parse(corpPath,quary,stemmer);
         try {
@@ -65,6 +57,10 @@ public class Searcher {
             System.out.println("error searcher constructor 1");
             throw new Exception("parser failure");
         }
+
+        ranker = new Ranker(dataPath,quaryMap,filteredDocs);
+//        if (!semantics)
+//            ranker = new Ranker
 
 
     }
