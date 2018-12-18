@@ -26,6 +26,8 @@ public class Main extends Application {
 
             //--------------
             primaryStage.show();
+            View v = fxmlLoader.getController();
+            v.getConfig();
         }
         catch (Exception e){
             System.out.println("Bye");
