@@ -301,4 +301,19 @@ public class MyDocument implements Comparable{
         }
         return 0;
     }
+
+    /**
+     * callculates the total number ofTerm+appearances in the curent document
+     * @return - the total number of term appearances.
+     */
+    public int getTotalDocTermFrequanct(){
+        int ans=0;
+        for(String term:terms.keySet()){
+            if(term.equals(""))
+                continue;
+            ans += terms.get(term).getKey();
+        }
+        return ans;
+
+    }
 }

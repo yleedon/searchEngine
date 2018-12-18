@@ -21,6 +21,7 @@ public class ReadFile {
     private boolean stem;
     private List<Thread> apiThreadList;
     private Parse cityParser;
+    private int totalTermCount;
 
     //</editor-fold>
 
@@ -196,6 +197,8 @@ public class ReadFile {
         t2.start();
         Thread t3 = new Thread(()-> indexer.writePresentedDictionary());
         t3.start();
+        Thread t4 = new Thread(()-> writeAvrTermDocCount());
+        t4.start();
 
         indexer.writeLastWaitingList();
         indexer.mergeLastMiniFolded();
@@ -215,6 +218,7 @@ public class ReadFile {
             t1.join();
             t2.join();
             t3.join();
+            t4.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
             System.out.println("error mergeFinalePostingList thread exception");
@@ -222,6 +226,33 @@ public class ReadFile {
 
         writer.close();
         return indexer.getDictianary();
+    }
+
+
+    /**
+     * callculates and writes to disk the avrage term count for all the documents
+     */
+    private void writeAvrTermDocCount() {
+        double avrageTermCount = (double)totalTermCount/docNumber;
+        try {
+            String isStemmed = "\\stemmed";
+            if (!stem)
+                isStemmed = "\\not stemmed";
+
+            File average = new File(outPath + "\\dataBase" + isStemmed + "\\averageTermCount.txt");
+            FileWriter fw = new FileWriter(average);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.flush();
+            bw.write(avrageTermCount+"");
+
+        }
+        catch (Exception e){
+            System.out.printf("error writeTermCount");
+            return;
+        }
+
+
+
     }
 
     /**
@@ -303,8 +334,10 @@ public class ReadFile {
                     String city = ","+document.getCity();
                     if(city.length()==1)
                         city = "";
-                    entry = new StringBuilder().append(docNumber).append(",").append(startIdx).append(",").append(endIdx).append(",").append(file.getPath().replace(path+"\\","")).append(",").append(termsCount).append(",").append(maxFreq).append(city).append("\n").toString();
-
+                    int docTotalTermCount = document.getTotalDocTermFrequanct();
+                    totalTermCount += docTotalTermCount;
+                    entry = new StringBuilder().append(docNumber).append(",").append(startIdx).append(",").append(endIdx).append(",").append(file.getPath().replace(path+"\\","")).append(",").append(termsCount).append(",").append(docTotalTermCount).append(",").append(maxFreq).append(city).append("\n").toString();
+                    //docIDX: docNumber,startIDX,EndIDX,path,uniqueTermCount,maxFreq,city
                     docBuilder.delete(0,docBuilder.length());
                     writer.append(entry);
                     writer.flush();
