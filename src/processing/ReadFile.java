@@ -243,7 +243,10 @@ public class ReadFile {
             FileWriter fw = new FileWriter(average);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.flush();
+            avrageTermCount = Math.floor(avrageTermCount*1000)/1000;
             bw.write(avrageTermCount+"");
+
+            bw.close();
 
         }
         catch (Exception e){

@@ -53,4 +53,9 @@ public class TermDocData implements Comparable {
         TermDocData other = (TermDocData)o;
         return docId - other.getDocId();
     }
+
+    public String toString(){
+        return "[Term:"+term+",Doc:"+docId+",RelativeLocation:"+relativePlace+",intTitle:"+isInTitle+",totalTermsAmount:"+docTotalAmountofTerms+"]";
+
+    }
 }

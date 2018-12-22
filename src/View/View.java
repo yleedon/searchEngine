@@ -374,7 +374,10 @@ public class View {
     }
 
     public void buttonTestPressed() {
-        testResult();
+        String s = "5:a,b,c";
+        String[] docs = s.split(":")[1].split("~");
+        System.out.println(docs[0]);
+        System.out.println(docs.length);
     }
 
     /**
