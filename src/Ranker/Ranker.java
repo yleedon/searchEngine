@@ -5,10 +5,7 @@ import javafx.util.Pair;
 import processing.MyDocument;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Ranker implements IRanker {
 
@@ -17,14 +14,19 @@ public class Ranker implements IRanker {
     private Map<String, Pair<Integer, Integer>> quaryMap;
     private TreeSet<String> filteredDocs;
     private boolean filterOn;
+    private double avrageTermCount;
+    private PriorityQueue<TermDocData> docDataList;
 
-    public Ranker(String dataPath, Map<String, Pair<Integer, Integer>> quaryMap, TreeSet<String> filteredDocs) throws Exception {
+    public Ranker(String dataPath, Map<String, Pair<Integer, Integer>> quaryMap, TreeSet<String> filteredDocs, double averageTermCount) throws Exception {
         this.outPut = dataPath;
         this.quaryMap = quaryMap;
         this.filteredDocs = filteredDocs;
+        this.avrageTermCount = averageTermCount;
         if(filteredDocs == null || filteredDocs.size() ==0 )
             filterOn = false;
         else filterOn = true;
+
+        docDataList = new PriorityQueue<>();
 
         loadDictionary();
         getReleventDocs();
@@ -73,10 +75,8 @@ public class Ranker implements IRanker {
         int docTotalTermAmount = getDocTotalTermAmount(Integer.valueOf(docInfo[0]));
 
         TermDocData termDocData = new TermDocData(Integer.valueOf(docInfo[0]),isInTitle,Integer.valueOf(docInfo[2]),Integer.valueOf(docInfo[1]),term,docTotalTermAmount);
-        ///////////////////////////////////// yaniv
-
-        System.out.println(termDocData);
-        ///////////////////////////////////////
+        System.out.println(termDocData); ///////////////////////////////////// yaniv
+        docDataList.add(termDocData);
     }
 
     private int getDocTotalTermAmount(int doc) throws Exception {
