@@ -1,5 +1,7 @@
 package Ranker;
 
+import java.io.File;
+
 public class TermDocData implements Comparable {
 
     private int docId;
@@ -7,14 +9,19 @@ public class TermDocData implements Comparable {
     private int relativePlace;
     private int frequency;
     private String term;
+    private  int docTotalAmountofTerms;
 
-    public TermDocData(int docId, boolean isInTitle, int relativePlace, int frequency, String term) {
+    public TermDocData(int docId, boolean isInTitle, int relativePlace, int frequency, String term, int docTotalTermAmount) {
         this.docId = docId;
         this.isInTitle = isInTitle;
         this.relativePlace = relativePlace;
         this.frequency = frequency;
         this.term = term;
+        this.docTotalAmountofTerms = docTotalTermAmount;
+
     }
+
+
 
 
     public int getDocId() {
@@ -45,5 +52,10 @@ public class TermDocData implements Comparable {
             return 1;
         TermDocData other = (TermDocData)o;
         return docId - other.getDocId();
+    }
+
+    public String toString(){
+        return "[Term:"+term+",Doc:"+docId+",RelativeLocation:"+relativePlace+",intTitle:"+isInTitle+",totalTermsAmount:"+docTotalAmountofTerms+"]";
+
     }
 }
