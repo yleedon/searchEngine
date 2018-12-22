@@ -18,11 +18,16 @@ public class Ranker implements IRanker {
     private String outPut;
     private Map<String, Pair<Integer, Integer>> quaryMap;
     private TreeSet<String> filteredDocs;
+    private boolean filterOn;
 
     public Ranker(String dataPath, Map<String, Pair<Integer, Integer>> quaryMap, TreeSet<String> filteredDocs) throws Exception {
         this.outPut = dataPath;
         this.quaryMap = quaryMap;
         this.filteredDocs = filteredDocs;
+        if(filteredDocs == null || filteredDocs.size() ==0 )
+            filterOn = false;
+        else filterOn = true;
+
         loadDictionary();
         getReleventDocs();
     }
@@ -32,16 +37,14 @@ public class Ranker implements IRanker {
             if(dictianary.containsKey(term)){
                 String posting = getPosting(dictianary.get(term).getId());
                 String[] docs = posting.split(":")[1].split("~");
-                ArrayList<MyDocument> relaventDocs = getTermDocs(docs);
-
-
+                ArrayList<MyDocument> relaventDocs = getTermDocs(docs,term);
 
 
             }
         }
     }
 
-    private ArrayList<MyDocument> getTermDocs(String[] docs) {
+    private ArrayList<MyDocument> getTermDocs(String[] docs,String term) {
         ArrayList<MyDocument> ans = new ArrayList<>();
         int curretnDoc = 0;
         int gap ;
@@ -49,12 +52,37 @@ public class Ranker implements IRanker {
             String[] docInfoSplit = docInfo.split(",");
             gap = Integer.valueOf(docInfoSplit[0]);
             curretnDoc+=gap;
+
             docInfoSplit[0] = curretnDoc+"";
 
-            ans.add( new MyDocument(curretnDoc,0));
+            if(filterOn && !filteredDocs.contains(docInfoSplit[0]) )
+                continue;
+
+            addTermDocData(docInfoSplit,term);
+
+//            ans.add( new MyDocument(curretnDoc,0));
 
         }
         return ans;
+
+    }
+    //check posting list for correctness!!!
+
+    private void addTermDocData(String[] docInfoSplit, String term) {
+        boolean isInTitle = false;
+        if(docInfoSplit[2].contains("@")){
+            docInfoSplit[2].replace("@","");
+            isInTitle=true;
+        }
+        int docTotalTermAmount = getDocTotalTermAmount(Integer.valueOf(docInfoSplit[0]));
+
+        TermDocData termDocData = new TermDocData(Integer.valueOf(docInfoSplit[0]),isInTitle,Integer.valueOf(docInfoSplit[2]),Integer.valueOf(docInfoSplit[1]),term,docTotalTermAmount);
+    }
+
+    private int getDocTotalTermAmount(int doc) {
+        File docIdx = new File(outPut+"docIdx.txt");
+//        dfghjkhgfdfgh
+return 1;
 
     }
 
