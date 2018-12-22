@@ -7,6 +7,7 @@ import javafx.util.Pair;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Collection;
 import java.util.HashSet;
@@ -58,7 +59,7 @@ public class Searcher {
             throw new Exception("parser failure");
         }
 
-        ranker = new Ranker(dataPath,quaryMap,filteredDocs);
+        ranker = new Ranker(dataPath,quaryMap,filteredDocs,getAverageTermCount());
 //        if (!semantics)
 //            ranker = new Ranker
 
@@ -104,6 +105,20 @@ public class Searcher {
         }
         catch (Exception e){
             throw new Exception("cityIdx bad Format error!!");
+        }
+    }
+
+    private double getAverageTermCount() throws Exception {
+        String path = dataPath + "averageTermCount.txt";
+        try {
+            File f = new File(path);
+            FileReader fr = new FileReader(f);
+            BufferedReader bf = new BufferedReader(fr);
+            String avg = bf.readLine();
+            return Double.valueOf(avg);
+        }
+        catch (Exception e){
+            throw new Exception("path not found:\n"+path);
         }
     }
 }

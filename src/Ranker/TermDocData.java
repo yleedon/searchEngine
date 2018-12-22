@@ -1,6 +1,5 @@
 package Ranker;
 
-import java.io.File;
 
 public class TermDocData implements Comparable {
 
@@ -56,6 +55,5 @@ public class TermDocData implements Comparable {
 
     public String toString(){
         return "[Term:"+term+",Doc:"+docId+",RelativeLocation:"+relativePlace+",intTitle:"+isInTitle+",totalTermsAmount:"+docTotalAmountofTerms+"]";
-
     }
 }
