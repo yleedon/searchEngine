@@ -2,14 +2,10 @@ package Searcher;
 
 import Parser.Parse;
 import Ranker.Ranker;
-import javafx.scene.control.CheckBox;
 import javafx.util.Pair;
-
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeSet;
@@ -28,7 +24,16 @@ public class Searcher {
     private TreeSet<String> filteredDocs;
 
 
-
+    /**
+     * constructor
+     * @param quaryText - the query
+     * @param corpPath - the path where the stp word are
+     * @param stemmer - indicator if the stemmer is in use
+     * @param outPath - the path where all the disc data is at
+     * @param semantics - indicator if the semantics are in use
+     * @param citysFilter - a list of cities that the are to be filtered
+     * @throws Exception - inner functions exceptions
+     */
     public Searcher(String quaryText, String corpPath, boolean stemmer, String outPath, boolean semantics, HashSet<String> citysFilter) throws Exception {
         quary = quaryText;
         corpusPath = corpPath;
@@ -51,7 +56,7 @@ public class Searcher {
             quaryMap = parser.getDocMap();
             for (String term:quaryMap.keySet()
                  ) {
-                System.out.println(term);
+                System.out.println(term);// yaniv
             }
 
         }catch (Exception e){
@@ -66,11 +71,14 @@ public class Searcher {
 
     }
 
-    private HashSet<String> getFilteredDocs() throws Exception {
+    /**
+     * translates the filtered cities to the document ID that hold the cities
+     * @throws Exception - cityIndex.txt path not found
+     */
+    private void getFilteredDocs() throws Exception {
         if (cityFilters == null || cityFilters.isEmpty())
-            return null;
+            return;
 
-        HashSet<String> ans = new HashSet<>();
         String path = dataPath+"cityIndex.txt";
         try{
             File cityIndex = new File(path);
@@ -82,7 +90,6 @@ public class Searcher {
                 currentCity = bf.readLine();
                 if(cityFilters.contains(currentCity.split("=")[0]))
                     addCityDocs(currentCity.split("@")[1]);
-
             }
 
         }
@@ -90,10 +97,13 @@ public class Searcher {
             throw new Exception("path not found:\n"+ path);
 
         }
-
-        return null;
     }
 
+    /**
+     * adds the document to the filteredDocs list
+     * @param s - the city data line (cityIdx)
+     * @throws Exception
+     */
     private void addCityDocs(String s) throws Exception {
         try {
             String[] allData = s.split("~");
@@ -108,6 +118,11 @@ public class Searcher {
         }
     }
 
+    /**
+     * retrieves from the disc the AverageTermCount in the dataBase
+     * @return - the AverageTermCount
+     * @throws Exception - averageTermCount.txt path not found
+     */
     private double getAverageTermCount() throws Exception {
         String path = dataPath + "averageTermCount.txt";
         try {
