@@ -4,10 +4,7 @@ import javafx.util.Pair;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Parse {
 
@@ -981,7 +978,31 @@ public class Parse {
         return ans;
     }
 
+    /**
+     *  getter,
+     * @return - returns the city position list
+     */
     public String getCityPositions() {
         return cityPositionList;
+    }
+
+    /**
+     * finds the top most frequent upper case terms in the text
+     * @return - the 5 most frequent upper case terms;
+     */
+    public  ArrayList<UpperCaseEntity> getFiveTopEnteties(){
+        ArrayList<UpperCaseEntity> ans = new ArrayList<>();
+        PriorityQueue<UpperCaseEntity> entetiesList = new PriorityQueue<>();
+        for(String term:indexMap.keySet()){
+            if(term.toUpperCase().equals(term)){
+                entetiesList.add(new UpperCaseEntity(term,(double)indexMap.get(term).getKey()/maxFreq));
+            }
+        }
+        for (int i = 0; i < 5 ; i ++){
+            if (entetiesList.isEmpty())
+                return ans;
+            ans.add(entetiesList.poll());
+        }
+        return ans;
     }
 }

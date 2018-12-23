@@ -49,6 +49,13 @@ public class ReadFile {
         setOutputDestination(outputPath,stemmer);
     }
 
+    public ReadFile(String outPutPath, String corpusPath) {
+        this.outPath = outPutPath;
+        path = corpusPath;
+        this.docIdxFile = new File(outPutPath+"\\docIdx.txt");
+    }
+
+
     /**
      * sets the output destination in accordance to "stemmed" or "not stemmed" and also initializes the indexer
      * @param outputPath - the dataBase destination
@@ -239,14 +246,15 @@ public class ReadFile {
             if (!stem)
                 isStemmed = "\\not stemmed";
 
-            File average = new File(outPath + "\\dataBase" + isStemmed + "\\averageTermCount.txt");
+            File average = new File(outPath + "\\dataBase" + isStemmed + "\\rankerInfo.txt");
             FileWriter fw = new FileWriter(average);
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.flush();
+            PrintWriter pw = new PrintWriter(fw);
+            pw.flush();
             avrageTermCount = Math.floor(avrageTermCount*1000)/1000;
-            bw.write(avrageTermCount+"");
+            pw.println(avrageTermCount+"");
+            pw.println(docNumber);
 
-            bw.close();
+            pw.close();
 
         }
         catch (Exception e){
