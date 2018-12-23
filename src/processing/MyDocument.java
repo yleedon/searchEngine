@@ -342,6 +342,7 @@ public class MyDocument implements Comparable{
 
     @Override
     public String toString() {
-        return String.format("MyDocument: id= %d, rank = %d", docNo, rank);
+        String ans = "My Document: id= " + docNo+", rank= "+rank;
+        return ans;
     }
 }

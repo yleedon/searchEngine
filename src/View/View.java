@@ -464,7 +464,7 @@ public class View {
 
     private void showResults(PriorityQueue<MyDocument> documents){
         //sets the result diplayer
-        PriorityQueue<MyDocument> pq_docs = new PriorityQueue<>((((o1, o2) -> (int)(o2.getRank()-o1.getRank()))));
+        PriorityQueue<MyDocument> pq_docs = new PriorityQueue<>(Comparator.reverseOrder());
         for(MyDocument md:documents){
             pq_docs.add(md);
         }
