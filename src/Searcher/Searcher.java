@@ -84,7 +84,7 @@ public class Searcher {
      * @return - the top ranked document of the query
      */
     public PriorityQueue<MyDocument> getSearchResault(){
-        ReadFile readFile = new ReadFile(outPutPath.substring(0,outPutPath.length()-1),corpusPath);
+        ReadFile readFile = new ReadFile(dataPath.substring(0, dataPath.length()-1),corpusPath);
         PriorityQueue<MyDocument> reaults = ranker.getTopNDocs(50);
         for (MyDocument doc:reaults) {
             doc.setDoc(readFile.getDocument(doc.getDocId()+"").getDoc());

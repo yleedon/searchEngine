@@ -2,6 +2,7 @@ package View;
 
 
 import Indexer.DicEntry;
+import Parser.UpperCaseEntity;
 import Searcher.Searcher;
 import View.Displayers.CitiesFilterDisplayer;
 import View.Displayers.MyDocumentDisplayer;
@@ -36,7 +37,8 @@ public class View {
     public TextField fld_searchQuary;
     public CheckBox cb_semantics;
     private HashSet<String> selectedCitiesFilter;
-
+    private Searcher searcher;
+    private PriorityQueue<MyDocument> queryResult;
     //<editor-fold desc="part A">
 
     /**
@@ -321,11 +323,10 @@ public class View {
     }
 
     public void searchPressed() {
-
-
         try {
-            Searcher searcher = new Searcher(fld_searchQuary.getText(), fld_corpusPath.getText(), btn_stemmingBox.isSelected(), fld_outputPath.getText(), cb_semantics.isSelected(), selectedCitiesFilter);
-            PriorityQueue<MyDocument> resaults = searcher.getSearchResault();
+            searcher = new Searcher(fld_searchQuary.getText(), fld_corpusPath.getText(), btn_stemmingBox.isSelected(), fld_outputPath.getText(), cb_semantics.isSelected(), selectedCitiesFilter);
+            queryResult = searcher.getSearchResault();
+            showResults(queryResult);
             System.out.println("not implemented VIEW -- SEARCH");
         } catch (Exception e) {
             Alert alert = createAlert();
@@ -461,22 +462,13 @@ public class View {
         }
     }
 
-    private void testResult(){
-        PriorityQueue<MyDocument> documents = new PriorityQueue<>((o1, o2) -> (int)(o2.getRank()-o1.getRank()));
-        ReadFile rf = new ReadFile(fld_corpusPath.getText(), fld_outputPath.getText(), btn_stemmingBox.isSelected());
-        MyDocument md;
-        for (int i=1; i<=25; i++) {
-            md = rf.getDocument(i+"");
-            md.setDocId(i);
-            md.setRank(Math.random());
-            documents.add(md);
-        }
-        showResults(documents);
-    }
-
     private void showResults(PriorityQueue<MyDocument> documents){
         //sets the result diplayer
-        ResultDisplayer result = new ResultDisplayer(documents);
+        PriorityQueue<MyDocument> pq_docs = new PriorityQueue<>((((o1, o2) -> (int)(o2.getRank()-o1.getRank()))));
+        for(MyDocument md:documents){
+            pq_docs.add(md);
+        }
+        ResultDisplayer result = new ResultDisplayer(pq_docs);
 
         //set the context menu for each label
         for(Label lbl: result.getDocs()){
@@ -538,13 +530,44 @@ public class View {
     }
 
     private void showEntities(int docID){
-        System.out.println("The Entities of DocumentID: "+docID);
+        MyDocument doc = findDocInResults(docID);
+        if (doc == null)
+            return;
+        try {
+            ArrayList<UpperCaseEntity> entities = searcher.getFiveEnteties(doc);
+            ListView entitiesView = new ListView();
+            for (UpperCaseEntity entity: entities){
+                entitiesView.getItems().add(new Label(entity.toString()));
+            }
+
+            //popup
+            final Stage dialog = new Stage();
+            dialog.initModality(Modality.NONE);
+            VBox dialogVbox = new VBox(20);
+            dialogVbox.getChildren().add(entitiesView);
+
+            //sets the button bar
+            Button btn_cancel = new Button("Cancel");
+            btn_cancel.setOnAction(event -> {
+                dialog.close();
+            });
+            dialogVbox.getChildren().add(btn_cancel);
+
+
+            Scene dialogScene = new Scene(dialogVbox, 300, 300);
+            dialog.setScene(dialogScene);
+            dialog.showAndWait();
+        }
+        catch (Exception e){
+            Alert alert = createAlert();
+            alert.setAlertType(Alert.AlertType.ERROR);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     private void showDocument(int docID){
-        System.out.println("The Document of DocumentID: "+docID);
-        ReadFile rf = new ReadFile(fld_corpusPath.getText(), fld_outputPath.getText(), btn_stemmingBox.isSelected());
-        MyDocument document = rf.getDocument(""+docID);
+        MyDocument document = findDocInResults(docID);
         MyDocumentDisplayer docDisplayer = new MyDocumentDisplayer(document);
 
         //opens popup
@@ -572,6 +595,15 @@ public class View {
         dialog.showAndWait();
     }
 
-
+    private MyDocument findDocInResults(int docID) {
+        Iterator<MyDocument> iterator = queryResult.iterator();
+        MyDocument ans = null;
+        while (iterator.hasNext()){
+            ans = iterator.next();
+            if(ans.getDocId() == docID)
+                return ans;
+        }
+        return ans;
+    }
 
 }
