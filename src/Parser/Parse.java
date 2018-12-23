@@ -999,7 +999,9 @@ public class Parse {
             }
         }
         for (int i = 0; i < 5 ; i ++){
-            ans.add(entetiesList.poll()); // can be null!!
+            if (entetiesList.isEmpty())
+                return ans;
+            ans.add(entetiesList.poll());
         }
         return ans;
     }

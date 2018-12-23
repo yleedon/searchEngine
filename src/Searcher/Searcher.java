@@ -1,11 +1,15 @@
 package Searcher;
 
 import Parser.Parse;
+import Parser.UpperCaseEntity;
 import Ranker.Ranker;
 import javafx.util.Pair;
+import processing.MyDocument;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeSet;
@@ -135,5 +139,28 @@ public class Searcher {
         catch (Exception e){
             throw new Exception("path not found:\n"+path);
         }
+    }
+
+    /**
+     * given a document, this function will return the 5 top ranked enteties in the document
+     * @param document - the document
+     * @return - the 5 top ranked entities in the document
+     * @throws Exception - parser exceptions and no entities exception
+     */
+    public ArrayList<UpperCaseEntity> getFiveEnteties(MyDocument document)throws Exception{
+        ArrayList<UpperCaseEntity> ans = new ArrayList<>();
+        try {
+            Parse parser = new Parse(corpusPath, "", usestemmer);
+            parser.setTxt(document.getTxt(), "");
+            parser.parse();
+            ans = parser.getFiveTopEnteties();
+
+        }
+        catch (Exception e){
+            throw new Exception("parser error (searcher: getFiveEnteties)");
+        }
+        if(ans.size() == 0)
+            throw new Exception("no entities exist in this document");
+        return ans;
     }
 }
