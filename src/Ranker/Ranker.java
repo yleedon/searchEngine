@@ -2,6 +2,8 @@ package Ranker;
 
 import Indexer.DicEntry;
 import javafx.util.Pair;
+import processing.MyDocument;
+
 import java.io.*;
 import java.util.*;
 
@@ -13,6 +15,7 @@ public class Ranker implements IRanker {
     private TreeSet<String> filteredDocs;
     private boolean filterOn;
     private double avrageTermCount;
+    private int numOfDocsInCorpus;
     private PriorityQueue<TermDocData> docDataList;
 
     /**
@@ -23,11 +26,12 @@ public class Ranker implements IRanker {
      * @param averageTermCount - the total average term count in the dataBase
      * @throws Exception - from private functions (I/O)
      */
-    public Ranker(String dataPath, Map<String, Pair<Integer, Integer>> quaryMap, TreeSet<String> filteredDocs, double averageTermCount) throws Exception {
+    public Ranker(String dataPath, Map<String, Pair<Integer, Integer>> quaryMap, TreeSet<String> filteredDocs, double averageTermCount, int numOfDocsInCorpus) throws Exception {
         this.outPut = dataPath;
         this.quaryMap = quaryMap;
         this.filteredDocs = filteredDocs;
         this.avrageTermCount = averageTermCount;
+        this.numOfDocsInCorpus = numOfDocsInCorpus;
         this.docDataList = new PriorityQueue<>();
 
         if(filteredDocs == null || filteredDocs.size() ==0 )
@@ -57,6 +61,8 @@ public class Ranker implements IRanker {
                 createTermDocData(docs,term);
             }
         }
+        if (docDataList.isEmpty())
+            throw new Exception("No results found for your query");
     }
 
     /**
@@ -194,5 +200,48 @@ public class Ranker implements IRanker {
         } catch (Exception e) {
             throw new Exception("load dictionary error");
         }
+    }
+
+    public PriorityQueue<MyDocument> getTopNDocs(int N){
+        PriorityQueue<MyDocument> ans = new PriorityQueue<>(Comparator.reverseOrder());
+        PriorityQueue<MyDocument> minHeap = new PriorityQueue<>();
+        int qSize = 0;
+        TermDocData currentDoc;
+        MyDocument myDoc;
+        ArrayList<TermDocData> docTerms;
+        while (!docDataList.isEmpty()){
+            docTerms = new ArrayList<TermDocData>();
+            currentDoc = docDataList.poll();
+            docTerms.add(currentDoc);
+            while(!docDataList.isEmpty() && currentDoc.getDocId() == docDataList.peek().getDocId()){
+                docTerms.add(docDataList.poll());
+            }
+            myDoc = new MyDocument(currentDoc.getDocId(), BM25(docTerms));
+            if (qSize < N){
+                ans.add(myDoc);
+                minHeap.add(myDoc);
+                qSize ++;
+            }
+            else if (minHeap.peek().getRank() < myDoc.getRank()) {
+                ans.remove(minHeap.poll());
+                ans.add(myDoc);
+                minHeap.add(myDoc);
+            }
+        }
+        return ans;
+    }
+
+    private double BM25(ArrayList<TermDocData> docTerms){
+        double rank = 0;
+        int cwq, cwd, dLen, df;
+        double b = 0.75, k=1.5;
+        for (TermDocData tdd: docTerms){
+            cwq = quaryMap.get(tdd.getTerm()).getKey();
+            cwd = tdd.getFrequency();
+            dLen =  tdd.getDocTotalAmountofTerms();
+            df = dictianary.get(tdd.getTerm()).numOfDocs;
+            rank += ( (cwq*(k+1)*cwd)/(cwd+k*(1-b+b*(dLen/avrageTermCount))) ) * Math.log((numOfDocsInCorpus+1)/df);
+        }
+        return rank;
     }
 }

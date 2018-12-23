@@ -23,6 +23,7 @@ public class MyDocumentDisplayer extends ListView {
         for (String line: sLines){
             lines.add(new Label(line));
         }
+        lines.add(new Label("Rank: "+doc.getRank()));
         setPrefHeight(450);
         setPrefWidth(250);
         getItems().addAll(lines);

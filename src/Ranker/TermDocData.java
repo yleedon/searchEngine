@@ -43,7 +43,7 @@ public class TermDocData implements Comparable {
         return term;
     }
 
-
+    public int getDocTotalAmountofTerms(){return docTotalAmountofTerms;}
 
     @Override
     public int compareTo(Object o) {

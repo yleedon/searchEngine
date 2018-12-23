@@ -318,7 +318,9 @@ public class MyDocument implements Comparable{
     @Override
     public int compareTo(Object o) {
         if(o instanceof MyDocument){
-            return (int)(rank-((MyDocument)o).rank);
+            double ans = rank-((MyDocument)o).rank;
+            if (ans > 0) return 1;
+            if (ans < 0) return -1;
         }
         return 0;
     }
@@ -336,5 +338,10 @@ public class MyDocument implements Comparable{
         }
         return ans;
 
+    }
+
+    @Override
+    public String toString() {
+        return String.format("MyDocument: id= %d, rank = %d", docNo, rank);
     }
 }
