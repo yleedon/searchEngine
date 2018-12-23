@@ -995,7 +995,7 @@ public class Parse {
         PriorityQueue<UpperCaseEntity> entetiesList = new PriorityQueue<>();
         for(String term:indexMap.keySet()){
             if(term.toUpperCase().equals(term)){
-                entetiesList.add(new UpperCaseEntity(term,indexMap.get(term).getKey()));
+                entetiesList.add(new UpperCaseEntity(term,(double)indexMap.get(term).getKey()/maxFreq));
             }
         }
         for (int i = 0; i < 5 ; i ++){

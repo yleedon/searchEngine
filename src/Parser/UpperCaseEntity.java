@@ -2,25 +2,25 @@ package Parser;
 
 public class UpperCaseEntity implements Comparable{
 
-    private int frequency;
+    private double rank;
     private String term;
 
     /**
      * contruter
      * @param term - the term
-     * @param frequency - amount of times the term is in the text
+     * @param rank - amount of times the term is in the text divided by doc max frequency
      */
-    public UpperCaseEntity(String term, int frequency) {
-        this.frequency = frequency;
+    public UpperCaseEntity(String term, double rank) {
+        this.rank = rank;
         this.term = term;
     }
 
     /**
      * getter
-     * @return returns the frequency
+     * @return returns the rank
      */
-    public int getFrequency() {
-        return frequency;
+    public double getRank() {
+        return rank;
     }
 
     /**
@@ -41,13 +41,17 @@ public class UpperCaseEntity implements Comparable{
         if(o==null || !(o instanceof UpperCaseEntity))
             return -1; /// yaniv ??????
         UpperCaseEntity other = (UpperCaseEntity) o;
-
-        return other.getFrequency() - frequency;
+        double compare = other.getRank() - rank;
+        if (compare > 0)
+            return 1;
+        if(compare < 0)
+            return -1;
+        return 0;
     }
 
     @Override
     public String toString() {
-        return "Entity: "+ term+", rank: "+ 0.9*frequency; //decide rank...
+        return "Entity: "+ term+",  rank: "+ rank;
     }
 }
 

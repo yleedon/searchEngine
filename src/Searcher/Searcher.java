@@ -5,14 +5,12 @@ import Parser.UpperCaseEntity;
 import Ranker.Ranker;
 import javafx.util.Pair;
 import processing.MyDocument;
+import processing.ReadFile;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Searcher {
 
@@ -26,7 +24,8 @@ public class Searcher {
     private Ranker ranker;
     private String dataPath;
     private TreeSet<String> filteredDocs;
-
+    private double averageTermCount;
+    private int docAmount;
 
     /**
      * constructor
@@ -39,6 +38,8 @@ public class Searcher {
      * @throws Exception - inner functions exceptions
      */
     public Searcher(String quaryText, String corpPath, boolean stemmer, String outPath, boolean semantics, HashSet<String> citysFilter) throws Exception {
+        System.out.println(corpPath);
+        System.out.println(outPath);
         quary = quaryText;
         corpusPath = corpPath;
         outPutPath = outPath;
@@ -68,11 +69,27 @@ public class Searcher {
             throw new Exception("parser failure");
         }
 
-        ranker = new Ranker(dataPath,quaryMap,filteredDocs,getAverageTermCount());
+        getRankData();
+        ranker = new Ranker(dataPath,quaryMap,filteredDocs,averageTermCount,docAmount);
+
 //        if (!semantics)
 //            ranker = new Ranker
 
 
+    }
+
+    /**
+     * this function trigers the Ranker to retrieve the ranked documents
+     * for each document returned, the document will be loaded from the disk
+     * @return - the top ranked document of the query
+     */
+    public PriorityQueue<MyDocument> getSearchResault(){
+        ReadFile readFile = new ReadFile(outPutPath.substring(0,outPutPath.length()-1),corpusPath);
+        PriorityQueue<MyDocument> reaults = ranker.getTopNDocs(50);
+        for (MyDocument doc:reaults) {
+            doc.setDoc(readFile.getDocument(doc.getDocId()+"").getDoc());
+        }
+        return reaults;
     }
 
     /**
@@ -127,14 +144,23 @@ public class Searcher {
      * @return - the AverageTermCount
      * @throws Exception - averageTermCount.txt path not found
      */
-    private double getAverageTermCount() throws Exception {
-        String path = dataPath + "averageTermCount.txt";
+    private void getRankData() throws Exception {
+        String path = dataPath + "rankerInfo.txt";
         try {
             File f = new File(path);
             FileReader fr = new FileReader(f);
             BufferedReader bf = new BufferedReader(fr);
-            String avg = bf.readLine();
-            return Double.valueOf(avg);
+            String line = bf.readLine();
+            averageTermCount =  Double.valueOf(line);
+            line = bf.readLine();
+            docAmount = Integer.valueOf(line);
+
+            //////////////////////////////////////////////////////////////
+            System.out.println("averageTermCount = "+averageTermCount);
+            System.out.println("totalDocsInCorpus = "+ docAmount);
+            ////////////////////////////////////////////////////////////// yaniv
+            bf.close();
+
         }
         catch (Exception e){
             throw new Exception("path not found:\n"+path);
@@ -148,7 +174,7 @@ public class Searcher {
      * @throws Exception - parser exceptions and no entities exception
      */
     public ArrayList<UpperCaseEntity> getFiveEnteties(MyDocument document)throws Exception{
-        ArrayList<UpperCaseEntity> ans = new ArrayList<>();
+        ArrayList<UpperCaseEntity> ans;
         try {
             Parse parser = new Parse(corpusPath, "", usestemmer);
             parser.setTxt(document.getTxt(), "");
@@ -157,7 +183,7 @@ public class Searcher {
 
         }
         catch (Exception e){
-            throw new Exception("parser error (searcher: getFiveEnteties)");
+            throw new Exception("parser error (searcher: getFiveEntities)");
         }
         if(ans.size() == 0)
             throw new Exception("no entities exist in this document");
