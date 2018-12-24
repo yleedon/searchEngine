@@ -324,11 +324,18 @@ public class View {
     }
 
     public void searchPressed() {
+        if(dictianary == null){
+            loadDictionary();
+        }
         try {
             if(!(new File(fld_corpusPath.getText()).exists()))
                 throw new Exception("path does not exist\n"+fld_corpusPath.getText());
-            searcher = new Searcher(fld_searchQuary.getText(), fld_corpusPath.getText(), btn_stemmingBox.isSelected(), fld_outputPath.getText(), cb_semantics.isSelected(), selectedCitiesFilter);
+            long start = System.nanoTime();
+            searcher = new Searcher(fld_searchQuary.getText(), fld_corpusPath.getText(), btn_stemmingBox.isSelected(), fld_outputPath.getText(), cb_semantics.isSelected(), selectedCitiesFilter,dictianary);
+            System.out.println("constructor: "+ (System.nanoTime() - start)/1000000);
+            start = System.nanoTime();
             queryResult = searcher.getSearchResault();
+            System.out.println("function: "+ (System.nanoTime() - start)/1000000);
             showResults(queryResult);
            
         } catch (Exception e) {
@@ -467,6 +474,7 @@ public class View {
     }
 
     private void showResults(PriorityQueue<MyDocument> documents){
+        long start = System.nanoTime();
         //sets the result diplayer
         PriorityQueue<MyDocument> pq_docs = new PriorityQueue<>(Comparator.reverseOrder());
         for(MyDocument md:documents){
@@ -519,6 +527,7 @@ public class View {
         Scene dialogScene = new Scene(dialogVbox, 500, 500);
         dialog.setScene(dialogScene);
         dialog.setTitle("Search Results");
+        System.out.println("show: "+ (System.nanoTime() - start)/1000000);
         dialog.showAndWait();
 
     }

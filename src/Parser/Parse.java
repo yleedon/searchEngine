@@ -994,7 +994,7 @@ public class Parse {
         ArrayList<UpperCaseEntity> ans = new ArrayList<>();
         PriorityQueue<UpperCaseEntity> entetiesList = new PriorityQueue<>();
         for(String term:indexMap.keySet()){
-            if(term.toUpperCase().equals(term)){
+            if(term.toUpperCase().equals(term) && !term.toLowerCase().equals(term)){
                 entetiesList.add(new UpperCaseEntity(term,(double)indexMap.get(term).getKey()/maxFreq));
             }
         }
