@@ -429,6 +429,7 @@ public class View {
 
         Scene dialogScene = new Scene(dialogVbox, 500, 500);
         dialog.setScene(dialogScene);
+        dialog.setTitle("Filter by cities");
         dialog.showAndWait();
     }
 
@@ -574,6 +575,7 @@ public class View {
 
             Scene dialogScene = new Scene(dialogVbox, 300, 300);
             dialog.setScene(dialogScene);
+            dialog.setTitle("Five top Entities");
             dialog.showAndWait();
         }
         catch (Exception e){
@@ -610,6 +612,7 @@ public class View {
 
         Scene dialogScene = new Scene(dialogVbox, 500, 500);
         dialog.setScene(dialogScene);
+        dialog.setTitle("Document Preview");
         dialog.showAndWait();
     }
 
