@@ -329,7 +329,7 @@ public class View {
             searcher = new Searcher(fld_searchQuary.getText(), fld_corpusPath.getText(), btn_stemmingBox.isSelected(), fld_outputPath.getText(), cb_semantics.isSelected(), selectedCitiesFilter);
             queryResult = searcher.getSearchResault();
             showResults(queryResult);
-            System.out.println("not implemented VIEW -- SEARCH");
+           
         } catch (Exception e) {
             Alert alert = createAlert();
             alert.setAlertType(Alert.AlertType.ERROR);
