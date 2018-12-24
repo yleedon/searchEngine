@@ -3,7 +3,6 @@ package Ranker;
 import Indexer.DicEntry;
 import javafx.util.Pair;
 import processing.MyDocument;
-
 import java.io.*;
 import java.util.*;
 
@@ -50,6 +49,10 @@ public class Ranker implements IRanker {
         System.out.println("ranker fucker: "+ (System.nanoTime()-start)/1000000);
     }
 
+    /**
+     * loads the "docTermCountMap" from "docIdx"
+     * @throws Exception - I/O
+     */
     private void loadDocsTermCount() throws Exception {
         try {
             docTermCountMap = new HashMap<>();
@@ -93,6 +96,10 @@ public class Ranker implements IRanker {
             throw new Exception("No results found for your query");
     }
 
+    /**
+     * creates the postingList Map by retrieving specific data from postingList.txt
+     * @throws Exception
+     */
     private void createPostinglistmap() throws Exception {
         TreeSet<Integer> postinglistSet = new TreeSet<>();
         for (String term : quaryMap.keySet()) {
@@ -106,11 +113,13 @@ public class Ranker implements IRanker {
         }
 
         loadPostingList(postingLines);
-
-
-
     }
 
+    /**
+     * adds all the relative lines from the posting list to the postingList MAP
+     * @param postingLines - the relative lines (sorted from small to big)
+     * @throws Exception - I/O Exceptions
+     */
     private void loadPostingList(PriorityQueue<Integer> postingLines) throws Exception {
         postingListMap = new HashMap<>();
         int lineNumber;
@@ -136,6 +145,10 @@ public class Ranker implements IRanker {
         }
     }
 
+    /**
+     * changes the querry case sensitivity in accordance to the dictionary.
+     * @throws Exception  - not supposed to happen
+     */
     private void deCapitalizedMap() throws Exception {
         try {
             Map<String, Pair<Integer, Integer>> tempMap = new TreeMap<>();
@@ -144,7 +157,6 @@ public class Ranker implements IRanker {
 
                 if (!dictianary.containsKey(term)) {
                     Pair<Integer, Integer> currentPair = quaryMap.get(term);
-//                    quaryMap.remove(term);
                     term = capitalSensitivetyFix(term);
                     tempMap.put(term, currentPair);
                 }
@@ -152,7 +164,7 @@ public class Ranker implements IRanker {
             }
             quaryMap = tempMap;
         } catch (Exception e){
-            throw new Exception("dan Did it");
+            throw new Exception("deCapitalizedMap error (Ranker)");
         }
     }
 
