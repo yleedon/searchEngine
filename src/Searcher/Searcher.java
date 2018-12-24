@@ -38,6 +38,7 @@ public class Searcher {
      * @throws Exception - inner functions exceptions
      */
     public Searcher(String quaryText, String corpPath, boolean stemmer, String outPath, boolean semantics, HashSet<String> citysFilter) throws Exception {
+        long start = System.nanoTime();
         quary = quaryText;
         corpusPath = corpPath;
         outPutPath = outPath;
@@ -68,6 +69,7 @@ public class Searcher {
         }
 
         getRankData();
+        System.out.println("searcher: "+(System.nanoTime()-start)/1000000);
         ranker = new Ranker(dataPath,quaryMap,filteredDocs,averageTermCount,docAmount);
 
 //        if (!semantics)
