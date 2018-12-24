@@ -18,6 +18,8 @@ public class Ranker implements IRanker {
     private int numOfDocsInCorpus;
     private PriorityQueue<TermDocData> docDataList;
     private Map<String,Integer> docTermCountMap;
+    private Map<Integer,String> postingListMap;
+
 
     /**
      * constructor, retrieves all the necessary data for ranking the documents.
@@ -42,12 +44,10 @@ public class Ranker implements IRanker {
         else filterOn = true;
         loadDocsTermCount();
 
-        long start = System.nanoTime();
         loadDictionary();
-        System.out.println("dictionary: "+(System.nanoTime()-start)/1000000);
-        start = System.nanoTime();
+        long start = System.nanoTime();
         getReleventDocs();
-        System.out.println("ranker other: "+(System.nanoTime()-start)/1000000);
+        System.out.println("ranker fucker: "+ (System.nanoTime()-start)/1000000);
     }
 
     private void loadDocsTermCount() throws Exception {
@@ -79,27 +79,61 @@ public class Ranker implements IRanker {
      */
     private void getReleventDocs() throws Exception {
         deCapitalizedMap();
-        long totalIOTime = 0;
-        long totalOther = 0;
-        long start;
-        long start2;
+
+        createPostinglistmap();
+
         for (String term : quaryMap.keySet()) {
             if (dictianary.containsKey(term)) {
-                start = System.nanoTime();
-                String posting = getPosting(dictianary.get(term).getId());
-                totalIOTime += (System.nanoTime() - start);
+                String posting = postingListMap.get(dictianary.get(term).getId());
                 String[] docs = posting.split(":")[1].split("~");
-
-
-                start2 = System.nanoTime();
                 createTermDocData(docs, term);
-                totalOther += (System.nanoTime() - start2);
             }
         }
-        System.out.println("total IO: "+totalIOTime/1000000);
-        System.out.println("total ranker other: "+totalOther/1000000);
         if (docDataList.isEmpty())
             throw new Exception("No results found for your query");
+    }
+
+    private void createPostinglistmap() throws Exception {
+        TreeSet<Integer> postinglistSet = new TreeSet<>();
+        for (String term : quaryMap.keySet()) {
+            if (dictianary.containsKey(term)) {
+                postinglistSet.add(dictianary.get(term).getId());
+            }
+        }
+        PriorityQueue<Integer> postingLines = new PriorityQueue<>();
+        for (int termId:postinglistSet){
+            postingLines.add(termId);
+        }
+
+        loadPostingList(postingLines);
+
+
+
+    }
+
+    private void loadPostingList(PriorityQueue<Integer> postingLines) throws Exception {
+        postingListMap = new HashMap<>();
+        int lineNumber;
+        int currentLine = 0;
+        String line;
+
+        File postingList = new File(outPut + "postingList.txt");
+        try {
+            FileReader fr = new FileReader(postingList);
+            BufferedReader bf = new BufferedReader(fr);
+            while (!postingLines.isEmpty()) {
+                lineNumber = postingLines.poll();
+                while (currentLine!=lineNumber){
+                    bf.readLine();
+                    currentLine++;
+                }
+                line = bf.readLine();
+                postingListMap.put(lineNumber,line);
+                currentLine++;
+            }
+        } catch (Exception e) {
+            throw new Exception("posting list not found -- getPosting");
+        }
     }
 
     private void deCapitalizedMap() throws Exception {
@@ -179,53 +213,6 @@ public class Ranker implements IRanker {
 
         TermDocData termDocData = new TermDocData(Integer.valueOf(docInfo[0]), isInTitle, Integer.valueOf(docInfo[2]), Integer.valueOf(docInfo[1]), term, docTotalTermAmount);
         docDataList.add(termDocData);
-    }
-
-//    /**
-//     * retrieves the totalTermCount in the givven document
-//     *
-//     * @param doc - the documrnt ID
-//     * @return - the total amount of terms in the document
-//     * @throws Exception - doxIdx,txt psth not found
-//     */
-//    private int getDocTotalTermAmount(int doc) throws Exception {
-//        try {
-//            File docIdx = new File(outPut + "docIdx.txt");
-//            FileReader fr = new FileReader(docIdx);
-//            BufferedReader bf = new BufferedReader(fr);
-//            String line;
-//            for (int i = 1; i < doc; i++) {
-//                bf.readLine();
-//            }
-//            line = bf.readLine();
-//            bf.close();
-//            String totalTermsAmount = line.split(",")[5];
-//            return Integer.valueOf(totalTermsAmount);
-//
-//        } catch (Exception e) {
-//            throw new Exception("docIdx.txt not found\nRanker_GetTotalTermAmount (docNumber: " + doc + " )");
-//        }
-//    }
-
-    /**
-     * retrieves the terms posting list
-     *
-     * @param id - term ID
-     * @return - the posting line of the term
-     * @throws Exception - posting list path not found
-     */
-    private String getPosting(int id) throws Exception {
-        File postingList = new File(outPut + "postingList.txt");
-        try {
-            FileReader fr = new FileReader(postingList);
-            BufferedReader bf = new BufferedReader(fr);
-            for (int i = 0; i < id; i++) {
-                bf.readLine();
-            }
-            return bf.readLine();
-        } catch (Exception e) {
-            throw new Exception("posting list not found -- getPosting");
-        }
     }
 
     /**
