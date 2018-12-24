@@ -8,7 +8,7 @@ import java.util.*;
 
 public class Ranker implements IRanker {
 
-    private TreeMap<String, DicEntry> dictianary;
+    private Map<String, DicEntry> dictianary;
     private String outPut;
     private Map<String, Pair<Integer, Integer>> quaryMap;
     private TreeSet<String> filteredDocs;
@@ -27,10 +27,12 @@ public class Ranker implements IRanker {
      * @param quaryMap         - the terms in the quarry with the frequency
      * @param filteredDocs     - the filtered docs by city
      * @param averageTermCount - the total average term count in the dataBase
+     * @param dictianary
      * @throws Exception - from private functions (I/O)
      */
-    public Ranker(String dataPath, Map<String, Pair<Integer, Integer>> quaryMap, TreeSet<String> filteredDocs, double averageTermCount, int numOfDocsInCorpus) throws Exception {
+    public Ranker(String dataPath, Map<String, Pair<Integer, Integer>> quaryMap, TreeSet<String> filteredDocs, double averageTermCount, int numOfDocsInCorpus, Map<String, DicEntry> dictianary) throws Exception {
 
+        this.dictianary = dictianary;
         this.outPut = dataPath;
         this.quaryMap = quaryMap;
         this.filteredDocs = filteredDocs;
@@ -43,7 +45,7 @@ public class Ranker implements IRanker {
         else filterOn = true;
         loadDocsTermCount();
 
-        loadDictionary();
+//        loadDictionary();
         long start = System.nanoTime();
         getReleventDocs();
         System.out.println("ranker fucker: "+ (System.nanoTime()-start)/1000000);

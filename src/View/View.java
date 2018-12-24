@@ -324,11 +324,14 @@ public class View {
     }
 
     public void searchPressed() {
+        if(dictianary == null){
+            loadDictionary();
+        }
         try {
             if(!(new File(fld_corpusPath.getText()).exists()))
                 throw new Exception("path does not exist\n"+fld_corpusPath.getText());
             long start = System.nanoTime();
-            searcher = new Searcher(fld_searchQuary.getText(), fld_corpusPath.getText(), btn_stemmingBox.isSelected(), fld_outputPath.getText(), cb_semantics.isSelected(), selectedCitiesFilter);
+            searcher = new Searcher(fld_searchQuary.getText(), fld_corpusPath.getText(), btn_stemmingBox.isSelected(), fld_outputPath.getText(), cb_semantics.isSelected(), selectedCitiesFilter,dictianary);
             System.out.println("constructor: "+ (System.nanoTime() - start)/1000000);
             start = System.nanoTime();
             queryResult = searcher.getSearchResault();
