@@ -62,14 +62,23 @@ public class Ranker implements IRanker {
             throw new Exception("No results found for your query");
     }
 
-    private void deCapitalizedMap() {
-        for (String term : quaryMap.keySet()) {
-            if (!dictianary.containsKey(term)) {
-                Pair<Integer, Integer> currentPair = quaryMap.get(term);
-                quaryMap.remove(term);
-                term = capitalSensitivetyFix(term);
-                quaryMap.put(term, currentPair);
+    private void deCapitalizedMap() throws Exception {
+        try {
+            Map<String, Pair<Integer, Integer>> tempMap = new TreeMap<>();
+
+            for (String term : quaryMap.keySet()) {
+
+                if (!dictianary.containsKey(term)) {
+                    Pair<Integer, Integer> currentPair = quaryMap.get(term);
+//                    quaryMap.remove(term);
+                    term = capitalSensitivetyFix(term);
+                    tempMap.put(term, currentPair);
+                }
+                else tempMap.put(term,quaryMap.get(term));
             }
+            quaryMap = tempMap;
+        } catch (Exception e){
+            throw new Exception("dan Did it");
         }
     }
 
