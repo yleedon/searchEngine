@@ -27,10 +27,14 @@ public class ResultDisplayer extends ListView {
             return;
         init();
         MyDocument current;
+        Label lbl;
+        int i=1;
         while (!documents.isEmpty()){
             current = documents.poll();
-            docs.add(new Label(current.getDocumentName()));
-            documentMap.put(current.getDocumentName(), current.getDocId());
+            lbl = new Label(i+".\t"+current.getDocumentName()+"       " + current.getRank());
+            docs.add(lbl);
+            documentMap.put(lbl.getText(), current.getDocId());
+            i++;
         }
 //        getChildren().addAll(docs);
         getItems().addAll(docs);
@@ -51,6 +55,9 @@ public class ResultDisplayer extends ListView {
      */
     private void init(){
         docs = new ArrayList<>();
+        Label title = new Label("#\tDocument:\tRank:");
+        title.setStyle("-fx-text-fill: BLUE;-fx-font-weight:bold;");
+        getItems().add(title);
         documentMap = new HashMap<>();
     }
 

@@ -28,6 +28,7 @@ public class Main extends Application {
             primaryStage.show();
             View v = fxmlLoader.getController();
             v.getConfig();
+            v.setFocus();
         }
         catch (Exception e){
             System.out.println("Bye");

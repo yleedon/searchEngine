@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -471,9 +472,17 @@ public class View {
             pq_docs.add(md);
         }
         ResultDisplayer result = new ResultDisplayer(pq_docs);
+        result.setOnKeyPressed(event -> {
+            resultKeyPressed(event, result);
+        });
 
         //set the context menu for each label
+        boolean first = true;
         for(Label lbl: result.getDocs()){
+            if (first){
+                lbl.requestFocus();
+                first = false;
+            }
             lbl.setOnContextMenuRequested(event -> {
                 getContextMenu(result.getDocumentID(lbl.getText())).show(lbl, event.getScreenX(), event.getScreenY());
             });
@@ -513,8 +522,15 @@ public class View {
 
         Scene dialogScene = new Scene(dialogVbox, 500, 500);
         dialog.setScene(dialogScene);
+        dialog.setTitle("Search Results");
         dialog.showAndWait();
 
+    }
+
+    private void resultKeyPressed(KeyEvent event, ResultDisplayer result) {
+        if (event.getCode().getName().equals("Enter")){
+            showDocument(result.getDocumentID(((Label)result.getSelectionModel().getSelectedItem()).getText()));
+        }
     }
 
     private ContextMenu getContextMenu(int documentID){
@@ -608,4 +624,13 @@ public class View {
         return ans;
     }
 
+    public void onKeyPressed(KeyEvent event){
+        if (event.getCode().getName().equals("Enter")){
+            searchPressed();
+        }
+    }
+
+    public void setFocus() {
+        fld_searchQuary.requestFocus();
+    }
 }
