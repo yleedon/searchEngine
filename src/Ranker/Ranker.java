@@ -129,7 +129,6 @@ public class Ranker implements IRanker {
         int docTotalTermAmount = getDocTotalTermAmount(Integer.valueOf(docInfo[0]));
 
         TermDocData termDocData = new TermDocData(Integer.valueOf(docInfo[0]), isInTitle, Integer.valueOf(docInfo[2]), Integer.valueOf(docInfo[1]), term, docTotalTermAmount);
-        System.out.println(termDocData); ///////////////////////////////////// yaniv
         docDataList.add(termDocData);
     }
 

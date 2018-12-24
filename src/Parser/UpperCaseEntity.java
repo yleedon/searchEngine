@@ -51,7 +51,7 @@ public class UpperCaseEntity implements Comparable{
 
     @Override
     public String toString() {
-        return "Entity: "+ term+",  rank: "+ rank;
+        return "Entity: "+ term+",     Rank: "+ rank;
     }
 }
 

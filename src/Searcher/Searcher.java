@@ -38,8 +38,6 @@ public class Searcher {
      * @throws Exception - inner functions exceptions
      */
     public Searcher(String quaryText, String corpPath, boolean stemmer, String outPath, boolean semantics, HashSet<String> citysFilter) throws Exception {
-        System.out.println(corpPath);
-        System.out.println(outPath);
         quary = quaryText;
         corpusPath = corpPath;
         outPutPath = outPath;
@@ -61,7 +59,7 @@ public class Searcher {
             quaryMap = parser.getDocMap();
             for (String term:quaryMap.keySet()
                  ) {
-                System.out.println(term);// yaniv
+
             }
 
         }catch (Exception e){
@@ -155,10 +153,6 @@ public class Searcher {
             line = bf.readLine();
             docAmount = Integer.valueOf(line);
 
-            //////////////////////////////////////////////////////////////
-            System.out.println("averageTermCount = "+averageTermCount);
-            System.out.println("totalDocsInCorpus = "+ docAmount);
-            ////////////////////////////////////////////////////////////// yaniv
             bf.close();
 
         }
