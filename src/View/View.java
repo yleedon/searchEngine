@@ -478,12 +478,7 @@ public class View {
         });
 
         //set the context menu for each label
-        boolean first = true;
         for(Label lbl: result.getDocs()){
-            if (first){
-                lbl.requestFocus();
-                first = false;
-            }
             lbl.setOnContextMenuRequested(event -> {
                 getContextMenu(result.getDocumentID(lbl.getText())).show(lbl, event.getScreenX(), event.getScreenY());
             });
@@ -529,6 +524,8 @@ public class View {
     }
 
     private void resultKeyPressed(KeyEvent event, ResultDisplayer result) {
+        MultipleSelectionModel<Label> selection = result.getSelectionModel();
+        if (selection.getSelectedIndices().size() == 0 || selection.getSelectedIndices().contains(0)) return;
         if (event.getCode().getName().equals("Enter")){
             showDocument(result.getDocumentID(((Label)result.getSelectionModel().getSelectedItem()).getText()));
         }
