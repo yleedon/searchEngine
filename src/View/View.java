@@ -17,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import processing.MyDocument;
@@ -40,6 +41,7 @@ public class View {
     private HashSet<String> selectedCitiesFilter;
     private Searcher searcher;
     private PriorityQueue<MyDocument> queryResult;
+    public TextField fld_fileQueryPath;
     //<editor-fold desc="part A">
 
     /**
@@ -117,6 +119,16 @@ public class View {
 
     }
 
+
+    public void fileBrowser(){
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("SELECT THE QUERY FILE");
+        File selectedFile = chooser.showOpenDialog(new Stage());   //showDialog(new Stage());
+        if(selectedFile == null){
+            return;
+        }
+        fld_fileQueryPath.setText(selectedFile.getPath());
+    }
     /**
      * allows the oser to pick a folder with fileChooser
      *
@@ -143,6 +155,7 @@ public class View {
             fld_corpusPath.setText(selectedDirectory.getPath());
         if (button == 2)
             fld_outputPath.setText(selectedDirectory.getPath());
+
     }
 
     /**
@@ -337,7 +350,7 @@ public class View {
             queryResult = searcher.getSearchResault();
             System.out.println("function: "+ (System.nanoTime() - start)/1000000);
             showResults(queryResult);
-           
+
         } catch (Exception e) {
             Alert alert = createAlert();
             alert.setAlertType(Alert.AlertType.ERROR);

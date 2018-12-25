@@ -65,7 +65,10 @@
       </GridPane>
       <Button fx:id="btn_search" layoutX="751.0" layoutY="389.0" mnemonicParsing="false" onAction="#searchPressed" text="search" />
       <Button fx:id="btn_tst" layoutX="391.0" layoutY="197.0" mnemonicParsing="false" onAction="#buttonTestPressed" text="Test" />
-      <CheckBox fx:id="cb_semantics" layoutX="192.0" layoutY="353.0" mnemonicParsing="false" text="use semantics" />
+      <CheckBox fx:id="cb_semantics" layoutX="187.0" layoutY="303.0" mnemonicParsing="false" text="use semantics" />
       <Button fx:id="btn_cityFilter" layoutX="87.0" layoutY="287.0" mnemonicParsing="false" onAction="#onClickedCityFilter" text="City Filter" />
+      <Button fx:id="btn_fileSearch" layoutX="629.0" layoutY="353.0" mnemonicParsing="false" onAction="#fileBrowser" text="file query search" userData="3" />
+      <TextField fx:id="fld_fileQueryPath" layoutX="197.0" layoutY="353.0" prefHeight="25.0" prefWidth="418.0" />
+      <Label layoutX="87.0" layoutY="357.0" text="enter query file" />
   </children>
 </AnchorPane>
