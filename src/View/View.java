@@ -17,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import processing.MyDocument;
@@ -40,6 +41,9 @@ public class View {
     private HashSet<String> selectedCitiesFilter;
     private Searcher searcher;
     private PriorityQueue<MyDocument> queryResult;
+    public TextField fld_fileQueryPath;
+    public TextField fld_fileQueryOutput;
+
     //<editor-fold desc="part A">
 
     /**
@@ -117,6 +121,19 @@ public class View {
 
     }
 
+
+    /**
+     * File browser for the query file
+     */
+    public void fileBrowser(){
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("SELECT THE QUERY FILE");
+        File selectedFile = chooser.showOpenDialog(new Stage());   //showDialog(new Stage());
+        if(selectedFile == null){
+            return;
+        }
+        fld_fileQueryPath.setText(selectedFile.getPath());
+    }
     /**
      * allows the oser to pick a folder with fileChooser
      *
@@ -135,6 +152,10 @@ public class View {
         if (button == 2) {// outputBrowse
             chooser.setTitle("SELECT OUTPUT DIRECTORY");
         }
+        if (button == 3) {// outputBrowse
+            chooser.setTitle("SELECT QUERY OUTPUT DIRECTORY");
+        }
+
 
         File selectedDirectory = chooser.showDialog(new Stage());
         if (selectedDirectory == null)
@@ -143,6 +164,9 @@ public class View {
             fld_corpusPath.setText(selectedDirectory.getPath());
         if (button == 2)
             fld_outputPath.setText(selectedDirectory.getPath());
+        if (button == 3)
+            fld_fileQueryOutput.setText(selectedDirectory.getPath());
+
     }
 
     /**
@@ -185,6 +209,7 @@ public class View {
             alert.setHeaderText("dictionary not loaded");
             alert.setContentText("\"" + stemm + "\" dictionary not found");
             alert.show();
+            dictianary = null;
             return;
         }
         dictianary = new TreeMap<String, DicEntry>();
@@ -217,6 +242,7 @@ public class View {
         } catch (Exception e) {
             a.setContentText("dictianary was not loaded");
             a.show();
+            dictianary = null;
         }
     }
 
@@ -315,6 +341,8 @@ public class View {
                 pw.println("corpus=");
                 pw.println("outPut=");
                 pw.println("stemmer=true");
+                pw.println("queryFilePath=");
+                pw.println("queryOutPath=");
                 pw.close();
                 System.out.println("default config file created");
             } catch (IOException e1) {
@@ -326,18 +354,17 @@ public class View {
     public void searchPressed() {
         if(dictianary == null){
             loadDictionary();
+            if (dictianary==null)
+                return;
         }
         try {
             if(!(new File(fld_corpusPath.getText()).exists()))
                 throw new Exception("path does not exist\n"+fld_corpusPath.getText());
-            long start = System.nanoTime();
+
             searcher = new Searcher(fld_searchQuary.getText(), fld_corpusPath.getText(), btn_stemmingBox.isSelected(), fld_outputPath.getText(), cb_semantics.isSelected(), selectedCitiesFilter,dictianary);
-            System.out.println("constructor: "+ (System.nanoTime() - start)/1000000);
-            start = System.nanoTime();
             queryResult = searcher.getSearchResault();
-            System.out.println("function: "+ (System.nanoTime() - start)/1000000);
             showResults(queryResult);
-           
+
         } catch (Exception e) {
             Alert alert = createAlert();
             alert.setAlertType(Alert.AlertType.ERROR);
@@ -352,9 +379,12 @@ public class View {
             FileReader configFile = new FileReader("config");
             Properties properties = new Properties();
             properties.load(configFile);
-            String s = properties.getProperty("corpus");
+
             fld_corpusPath.setText(properties.getProperty("corpus"));
             fld_outputPath.setText(properties.getProperty("outPut"));
+            fld_fileQueryPath.setText(properties.getProperty("queryFilePath"));
+            fld_searchQuary.setPromptText("enter query");
+            fld_fileQueryOutput.setText(properties.getProperty("queryOutPath"));
             boolean stemmer = false;
             if (properties.getProperty("stemmer").equals("true"))
                 stemmer = true;
@@ -378,6 +408,8 @@ public class View {
             pw.println("corpus=" + fld_corpusPath.getText().replace("\\", "\\\\"));
             pw.println("outPut=" + fld_outputPath.getText().replace("\\", "\\\\"));
             pw.println("stemmer=" + btn_stemmingBox.isSelected());
+            pw.println("queryFilePath=" + fld_fileQueryPath.getText().replace("\\", "\\\\"));
+            pw.println("queryOutPath="+ fld_fileQueryOutput.getText().replace("\\", "\\\\"));
             pw.close();
             System.out.println("config file updated");
         } catch (IOException e1) {
@@ -474,7 +506,6 @@ public class View {
     }
 
     private void showResults(PriorityQueue<MyDocument> documents){
-        long start = System.nanoTime();
         //sets the result diplayer
         PriorityQueue<MyDocument> pq_docs = new PriorityQueue<>(Comparator.reverseOrder());
         for(MyDocument md:documents){
@@ -527,7 +558,6 @@ public class View {
         Scene dialogScene = new Scene(dialogVbox, 500, 500);
         dialog.setScene(dialogScene);
         dialog.setTitle("Search Results");
-        System.out.println("show: "+ (System.nanoTime() - start)/1000000);
         dialog.showAndWait();
 
     }
@@ -641,5 +671,39 @@ public class View {
 
     public void setFocus() {
         fld_searchQuary.requestFocus();
+    }
+
+    public void fileSearchPressed(){
+        if(dictianary == null){
+            loadDictionary();
+            if (dictianary==null)
+                return;
+        }
+
+
+            File queryFile = new File(fld_fileQueryPath.getText());
+            if(!queryFile.exists()) {
+                Alert alert = createAlert();
+                alert.setContentText("query file not found");
+                alert.showAndWait();
+                return;
+            }
+            try {
+                searcher = new Searcher(fld_searchQuary.getText(), fld_corpusPath.getText(), btn_stemmingBox.isSelected(), fld_outputPath.getText(), cb_semantics.isSelected(), selectedCitiesFilter,dictianary);
+                searcher.getFileQuerySearchReaults(queryFile,fld_fileQueryOutput.getText());
+                System.out.println("not implemented");
+
+
+        }
+        catch (Exception e){
+            Alert alert = createAlert();
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+        Alert alert = createAlert();
+            alert.setAlertType(Alert.AlertType.INFORMATION);
+            alert.setContentText("File query complete.\noutPut file name:\nresult_output.txt");
+            alert.showAndWait();
+
     }
 }

@@ -65,7 +65,14 @@
       </GridPane>
       <Button fx:id="btn_search" layoutX="751.0" layoutY="389.0" mnemonicParsing="false" onAction="#searchPressed" text="search" />
       <Button fx:id="btn_tst" layoutX="391.0" layoutY="197.0" mnemonicParsing="false" onAction="#buttonTestPressed" text="Test" />
-      <CheckBox fx:id="cb_semantics" layoutX="192.0" layoutY="353.0" mnemonicParsing="false" text="use semantics" />
+      <CheckBox fx:id="cb_semantics" layoutX="187.0" layoutY="303.0" mnemonicParsing="false" text="use semantics" />
       <Button fx:id="btn_cityFilter" layoutX="87.0" layoutY="287.0" mnemonicParsing="false" onAction="#onClickedCityFilter" text="City Filter" />
+      <Button fx:id="btn_queryInputFile" layoutX="694.0" layoutY="353.0" mnemonicParsing="false" onAction="#fileBrowser" text="browse query file" userData="3" />
+      <TextField fx:id="fld_fileQueryPath" layoutX="197.0" layoutY="353.0" prefHeight="25.0" prefWidth="484.0" />
+      <Label layoutX="87.0" layoutY="357.0" text="enter query file" />
+      <Button fx:id="btn_fileSearch" layoutX="709.0" layoutY="288.0" mnemonicParsing="false" onAction="#fileSearchPressed" text="file query search" />
+      <TextField fx:id="fld_fileQueryOutput" layoutX="197.0" layoutY="320.0" prefHeight="25.0" prefWidth="484.0" />
+      <Label layoutX="60.0" layoutY="324.0" text="enter query file output" />
+      <Button fx:id="btn_queryOutputBrows" layoutX="694.0" layoutY="320.0" mnemonicParsing="false" onAction="#browse" text="browse query output" userData="3" />
   </children>
 </AnchorPane>
