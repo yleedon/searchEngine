@@ -123,28 +123,31 @@ public class Searcher {
      */
     public void getFileQuerySearchReaults(File queryFile, String fileOutFolder) throws Exception {
 
+        File outputREsult = new File(fileOutFolder+"\\result_output.txt");
+
+        if (outputREsult.exists()){
+            outputREsult.delete();
+        }
 
         TreeMap<String,String> querys = getQuerys(queryFile);
         for (String currentQuery: querys.keySet()){
             this.quary = querys.get(currentQuery);
             PriorityQueue<MyDocument> results = getSearchResault();
-            WriteQueryResult(fileOutFolder,currentQuery,results);
+            WriteQueryResult(outputREsult,currentQuery,results);
         }
         System.out.println("not implemented");
 
         return;
     }
 
-    private void WriteQueryResult(String fileOutFolder, String currentQuery, PriorityQueue<MyDocument> results) throws Exception {
-        ////
-        fileOutFolder = "C:\\Users\\Yaniv\\Desktop";
-        //// yaniv
+    private void WriteQueryResult(File resultFile, String currentQuery, PriorityQueue<MyDocument> results) throws Exception {
+
 
         if(results == null || results.size() == 0)
             return;
-        String dataToWrite = "";
+
         try {
-            File resultFile = new File(fileOutFolder + "\\result_output.txt");
+
             FileWriter fw = new FileWriter(resultFile,true);
             PrintWriter pw = new PrintWriter(fw);
             while (!results.isEmpty()) {
