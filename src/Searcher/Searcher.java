@@ -8,9 +8,7 @@ import javafx.util.Pair;
 import processing.MyDocument;
 import processing.ReadFile;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.*;
 
 public class Searcher {
@@ -28,6 +26,7 @@ public class Searcher {
     private double averageTermCount;
     private int docAmount;
     private Map<String, DicEntry> dictianary;
+    private Parse parser;
 
     /**
      * constructor
@@ -41,7 +40,6 @@ public class Searcher {
      * @throws Exception - inner functions exceptions
      */
     public Searcher(String quaryText, String corpPath, boolean stemmer, String outPath, boolean semantics, HashSet<String> citysFilter, Map<String, DicEntry> dictianary) throws Exception {
-        long start = System.nanoTime();
         quary = quaryText;
         corpusPath = corpPath;
         outPutPath = outPath;
@@ -56,26 +54,11 @@ public class Searcher {
             dataPath = outPutPath+"\\dataBase\\stemmed\\";
         else dataPath = outPutPath+"\\dataBase\\not stemmed\\";
 
-        getFilteredDocs();
-
-
-        Parse parser = new Parse(corpPath,quary,stemmer);
-        try {
-            parser.parse();
-            quaryMap = parser.getDocMap();
-            for (String term:quaryMap.keySet()
-            ) {
-
-            }
-
-        }catch (Exception e){
-            System.out.println("error searcher constructor 1");
-            throw new Exception("parser failure");
-        }
-
         getRankData();
-        System.out.println("searcher: "+(System.nanoTime()-start)/1000000);
-        ranker = new Ranker(dataPath,quaryMap,filteredDocs,averageTermCount,docAmount,dictianary);
+        getFilteredDocs();
+        /////////////////////////////////////////////////////////// should not be in constror
+
+
 
 //        if (!semantics)
 //            ranker = new Ranker
@@ -98,7 +81,7 @@ public class Searcher {
 
     /**
      * this function retrieves all of the documents that the given city is in
-       and adds the documents to the "filteredDocs".
+     and adds the documents to the "filteredDocs".
      * @param city - the term that all the documents are to be added
      * @throws Exception - I/O
      */
@@ -133,11 +116,102 @@ public class Searcher {
 
 
     /**
+     * this fumction recieves a file of querrys, and writs the results of each query to a single file
+     * @param queryFile - the file with the querys
+     * @param fileOutFolder - the output file;
+     * @throws Exception I/O
+     */
+    public void getFileQuerySearchReaults(File queryFile, String fileOutFolder) throws Exception {
+
+
+        TreeMap<String,String> querys = getQuerys(queryFile);
+        for (String currentQuery: querys.keySet()){
+            this.quary = querys.get(currentQuery);
+            PriorityQueue<MyDocument> results = getSearchResault();
+            WriteQueryResult(fileOutFolder,currentQuery,results);
+        }
+        System.out.println("not implemented");
+
+        return;
+    }
+
+    private void WriteQueryResult(String fileOutFolder, String currentQuery, PriorityQueue<MyDocument> results) throws Exception {
+        ////
+        fileOutFolder = "C:\\Users\\Yaniv\\Desktop";
+        //// yaniv
+
+        if(results == null || results.size() == 0)
+            return;
+        String dataToWrite = "";
+        try {
+            File resultFile = new File(fileOutFolder + "\\result_output.txt");
+            FileWriter fw = new FileWriter(resultFile,true);
+            PrintWriter pw = new PrintWriter(fw);
+            while (!results.isEmpty()) {
+                pw.println(currentQuery+" 0 "+results.poll().getDocumentName()+" 0");
+            }
+            pw.close();
+        }
+        catch (Exception e){
+            throw  new Exception("Searcher - writeQueryResult error");
+        }
+    }
+
+    /**
+     * opens a query file and extract the query ID and the content
+     * @param queryFile - the file containing the query's
+     * @return - map[queryId,query]
+     * @throws Exception I/O
+     */
+    private TreeMap<String, String> getQuerys(File queryFile) throws Exception {
+        TreeMap<String, String> ans = new TreeMap<>();
+        try {
+            FileReader fr = new FileReader(queryFile);
+            BufferedReader bf = new BufferedReader(fr);
+            String line;
+            String currentQueryID = "";
+            while(bf.ready()){
+                line = bf.readLine();
+                if(line == null || line.equals(""))
+                    continue;
+                if(line.startsWith("<num>"))
+                    currentQueryID = line.split(":")[1].replace(" ","");
+                if(line.startsWith("<title>")){
+                    line = line.substring(8);
+                    ans.put(currentQueryID,line);
+//                    System.out.println("["+currentQueryID+","+line+"]");
+                }
+            }
+            bf.lines();
+
+        }
+        catch (Exception e){
+            throw new Exception("Searsher - getQuerys() Io error");
+        }
+
+        return ans;
+    }
+
+
+    /**
      * this function trigers the Ranker to retrieve the ranked documents
      * for each document returned, the document will be loaded from the disk
      * @return - the top ranked document of the query
      */
-    public PriorityQueue<MyDocument> getSearchResault(){
+    public PriorityQueue<MyDocument> getSearchResault() throws Exception {
+        if(parser==null)
+            parser = new Parse(corpusPath,quary,usestemmer);
+        try {
+            parser.setTxt(quary,"");
+            parser.parse();
+            quaryMap = parser.getDocMap();
+
+        }catch (Exception e){
+            System.out.println("error searcher constructor 1");
+            throw new Exception("parser failure");
+        }
+        ranker = new Ranker(dataPath,quaryMap,filteredDocs,averageTermCount,docAmount,dictianary);
+
         ReadFile readFile = new ReadFile(dataPath.substring(0, dataPath.length()-1),corpusPath);
         PriorityQueue<MyDocument> reaults = ranker.getTopNDocs(50);
         for (MyDocument doc:reaults) {

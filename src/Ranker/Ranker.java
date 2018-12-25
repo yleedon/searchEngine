@@ -44,11 +44,7 @@ public class Ranker implements IRanker {
             filterOn = false;
         else filterOn = true;
         loadDocsTermCount();
-
-//        loadDictionary();
-        long start = System.nanoTime();
         getReleventDocs();
-        System.out.println("ranker fucker: "+ (System.nanoTime()-start)/1000000);
     }
 
     /**
