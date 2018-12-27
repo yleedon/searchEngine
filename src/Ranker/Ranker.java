@@ -225,40 +225,6 @@ public class Ranker implements IRanker {
         docDataList.add(termDocData);
     }
 
-    /**
-     * loads the dictionary from the disc
-     *
-     * @throws Exception - dictionary path not found
-     */
-    public void loadDictionary() throws Exception {
-
-        File file = new File(outPut + "dictionary.txt");
-        if (!file.exists()) {
-            throw new Exception("dictionary not found:\n" + outPut + "dictionary.txt");
-        }
-        dictianary = new TreeMap<>();
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String st;
-            String[] line;
-            String[] data;
-            while ((st = br.readLine()) != null) {
-                if (st.equals("")) {
-                    continue;
-                }
-                line = st.split(":");
-                data = line[1].split(",");
-                DicEntry entry = new DicEntry(Integer.valueOf(data[0]));
-                entry.numOfDocs = Integer.valueOf(data[1]);
-                entry.totalTermFrequency = Integer.valueOf(data[2]);
-                dictianary.put(line[0], entry);
-            }
-            br.close();
-        } catch (Exception e) {
-            throw new Exception("load dictionary error");
-        }
-    }
-
     public PriorityQueue<MyDocument> getTopNDocs(int N) {
         PriorityQueue<MyDocument> ans = new PriorityQueue<>(Comparator.reverseOrder());
         PriorityQueue<MyDocument> minHeap = new PriorityQueue<>();
@@ -300,4 +266,40 @@ public class Ranker implements IRanker {
         }
         return rank;
     }
+
+
+
+    /**
+     //     * loads the dictionary from the disc
+     //     *
+     //     * @throws Exception - dictionary path not found
+     //     */
+//    public void loadDictionary() throws Exception {
+//
+//        File file = new File(outPut + "dictionary.txt");
+//        if (!file.exists()) {
+//            throw new Exception("dictionary not found:\n" + outPut + "dictionary.txt");
+//        }
+//        dictianary = new TreeMap<>();
+//        try {
+//            BufferedReader br = new BufferedReader(new FileReader(file));
+//            String st;
+//            String[] line;
+//            String[] data;
+//            while ((st = br.readLine()) != null) {
+//                if (st.equals("")) {
+//                    continue;
+//                }
+//                line = st.split(":");
+//                data = line[1].split(",");
+//                DicEntry entry = new DicEntry(Integer.valueOf(data[0]));
+//                entry.numOfDocs = Integer.valueOf(data[1]);
+//                entry.totalTermFrequency = Integer.valueOf(data[2]);
+//                dictianary.put(line[0], entry);
+//            }
+//            br.close();
+//        } catch (Exception e) {
+//            throw new Exception("load dictionary error");
+//        }
+//    }
 }

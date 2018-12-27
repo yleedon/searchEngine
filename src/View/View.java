@@ -329,6 +329,9 @@ public class View {
     //</editor-fold>
 
 
+    /**
+     * Constructor - loads the config (creates a config if does not exist)
+     */
     public View() {
         try {
             FileReader configFile = new FileReader("config");
@@ -351,6 +354,9 @@ public class View {
         }
     }
 
+    /**
+     * sends the qury to the searcher and shows the results
+     */
     public void searchPressed() {
         if(dictianary == null){
             loadDictionary();
@@ -374,6 +380,9 @@ public class View {
 
     }
 
+    /**
+     * loads the config
+     */
     public void getConfig() {
         try {
             FileReader configFile = new FileReader("config");
@@ -394,12 +403,9 @@ public class View {
         }
     }
 
-    public void getConfigMainWindow(MouseEvent event){
-        if(event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
-            getConfig();
-        }
-    }
-
+    /**
+     * sets the config with the current field data
+     */
     public void setConfig() {
         try {
             PrintWriter pw = new PrintWriter("config");
@@ -415,13 +421,6 @@ public class View {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-    }
-
-    public void buttonTestPressed() {
-        String s = "5:a,b,c";
-        String[] docs = s.split(":")[1].split("~");
-        System.out.println(docs[0]);
-        System.out.println(docs.length);
     }
 
     /**
@@ -705,5 +704,19 @@ public class View {
             alert.setContentText("File query complete.\noutPut file name:\nresult_output.txt");
             alert.showAndWait();
 
+    }
+
+
+    public void getConfigMainWindow(MouseEvent event){
+        if(event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
+            getConfig();
+        }
+    }////////////////////???????????
+
+    public void buttonTestPressed() {
+        String s = "5:a,b,c";
+        String[] docs = s.split(":")[1].split("~");
+        System.out.println(docs[0]);
+        System.out.println(docs.length);
     }
 }
