@@ -56,12 +56,6 @@ public class Searcher {
 
         getRankData();
         getFilteredDocs();
-        /////////////////////////////////////////////////////////// should not be in constror
-
-
-
-//        if (!semantics)
-//            ranker = new Ranker
 
 
     }
@@ -114,7 +108,6 @@ public class Searcher {
         }
     }
 
-
     /**
      * this fumction recieves a file of querrys, and writs the results of each query to a single file
      * @param queryFile - the file with the querys
@@ -140,6 +133,13 @@ public class Searcher {
         return;
     }
 
+    /**
+     * Writes the query ouyput to a file
+     * @param resultFile - the file to write to
+     * @param currentQuery - the query ID
+     * @param results - the documents that are the query results
+     * @throws Exception I/O
+     */
     private void WriteQueryResult(File resultFile, String currentQuery, PriorityQueue<MyDocument> results) throws Exception {
 
 
@@ -195,13 +195,16 @@ public class Searcher {
         return ans;
     }
 
-
     /**
      * this function trigers the Ranker to retrieve the ranked documents
      * for each document returned, the document will be loaded from the disk
      * @return - the top ranked document of the query
      */
     public PriorityQueue<MyDocument> getSearchResault() throws Exception {
+        if(useSemantics){
+            proccessSemanticQuery();
+        }
+
         if(parser==null)
             parser = new Parse(corpusPath,quary,usestemmer);
         try {
@@ -221,6 +224,46 @@ public class Searcher {
             doc.setDoc(readFile.getDocument(doc.getDocId()+"").getDoc());
         }
         return reaults;
+    }
+
+    /**
+     * proccesses the query with semantics:
+     * 1. spell check
+     * 2. synonyms
+     */
+    private void proccessSemanticQuery() {
+        runSpellcheck();
+        runSynonym();
+    }
+
+    private void runSynonym() {
+        String semanticQuery = "";
+        for(String term: quary.split(" ")){
+            semanticQuery += semanticApi(term) + " ";
+        }
+        quary = semanticQuery;
+    }
+
+    private String semanticApi(String term) {
+        System.out.println("not implemented semantic API");
+        return term;
+
+    }
+
+    private void runSpellcheck() {
+        String spellCheckQuery = "";
+        for (String term: quary.split(" ")){
+            spellCheckQuery += spellCheckAPI(term) + " ";
+        }
+        quary = spellCheckQuery;
+    }
+
+    private String spellCheckAPI(String term) {
+
+
+        System.out.println("not implemented spell check API");
+        return term;
+
     }
 
     /**
