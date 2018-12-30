@@ -267,45 +267,11 @@ public class Ranker implements IRanker {
             if(tdd.isInTitle())
                 rank = rank*1.1;
             rank += tdd.getFrequency()/10; // += (0-1]
+            rank = Math.floor(rank*10000)/10000;
         }
 
         return rank;
 
     }
 
-
-
-    /**
-     //     * loads the dictionary from the disc
-     //     *
-     //     * @throws Exception - dictionary path not found
-     //     */
-//    public void loadDictionary() throws Exception {
-//
-//        File file = new File(outPut + "dictionary.txt");
-//        if (!file.exists()) {
-//            throw new Exception("dictionary not found:\n" + outPut + "dictionary.txt");
-//        }
-//        dictianary = new TreeMap<>();
-//        try {
-//            BufferedReader br = new BufferedReader(new FileReader(file));
-//            String st;
-//            String[] line;
-//            String[] data;
-//            while ((st = br.readLine()) != null) {
-//                if (st.equals("")) {
-//                    continue;
-//                }
-//                line = st.split(":");
-//                data = line[1].split(",");
-//                DicEntry entry = new DicEntry(Integer.valueOf(data[0]));
-//                entry.numOfDocs = Integer.valueOf(data[1]);
-//                entry.totalTermFrequency = Integer.valueOf(data[2]);
-//                dictianary.put(line[0], entry);
-//            }
-//            br.close();
-//        } catch (Exception e) {
-//            throw new Exception("load dictionary error");
-//        }
-//    }
 }
