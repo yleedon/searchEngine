@@ -225,6 +225,11 @@ public class Ranker implements IRanker {
         docDataList.add(termDocData);
     }
 
+    /**
+     * gets the top documents by rank
+     * @param N - the number of document to return
+     * @return a priority queue by rank of the top N documents
+     */
     public PriorityQueue<MyDocument> getTopNDocs(int N) {
         PriorityQueue<MyDocument> ans = new PriorityQueue<>(Comparator.reverseOrder());
         PriorityQueue<MyDocument> minHeap = new PriorityQueue<>();
@@ -253,6 +258,11 @@ public class Ranker implements IRanker {
         return ans;
     }
 
+    /**
+     * calculating the BM25 formula
+     * @param docTerms - the terms of the doc and query
+     * @return the rank of the document
+     */
     private double BM25(ArrayList<TermDocData> docTerms) {
         double rank = 0;
         int cwq, cwd, dLen, df;

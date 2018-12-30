@@ -3,6 +3,7 @@ package View;
 
 import Indexer.DicEntry;
 import Parser.UpperCaseEntity;
+import Ranker.Semantic.LSIExecutor;
 import Searcher.Searcher;
 import View.Displayers.CitiesFilterDisplayer;
 import View.Displayers.MyDocumentDisplayer;
@@ -706,7 +707,6 @@ public class View {
 
     }
 
-
     public void getConfigMainWindow(MouseEvent event){
         if(event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
             getConfig();
@@ -714,9 +714,8 @@ public class View {
     }////////////////////???????????
 
     public void buttonTestPressed() {
-        String s = "5:a,b,c";
-        String[] docs = s.split(":")[1].split("~");
-        System.out.println(docs[0]);
-        System.out.println(docs.length);
+        LSIExecutor exe = new LSIExecutor();
+        System.out.println(exe.getSynonyms("observe"));
+        System.out.println(exe.spellCheck("obzerve"));
     }
 }

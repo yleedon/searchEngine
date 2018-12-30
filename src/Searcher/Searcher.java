@@ -4,6 +4,7 @@ import Indexer.DicEntry;
 import Parser.Parse;
 import Parser.UpperCaseEntity;
 import Ranker.Ranker;
+import Ranker.Semantic.LSIExecutor;
 import javafx.util.Pair;
 import processing.MyDocument;
 import processing.ReadFile;
@@ -239,34 +240,28 @@ public class Searcher {
         runSynonym();
     }
 
+    /**
+     * adds synonyms to the query
+     */
     private void runSynonym() {
+        LSIExecutor lsi = new LSIExecutor();
         String semanticQuery = "";
         for(String term: quary.split(" ")){
-            semanticQuery += semanticApi(term) + " ";
+            semanticQuery += lsi.getSynonyms(term);
         }
-        quary = semanticQuery;
+        quary += semanticQuery;
     }
 
-    private String semanticApi(String term) {
-        System.out.println("not implemented semantic API");
-        return term;
-
-    }
-
+    /**
+     * spell checking the query and adds correction if necessary
+     */
     private void runSpellcheck() {
+        LSIExecutor lsi = new LSIExecutor();
         String spellCheckQuery = "";
         for (String term: quary.split(" ")){
-            spellCheckQuery += spellCheckAPI(term) + " ";
+            spellCheckQuery += lsi.spellCheck(term);
         }
-        quary = spellCheckQuery;
-    }
-
-    private String spellCheckAPI(String term) {
-
-
-        System.out.println("not implemented spell check API");
-        return term;
-
+        quary += spellCheckQuery;
     }
 
     /**
