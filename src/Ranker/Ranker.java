@@ -263,8 +263,14 @@ public class Ranker implements IRanker {
             dLen = tdd.getDocTotalAmountofTerms();
             df = dictianary.get(tdd.getTerm()).numOfDocs;
             rank += ((cwq * (k + 1) * cwd) / (cwd + k * (1 - b + b * (dLen / avrageTermCount)))) * Math.log((numOfDocsInCorpus + 1) / df);
+//            System.out.println(tdd.getDocId() +"  "+ tdd.getTerm());
+            if(tdd.isInTitle())
+                rank = rank*1.1;
+            rank += tdd.getFrequency()/10; // += (0-1]
         }
+
         return rank;
+
     }
 
 

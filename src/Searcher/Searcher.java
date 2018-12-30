@@ -116,7 +116,7 @@ public class Searcher {
      */
     public void getFileQuerySearchReaults(File queryFile, String fileOutFolder) throws Exception {
 
-        File outputREsult = new File(fileOutFolder+"\\result_output.txt");
+        File outputREsult = new File(fileOutFolder+"\\results.txt");
 
         if (outputREsult.exists()){
             outputREsult.delete();
@@ -151,7 +151,8 @@ public class Searcher {
             FileWriter fw = new FileWriter(resultFile,true);
             PrintWriter pw = new PrintWriter(fw);
             while (!results.isEmpty()) {
-                pw.println(currentQuery+" 0 "+results.poll().getDocumentName()+" 0");
+                MyDocument doc = results.poll();
+                pw.println(currentQuery+" 0 "+doc.getDocumentName()+" "+Math.floor(doc.getRank()*100)/100 + " 9 mt");
             }
             pw.close();
         }
@@ -222,6 +223,8 @@ public class Searcher {
         PriorityQueue<MyDocument> reaults = ranker.getTopNDocs(50);
         for (MyDocument doc:reaults) {
             doc.setDoc(readFile.getDocument(doc.getDocId()+"").getDoc());
+            if(doc.getDocumentName().contains("FBIS3"))
+                System.out.println(doc.getDocumentName()+" rank: "+ doc.getRank());
         }
         return reaults;
     }
