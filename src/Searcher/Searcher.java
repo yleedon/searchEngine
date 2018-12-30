@@ -259,7 +259,7 @@ public class Searcher {
         LSIExecutor lsi = new LSIExecutor();
         String spellCheckQuery = "";
         for (String term: quary.split(" ")){
-            spellCheckQuery += lsi.spellCheck(term);
+            spellCheckQuery += (" " +lsi.spellCheck(term));
         }
         quary += spellCheckQuery;
     }
