@@ -19,7 +19,7 @@ public class LSIExecutor {
      */
     public String getSynonyms(String word) {
         String s = word.replaceAll(" ", "+");
-        return getWords(getJSON("http://api.datamuse.com/words?rel_syn=" + s), " ");
+        return getWords(getJSON("http://api.datamuse.com/words?rel_syn=" + s), 5000, " ");
     }
 
     /**
@@ -30,15 +30,15 @@ public class LSIExecutor {
      */
     public String spellCheck(String word) {
         String s = word.replaceAll(" ", "+");
-        String soundsSimilar = getWords(soundsSimilar(s), ",");
-        String speltSimilar = getWords(speltSimilar(s), ",");
+        String soundsSimilar = getWords(soundsSimilar(s), 1200, ",");
+        String speltSimilar = getWords(speltSimilar(s), 1200, ",");
         StringBuilder ans = new StringBuilder();
         for (String str : speltSimilar.split(",")) {
-            if (soundsSimilar.contains(str)) {
+            if (soundsSimilar.contains(str) && !str.equals(word)) {
                 ans.append(str).append(" ");
             }
         }
-        return ans.toString().length() > 1 ? ans.toString() : speltSimilar.split(",")[0];
+        return ans.toString().length()>1 ? ans.toString() : speltSimilar.split(",")[0];
     }
 
     /**
@@ -70,20 +70,22 @@ public class LSIExecutor {
      * @param delimiter - the given delimiter
      * @return the words in the entries split by the delimiter
      */
-    private String getWords(String synonyms, String delimiter) {
-        synonyms = synonyms.substring(1, synonyms.length());
+    private String getWords(String synonyms, int scoreLimit, String delimiter) {
+        synonyms = synonyms.substring(1, synonyms.length()-1);
         synonyms = synonyms.replace("},{", "}-{");
         String[] wordsData = synonyms.split("-");
         StringBuilder ans = new StringBuilder();
+        int matches = 0;
         for (String word : wordsData) {
-            if (getScore(word) > 1200) {
+            if (getScore(word) > scoreLimit && matches<3) {
                 word = word.split("\",\"")[0];
                 word = word.split("\":\"")[1];
                 ans.append(word).append(delimiter);
+                matches++;
             } else
                 break;
         }
-        return ans.toString().length() > 0 ? ans.toString().substring(0, ans.toString().length() - 1) : "";
+        return matches>0 ? ans.toString().substring(0, ans.toString().length() - 1) : "";
     }
 
     /**

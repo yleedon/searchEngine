@@ -249,7 +249,7 @@ public class Searcher {
         for(String term: quary.split(" ")){
             semanticQuery += lsi.getSynonyms(term);
         }
-        quary += semanticQuery;
+        quary += (" " + semanticQuery);
     }
 
     /**
@@ -259,9 +259,9 @@ public class Searcher {
         LSIExecutor lsi = new LSIExecutor();
         String spellCheckQuery = "";
         for (String term: quary.split(" ")){
-            spellCheckQuery += (" " +lsi.spellCheck(term));
+            spellCheckQuery += lsi.spellCheck(term);
         }
-        quary += spellCheckQuery;
+        quary += (" " + spellCheckQuery);
     }
 
     /**
