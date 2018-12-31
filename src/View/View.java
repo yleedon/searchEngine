@@ -395,7 +395,7 @@ public class View {
             fld_fileQueryPath.setText(properties.getProperty("queryFilePath"));
             fld_searchQuary.setPromptText("enter query");
             fld_fileQueryOutput.setText(properties.getProperty("queryOutPath"));
-            cb_semantics.setSelected(true);
+//            cb_semantics.setSelected(true);
             boolean stemmer = false;
             if (properties.getProperty("stemmer").equals("true"))
                 stemmer = true;

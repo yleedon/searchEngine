@@ -125,9 +125,9 @@ public class LSIExecutor {
                 s.append(inputLine);
             in.close();
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         return s != null ? s.toString() : null;
     }

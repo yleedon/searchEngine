@@ -276,7 +276,7 @@ public class Ranker implements IRanker {
 //            System.out.println(tdd.getDocId() +"  "+ tdd.getTerm());
             if(tdd.isInTitle())
                 rank = rank*1.1;
-            rank += tdd.getFrequency()/10; // += (0-1]
+            rank += tdd.getFrequency()/23; // += (0-1]
             rank = Math.floor(rank*10000)/10000;
         }
 

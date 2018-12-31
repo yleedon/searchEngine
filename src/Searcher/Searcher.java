@@ -242,7 +242,7 @@ public class Searcher {
      * 1. spell check
      * 2. synonyms
      */
-    private void proccessSemanticQuery() {
+    private void proccessSemanticQuery() throws Exception{
 //        runSpellcheck();
         runSynonym();
     }
@@ -250,15 +250,19 @@ public class Searcher {
     /**
      * adds synonyms to the query
      */
-    private void runSynonym() {
-        LSIExecutor lsi = new LSIExecutor();
-        String semanticQuery = "";
-        for(String term: quary.split(" ")){
-            if(term.equals("<!#%>"))
-                break;
-            semanticQuery += lsi.getSynonyms(term);
+    private void runSynonym() throws Exception {
+        try {
+            LSIExecutor lsi = new LSIExecutor();
+            String semanticQuery = "";
+            for (String term : quary.split(" ")) {
+                if (term.equals("<!#%>"))
+                    break;
+                semanticQuery += lsi.getSynonyms(term);
+            }
+            quary += (" " + semanticQuery);
+        }catch (Exception e){
+            throw new Exception("Semantic API could not establish internet connection.\nPlease try unplugging your router and plug it again");
         }
-        quary += (" " + semanticQuery);
     }
 
     /**
