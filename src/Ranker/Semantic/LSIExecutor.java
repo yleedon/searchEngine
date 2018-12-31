@@ -75,17 +75,18 @@ public class LSIExecutor {
         synonyms = synonyms.replace("},{", "}-{");
         String[] wordsData = synonyms.split("-");
         StringBuilder ans = new StringBuilder();
-        int matches = 0;
+        boolean foundMatch = false;
         for (String word : wordsData) {
-            if (getScore(word) > scoreLimit && matches<3) {
+            if (getScore(word) > scoreLimit && foundMatch) {
                 word = word.split("\",\"")[0];
                 word = word.split("\":\"")[1];
                 ans.append(word).append(delimiter);
-                matches++;
+                foundMatch = true;
+                break;
             } else
                 break;
         }
-        return matches>0 ? ans.toString().substring(0, ans.toString().length() - 1) : "";
+        return foundMatch ? ans.toString().substring(0, ans.toString().length() - 1) : "";
     }
 
     /**
