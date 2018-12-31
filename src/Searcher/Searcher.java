@@ -124,13 +124,13 @@ public class Searcher {
         }
 
         TreeMap<String,String> querys = getQuerys(queryFile);
+        int i = 1;
         for (String currentQuery: querys.keySet()){
+            System.out.println("working on query "+ i++ + " of "+ querys.size());
             this.quary = querys.get(currentQuery);
             PriorityQueue<MyDocument> results = getSearchResault();
             WriteQueryResult(outputREsult,currentQuery,results);
         }
-        System.out.println("not implemented");
-
         return;
     }
 
@@ -156,6 +156,7 @@ public class Searcher {
                 pw.println(currentQuery+" 0 "+doc.getDocumentName()+" "+Math.floor(doc.getRank()*100)/100 + " 9 mt");
             }
             pw.close();
+            System.out.println("results of query "+ currentQuery + " have been written to the disc");
         }
         catch (Exception e){
             throw  new Exception("Searcher - writeQueryResult error");
@@ -182,7 +183,13 @@ public class Searcher {
                 if(line.startsWith("<num>"))
                     currentQueryID = line.split(":")[1].replace(" ","");
                 if(line.startsWith("<title>")){
-                    line = line.substring(8);
+                    line = line.substring(8) + " <!#%>";
+                    String description = bf.readLine();
+                    while (bf.ready() && !description.contains("<narr>")){
+                        if(!description.contains("<desc>") && !description.equals(""))
+                            line += " " + description;
+                        description = bf.readLine();
+                    }
                     ans.put(currentQueryID,line);
 //                    System.out.println("["+currentQueryID+","+line+"]");
                 }
@@ -206,6 +213,8 @@ public class Searcher {
         if(useSemantics){
             proccessSemanticQuery();
         }
+        if(quary.contains("<!#%>"))
+            quary.replace("<!#%>","");
 
         if(parser==null)
             parser = new Parse(corpusPath,quary,usestemmer);
@@ -224,8 +233,6 @@ public class Searcher {
         PriorityQueue<MyDocument> reaults = ranker.getTopNDocs(50);
         for (MyDocument doc:reaults) {
             doc.setDoc(readFile.getDocument(doc.getDocId()+"").getDoc());
-            if(doc.getDocumentName().contains("FBIS3"))
-                System.out.println(doc.getDocumentName()+" rank: "+ doc.getRank());
         }
         return reaults;
     }
@@ -236,7 +243,7 @@ public class Searcher {
      * 2. synonyms
      */
     private void proccessSemanticQuery() {
-        runSpellcheck();
+//        runSpellcheck();
         runSynonym();
     }
 
@@ -247,6 +254,8 @@ public class Searcher {
         LSIExecutor lsi = new LSIExecutor();
         String semanticQuery = "";
         for(String term: quary.split(" ")){
+            if(term.equals("<!#%>"))
+                break;
             semanticQuery += lsi.getSynonyms(term);
         }
         quary += (" " + semanticQuery);
@@ -257,11 +266,14 @@ public class Searcher {
      */
     private void runSpellcheck() {
         LSIExecutor lsi = new LSIExecutor();
-        String spellCheckQuery = "";
+        String temp;
         for (String term: quary.split(" ")){
-            spellCheckQuery += lsi.spellCheck(term);
+            if(term.equals("<!#%>"))
+                break;
+            temp = lsi.spellCheck(term);
+            if(!temp.equals(term))
+                quary += " "+ temp;
         }
-        quary += (" " + spellCheckQuery);
     }
 
     /**
