@@ -395,6 +395,7 @@ public class View {
             fld_fileQueryPath.setText(properties.getProperty("queryFilePath"));
             fld_searchQuary.setPromptText("enter query");
             fld_fileQueryOutput.setText(properties.getProperty("queryOutPath"));
+            cb_semantics.setSelected(true);
             boolean stemmer = false;
             if (properties.getProperty("stemmer").equals("true"))
                 stemmer = true;
@@ -680,30 +681,39 @@ public class View {
                 return;
         }
 
-
-            File queryFile = new File(fld_fileQueryPath.getText());
-            if(!queryFile.exists()) {
-                Alert alert = createAlert();
-                alert.setContentText("query file not found");
-                alert.showAndWait();
-                return;
-            }
-            try {
-                searcher = new Searcher(fld_searchQuary.getText(), fld_corpusPath.getText(), btn_stemmingBox.isSelected(), fld_outputPath.getText(), cb_semantics.isSelected(), selectedCitiesFilter,dictianary);
-                searcher.getFileQuerySearchReaults(queryFile,fld_fileQueryOutput.getText());
-                System.out.println("not implemented");
-
+        File queryFile = new File(fld_fileQueryPath.getText());
+        if(!queryFile.exists()) {
+            Alert alert = createAlert();
+            alert.setContentText("query file not found");
+            alert.showAndWait();
+            return;
+        }
+        try {
+            Alert alert = createAlert();
+            alert.setAlertType(Alert.AlertType.INFORMATION);
+            alert.setContentText("this may take a few minutes.\nA notification message will appear on completion.\n\n (progress can be seen in the console)");
+            alert.setHeaderText("File query in progress...");
+            alert.setTitle("FILE QUERY SEARCH");
+            alert.show();
+            searcher = new Searcher(fld_searchQuary.getText(), fld_corpusPath.getText(), btn_stemmingBox.isSelected(), fld_outputPath.getText(), cb_semantics.isSelected(), selectedCitiesFilter,dictianary);
+            long start = System.nanoTime();
+            searcher.getFileQuerySearchReaults(queryFile,fld_fileQueryOutput.getText());
+            alert.close();
+            System.out.println("total file query time: "+ (System.nanoTime() - start)/1000000000 + "Sec");
 
         }
         catch (Exception e){
             Alert alert = createAlert();
             alert.setContentText(e.getMessage());
             alert.showAndWait();
+            return;
         }
+
         Alert alert = createAlert();
-            alert.setAlertType(Alert.AlertType.INFORMATION);
-            alert.setContentText("File query complete.\noutPut file name:\nresult_output.txt");
-            alert.showAndWait();
+        alert.setAlertType(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("File query complete");
+        alert.setContentText("outPut file name:\nresult_output.txt");
+        alert.showAndWait();
 
     }
 
