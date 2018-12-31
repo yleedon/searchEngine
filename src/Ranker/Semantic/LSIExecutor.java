@@ -19,7 +19,7 @@ public class LSIExecutor {
      */
     public String getSynonyms(String word) {
         String s = word.replaceAll(" ", "+");
-        return getWords(getJSON("http://api.datamuse.com/words?rel_syn=" + s), 5000, " ");
+        return getWords(getJSON("http://api.datamuse.com/words?rel_syn=" + s), 2500, " ");
     }
 
     /**
@@ -77,7 +77,7 @@ public class LSIExecutor {
         StringBuilder ans = new StringBuilder();
         boolean foundMatch = false;
         for (String word : wordsData) {
-            if (getScore(word) > scoreLimit && foundMatch) {
+            if (getScore(word) > scoreLimit) {
                 word = word.split("\",\"")[0];
                 word = word.split("\":\"")[1];
                 ans.append(word).append(delimiter);

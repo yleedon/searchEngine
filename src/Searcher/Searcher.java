@@ -271,7 +271,7 @@ public class Searcher {
             if(term.equals("<!#%>"))
                 break;
             temp = lsi.spellCheck(term);
-            if(!temp.equals(term))
+            if(!temp.toLowerCase().equals(term))
                 quary += " "+ temp;
         }
     }
