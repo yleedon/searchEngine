@@ -489,6 +489,10 @@ public class View {
         }
     }
 
+    /**
+     * display the results of the query
+     * @param documents - priority queue of the document, order by rank
+     */
     private void showResults(PriorityQueue<MyDocument> documents){
         //sets the result diplayer
         PriorityQueue<MyDocument> pq_docs = new PriorityQueue<>(Comparator.reverseOrder());
@@ -546,6 +550,11 @@ public class View {
 
     }
 
+    /**
+     * for controlling with keyboard on the resultDisplayer
+     * @param event - the key event
+     * @param result - the result displayer
+     */
     private void resultKeyPressed(KeyEvent event, ResultDisplayer result) {
         MultipleSelectionModel<Label> selection = result.getSelectionModel();
         if (selection.getSelectedIndices().size() == 0 || selection.getSelectedIndices().contains(0)) return;
@@ -554,6 +563,11 @@ public class View {
         }
     }
 
+    /**
+     * getter for specific context menu for the doc
+     * @param documentID - the specific document
+     * @return the right context menu for the document
+     */
     private ContextMenu getContextMenu(int documentID){
         ContextMenu contextMenu = new ContextMenu();
         MenuItem showEntities = new MenuItem("Show Entities");
@@ -568,6 +582,10 @@ public class View {
         return contextMenu;
     }
 
+    /**
+     * display the entities of the document
+     * @param docID - the id of the requested document
+     */
     private void showEntities(int docID){
         MyDocument doc = findDocInResults(docID);
         if (doc == null)
@@ -606,6 +624,10 @@ public class View {
         }
     }
 
+    /**
+     * displays the requested document
+     * @param docID - the id of the requested document
+     */
     private void showDocument(int docID){
         MyDocument document = findDocInResults(docID);
         MyDocumentDisplayer docDisplayer = new MyDocumentDisplayer(document);
@@ -636,6 +658,11 @@ public class View {
         dialog.showAndWait();
     }
 
+    /**
+     * getter for the Document itself
+     * @param docID - the id of the requested doc
+     * @return the requested document, if not found returns null
+     */
     private MyDocument findDocInResults(int docID) {
         Iterator<MyDocument> iterator = queryResult.iterator();
         MyDocument ans = null;
@@ -647,6 +674,10 @@ public class View {
         return ans;
     }
 
+    /**
+     * for keyboard shortcuts
+     * @param event - the key event
+     */
     public void onKeyPressed(KeyEvent event){
         if (event.getCode().getName().equals("Enter")){
             searchPressed();
@@ -662,32 +693,52 @@ public class View {
         }
     }
 
+    /**
+     * for keyboard shortcut
+     * @param event - the key event
+     */
     public void onKeyReleased(KeyEvent event){
         if (event.getCode().getName().equals("Ctrl")){
             ctrlPressed = false;
         }
     }
 
+    /**
+     * focus on the query txt field
+     */
     public void setFocus() {
         fld_searchQuary.requestFocus();
     }
 
+    /**
+     * load config by double click on the main screen
+     * @param event - mouse event
+     */
     public void getConfigMainWindow(MouseEvent event){
         if(event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
             getConfig();
         }
     }////////////////////???????????
 
+    /**
+     * for the tests
+     */
     public void buttonTestPressed() {
         LSIExecutor exe = new LSIExecutor();
         System.out.println(exe.getSynonyms("observe"));
         System.out.println(exe.spellCheck("obzerve"));
     }
 
+    /**
+     * loading the dictionary
+     */
     public void loadDicPressed(){
         loadDictionary(true);
     }
 
+    /**
+     * searching file query
+     */
     public void fileSearchPressed(){
         if(dictianary == null || (dicLoaededInfo != null && !dicLoaededInfo.equals(fld_outputPath.getText()+btn_stemmingBox.isSelected()))){
             loadDictionary(false);
@@ -756,43 +807,9 @@ public class View {
             String spellChecked = searcher.runSpellcheck(fld_searchQuary.getText());
             if(!spellChecked.equals(fld_searchQuary.getText())){
                 /// ask user(showAndWAit) if he meant "spellChecked"
-                Label haveYouMeant = new Label("Did you mean: "+spellChecked + "?");
-                Label explanation = new Label("Pressing Yes will search the corrected query, No will search your query");
-                final Stage dialog = new Stage();
-                dialog.initModality(Modality.NONE);
-                VBox dialogVbox = new VBox(20);
-                dialogVbox.getChildren().add(haveYouMeant);
-                dialogVbox.getChildren().add(explanation);
 
-                ButtonBar bb = new ButtonBar();
-//        gp_btns.getColumnConstraints().add(new ColumnConstraints(100));
-//        gp_btns.getColumnConstraints().add(new ColumnConstraints(100));
-                Button btn_cancel = new Button("Cancel");
-                Button btn_Yes = new Button("Yes");
-                Button btn_No = new Button("No");
-                btn_cancel.setOnAction(event -> {
-                    bCancelQuery = true;
-                    dialog.close();
-                });
-                btn_Yes.setOnAction(event -> {
-                    fld_searchQuary.setText(spellChecked);
-                    searcher.setQuary(spellChecked);
-                    dialog.close();
-                });
-                btn_No.setOnAction(event -> {
-                    dialog.close();
-                });
 
-                bb.getButtons().addAll(btn_Yes, btn_No, btn_cancel);
-                dialogVbox.getChildren().add(bb);
-
-                Scene dialogScene = new Scene(dialogVbox, 550, 150);
-                dialog.setScene(dialogScene);
-                dialog.setTitle("Spelling confirmation:");
-                dialog.showAndWait();
-
-                if (bCancelQuery) {
-                    bCancelQuery = false;
+                if (!verifySpell(spellChecked)) {
                     return;
                 }
 
@@ -812,5 +829,52 @@ public class View {
             alert.showAndWait();
         }
 
+    }
+
+    /**
+     * Verifying the spell check
+     * @param spellCheckedQuery - the query after spell checking
+     * @return - true if the user chose to continue, false if the user canceled the query
+     */
+    private boolean verifySpell(String spellCheckedQuery){
+        Label haveYouMeant = new Label("Did you mean: "+spellCheckedQuery + "?");
+        Label explanation = new Label("Pressing Yes will search the corrected query, No will search your query");
+        final Stage dialog = new Stage();
+        dialog.initModality(Modality.NONE);
+        VBox dialogVbox = new VBox(20);
+        dialogVbox.getChildren().add(haveYouMeant);
+        dialogVbox.getChildren().add(explanation);
+
+        ButtonBar bb = new ButtonBar();
+        Button btn_cancel = new Button("Cancel");
+        Button btn_Yes = new Button("Yes");
+        Button btn_No = new Button("No");
+
+        btn_cancel.setOnAction(event -> {
+            bCancelQuery = true;
+            dialog.close();
+        });
+        btn_Yes.setOnAction(event -> {
+            fld_searchQuary.setText(spellCheckedQuery);
+            searcher.setQuary(spellCheckedQuery);
+            dialog.close();
+        });
+        btn_No.setOnAction(event -> {
+            dialog.close();
+        });
+
+        bb.getButtons().addAll(btn_Yes, btn_No, btn_cancel);
+        dialogVbox.getChildren().add(bb);
+
+        Scene dialogScene = new Scene(dialogVbox, 550, 150);
+        dialog.setScene(dialogScene);
+        dialog.setTitle("Spelling confirmation:");
+        dialog.showAndWait();
+
+        if (bCancelQuery){
+            bCancelQuery = false;
+            return false;
+        }
+        return true;
     }
 }
