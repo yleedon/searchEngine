@@ -266,7 +266,7 @@ public class Ranker implements IRanker {
     private double BM25(ArrayList<TermDocData> docTerms) {
         double rank = 0;
         int cwq, cwd, dLen, df;
-        double b = 0.75, k = 1.5;
+        double b = 0.75, k = 1.75;
         for (TermDocData tdd : docTerms) {
             cwq = quaryMap.get(tdd.getTerm()).getKey();
             cwd = tdd.getFrequency();
@@ -275,8 +275,8 @@ public class Ranker implements IRanker {
             rank += ((cwq * (k + 1) * cwd) / (cwd + k * (1 - b + b * (dLen / avrageTermCount)))) * Math.log((numOfDocsInCorpus + 1) / df);
 //            System.out.println(tdd.getDocId() +"  "+ tdd.getTerm());
             if(tdd.isInTitle())
-                rank = rank*1.1;
-            rank += tdd.getFrequency()/23; // += (0-1]
+                rank = rank*1.5;
+            rank += tdd.getFrequency()/25; // += (0-1]
             rank = Math.floor(rank*10000)/10000;
         }
 
