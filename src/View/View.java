@@ -827,13 +827,15 @@ public class View {
      * @return - true if the user chose to continue, false if the user canceled the query
      */
     private boolean verifySpell(String spellCheckedQuery){
-        Label haveYouMeant = new Label("\n   We found A SpellCheck mistake,\n   Did you mean: "+spellCheckedQuery + "?");
-        Label explanation = new Label("   YES - change query.\n   NO - use original Query.\n   CANCEL - cancels the search.");
+        Label[] lines = {new Label("   Did you mean: "+spellCheckedQuery + "?"),
+                new Label("   YES - change query."),
+                new Label("   NO - use original Query."),
+                new Label("   CANCEL - cancels the search.")
+        };
         final Stage dialog = new Stage();
         dialog.initModality(Modality.NONE);
         VBox dialogVbox = new VBox(20);
-        dialogVbox.getChildren().add(haveYouMeant);
-        dialogVbox.getChildren().add(explanation);
+        dialogVbox.getChildren().addAll(lines);
 
         ButtonBar bb = new ButtonBar();
         Button btn_cancel = new Button("Cancel");
@@ -856,9 +858,9 @@ public class View {
         bb.getButtons().addAll(btn_Yes, btn_No, btn_cancel);
         dialogVbox.getChildren().add(bb);
 
-        Scene dialogScene = new Scene(dialogVbox, 550, 150);
+        Scene dialogScene = new Scene(dialogVbox, 550, 230);
         dialog.setScene(dialogScene);
-        dialog.setTitle("Spelling confirmation:");
+        dialog.setTitle("We found A SpellCheck mistake:");
         dialog.showAndWait();
 
         if (bCancelQuery){
