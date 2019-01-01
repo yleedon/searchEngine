@@ -721,15 +721,6 @@ public class View {
     }////////////////////???????????
 
     /**
-     * for the tests
-     */
-    public void buttonTestPressed() {
-        LSIExecutor exe = new LSIExecutor();
-        System.out.println(exe.getSynonyms("observe"));
-        System.out.println(exe.spellCheck("obzerve"));
-    }
-
-    /**
      * loading the dictionary
      */
     public void loadDicPressed(){
@@ -801,11 +792,13 @@ public class View {
                 throw new Exception("path does not exist\n"+fld_corpusPath.getText());
 
             searcher = new Searcher(fld_searchQuary.getText(), fld_corpusPath.getText(), btn_stemmingBox.isSelected(), fld_outputPath.getText(), cb_semantics.isSelected(), selectedCitiesFilter,dictianary);
-            String spellChecked = searcher.runSpellcheck(fld_searchQuary.getText());
+            if (cb_semantics.isSelected()) {
+                String spellChecked = searcher.runSpellcheck(fld_searchQuary.getText());
 
-            if(!spellChecked.equals(fld_searchQuary.getText())){
-                  if (!verifySpell(spellChecked)) {
-                    return;
+                if (!spellChecked.equals(fld_searchQuary.getText())) {
+                    if (!verifySpell(spellChecked)) {
+                        return;
+                    }
                 }
             }
 

@@ -6,7 +6,7 @@ import processing.MyDocument;
 import java.io.*;
 import java.util.*;
 
-public class Ranker implements IRanker {
+public class Ranker {
 
     private Map<String, DicEntry> dictianary;
     private String outPut;
@@ -266,7 +266,7 @@ public class Ranker implements IRanker {
     private double BM25(ArrayList<TermDocData> docTerms) {
         double rank = 0;
         int cwq, cwd, dLen, df;
-        double b = 0.75, k = 1.75;
+        double b = 0.3, k = 1.5;
         for (TermDocData tdd : docTerms) {
             cwq = quaryMap.get(tdd.getTerm()).getKey();
             cwd = tdd.getFrequency();
@@ -274,9 +274,9 @@ public class Ranker implements IRanker {
             df = dictianary.get(tdd.getTerm()).numOfDocs;
             rank += ((cwq * (k + 1) * cwd) / (cwd + k * (1 - b + b * (dLen / avrageTermCount)))) * Math.log((numOfDocsInCorpus + 1) / df);
 //            System.out.println(tdd.getDocId() +"  "+ tdd.getTerm());
+            rank += tdd.getRelativePlace()/8; // += (0-1]
             if(tdd.isInTitle())
                 rank = rank*1.5;
-            rank += tdd.getFrequency()/25; // += (0-1]
             rank = Math.floor(rank*10000)/10000;
         }
 
