@@ -45,6 +45,7 @@ public class View {
     public TextField fld_fileQueryPath;
     public TextField fld_fileQueryOutput;
     private boolean ctrlPressed=false;
+    private String dicLoaededInfo;
 
     //<editor-fold desc="part A">
 
@@ -199,13 +200,15 @@ public class View {
 
     /**
      * loads the dictionary into the main memory
+     * @param showInfo
      */
-    public void loadDictionary() {
+    public void loadDictionary(boolean showInfo) {
 
         String stemm = "stemmed";
         if (!btn_stemmingBox.isSelected())
             stemm = "not stemmed";
-        File file = new File(fld_outputPath.getText() + "/dataBase/" + stemm + "/dictionary.txt");
+        String dicPath = fld_outputPath.getText() + "/dataBase/" + stemm + "/dictionary.txt";
+        File file = new File(dicPath);
         if (!file.exists()) {
             Alert alert = createAlert();
             alert.setHeaderText("dictionary not loaded");
@@ -238,9 +241,13 @@ public class View {
 
 
             br.close();
-            a.setHeaderText("dictionary loaded successful");
-            a.setContentText("total terms loaded: " + dictianary.size());
-            a.show();
+            dicLoaededInfo = fld_outputPath.getText()+btn_stemmingBox.isSelected();
+            if(showInfo) {
+                a.setHeaderText("dictionary loaded successful");
+                a.setContentText("total terms loaded: " + dictianary.size());
+                a.show();
+            }
+            System.out.println("dictionary loaded");
         } catch (Exception e) {
             a.setContentText("dictianary was not loaded");
             a.show();
@@ -356,31 +363,7 @@ public class View {
         }
     }
 
-    /**
-     * sends the qury to the searcher and shows the results
-     */
-    public void searchPressed() {
-        if(dictianary == null){
-            loadDictionary();
-            if (dictianary==null)
-                return;
-        }
-        try {
-            if(!(new File(fld_corpusPath.getText()).exists()))
-                throw new Exception("path does not exist\n"+fld_corpusPath.getText());
 
-            searcher = new Searcher(fld_searchQuary.getText(), fld_corpusPath.getText(), btn_stemmingBox.isSelected(), fld_outputPath.getText(), cb_semantics.isSelected(), selectedCitiesFilter,dictianary);
-            queryResult = searcher.getSearchResault();
-            showResults(queryResult);
-
-        } catch (Exception e) {
-            Alert alert = createAlert();
-            alert.setAlertType(Alert.AlertType.ERROR);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-        }
-
-    }
 
     /**
      * loads the config
@@ -673,7 +656,7 @@ public class View {
             ctrlPressed = true;
         }
         else if (ctrlPressed && event.getCode().getName().equals("L")){
-            loadDictionary();
+            loadDictionary(true);
         }
         else if (ctrlPressed && event.getCode().getName().equals("Q")){
             fileSearchPressed();
@@ -690,9 +673,32 @@ public class View {
         fld_searchQuary.requestFocus();
     }
 
+
+
+    public void getConfigMainWindow(MouseEvent event){
+        if(event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
+            getConfig();
+        }
+    }////////////////////???????????
+
+    public void buttonTestPressed() {
+        LSIExecutor exe = new LSIExecutor();
+        System.out.println(exe.getSynonyms("observe"));
+        System.out.println(exe.spellCheck("obzerve"));
+    }
+
+    public void loadDicPressed(){
+        loadDictionary(true);
+    }
+
+
+
+
+
+
     public void fileSearchPressed(){
-        if(dictianary == null){
-            loadDictionary();
+        if(dictianary == null || (dicLoaededInfo != null && !dicLoaededInfo.equals(fld_outputPath.getText()+btn_stemmingBox.isSelected()))){
+            loadDictionary(false);
             if (dictianary==null)
                 return;
         }
@@ -728,20 +734,34 @@ public class View {
         Alert alert = createAlert();
         alert.setAlertType(Alert.AlertType.INFORMATION);
         alert.setHeaderText("File query complete");
-        alert.setContentText("outPut file name:\nresult_output.txt");
+        alert.setContentText("outPut file name:\nresults.txt");
         alert.showAndWait();
 
     }
 
-    public void getConfigMainWindow(MouseEvent event){
-        if(event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
-            getConfig();
+    /**
+     * sends the qury to the searcher and shows the results
+     */
+    public void searchPressed() {
+        if(dictianary == null || (dicLoaededInfo != null && !dicLoaededInfo.equals(fld_outputPath.getText()+btn_stemmingBox.isSelected()))){
+            loadDictionary(false);
+            if (dictianary==null)
+                return;
         }
-    }////////////////////???????????
+        try {
+            if(!(new File(fld_corpusPath.getText()).exists()))
+                throw new Exception("path does not exist\n"+fld_corpusPath.getText());
 
-    public void buttonTestPressed() {
-        LSIExecutor exe = new LSIExecutor();
-        System.out.println(exe.getSynonyms("observe"));
-        System.out.println(exe.spellCheck("obzerve"));
+            searcher = new Searcher(fld_searchQuary.getText(), fld_corpusPath.getText(), btn_stemmingBox.isSelected(), fld_outputPath.getText(), cb_semantics.isSelected(), selectedCitiesFilter,dictianary);
+            queryResult = searcher.getSearchResault();
+            showResults(queryResult);
+
+        } catch (Exception e) {
+            Alert alert = createAlert();
+            alert.setAlertType(Alert.AlertType.ERROR);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+
     }
 }

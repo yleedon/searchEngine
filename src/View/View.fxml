@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyReleased" onMouseClicked="#getConfigMainWindow" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.View">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyReleased" onMouseClicked="#getConfigMainWindow" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.View">
   <children>
       <MenuBar prefHeight="25.0" prefWidth="900.0">
         <menus>
@@ -33,7 +33,7 @@
     <CheckBox fx:id="btn_stemmingBox" layoutX="433.0" layoutY="514.0" mnemonicParsing="false" selected="true" text="use stemmer" />
       <Button fx:id="btn_reset" layoutX="346.0" layoutY="550.0" mnemonicParsing="false" onAction="#reset" text="reset" />
       <Button fx:id="btn_getDic" layoutX="551.0" layoutY="550.0" mnemonicParsing="false" onAction="#showDictianary" text="show dictionary" />
-      <Button fx:id="btn_loadDic" layoutX="553.0" layoutY="510.0" mnemonicParsing="false" onAction="#loadDictionary" text="load dictionary" />
+      <Button fx:id="btn_loadDic" layoutX="553.0" layoutY="510.0" mnemonicParsing="false" onAction="#loadDicPressed" text="load dictionary" />
       <Button layoutX="328.0" layoutY="510.0" mnemonicParsing="false" onAction="#startIndexing" text="start indexing" />
       <MenuButton layoutX="153.0" layoutY="1.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" style="-fx-background-color: transparent;" text="Language Selection">
         <items>
