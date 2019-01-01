@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyReleased" onMouseClicked="#getConfigMainWindow" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.View">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#onKeyPressed" onKeyReleased="#onKeyReleased" onMouseClicked="#getConfigMainWindow" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.View">
   <children>
       <MenuBar prefHeight="25.0" prefWidth="900.0">
         <menus>
@@ -64,7 +64,6 @@
          </children>
       </GridPane>
       <Button fx:id="btn_search" layoutX="751.0" layoutY="389.0" mnemonicParsing="false" onAction="#searchPressed" prefHeight="27.0" prefWidth="57.0" style="-fx-background-color: #18cf7d; -fx-border-color: black; -fx-border-radius: 3;" text="RUN" />
-      <Button fx:id="btn_tst" layoutX="391.0" layoutY="197.0" mnemonicParsing="false" onAction="#buttonTestPressed" text="Test" />
       <CheckBox fx:id="cb_semantics" layoutX="692.0" layoutY="310.0" mnemonicParsing="false" text="use semantics" />
       <Button fx:id="btn_cityFilter" layoutX="715.0" layoutY="278.0" mnemonicParsing="false" onAction="#onClickedCityFilter" style="-fx-background-color: #a0cfcf; -fx-border-color: black; -fx-border-radius: 3;" text="City Filter" />
       <Button fx:id="btn_queryInputFile" layoutX="624.0" layoutY="353.0" mnemonicParsing="false" onAction="#fileBrowser" style="-fx-background-color: #c3cf62; -fx-border-color: black; -fx-border-radius: 3;" text="Browse" userData="3" />
