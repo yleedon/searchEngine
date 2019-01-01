@@ -44,6 +44,7 @@ public class View {
     private PriorityQueue<MyDocument> queryResult;
     public TextField fld_fileQueryPath;
     public TextField fld_fileQueryOutput;
+    private boolean ctrlPressed=false;
 
     //<editor-fold desc="part A">
 
@@ -667,6 +668,21 @@ public class View {
     public void onKeyPressed(KeyEvent event){
         if (event.getCode().getName().equals("Enter")){
             searchPressed();
+        }
+        else if (event.getCode().getName().equals("Ctrl")){
+            ctrlPressed = true;
+        }
+        else if (ctrlPressed && event.getCode().getName().equals("L")){
+            loadDictionary();
+        }
+        else if (ctrlPressed && event.getCode().getName().equals("Q")){
+            fileSearchPressed();
+        }
+    }
+
+    public void onKeyReleased(KeyEvent event){
+        if (event.getCode().getName().equals("Ctrl")){
+            ctrlPressed = false;
         }
     }
 
