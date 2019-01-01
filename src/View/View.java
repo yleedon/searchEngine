@@ -713,6 +713,11 @@ public class View {
         try {
             Alert alert = createAlert();
             alert.setAlertType(Alert.AlertType.INFORMATION);
+            for (Node node : alert.getDialogPane().getChildren()) {
+                if (node instanceof ButtonBar) {
+                    node.setVisible(false);
+                }
+            }
             alert.setContentText("this may take a few minutes.\nA notification message will appear on completion.\n\n (progress can be seen in the console)");
             alert.setHeaderText("File query in progress...");
             alert.setTitle("FILE QUERY SEARCH");

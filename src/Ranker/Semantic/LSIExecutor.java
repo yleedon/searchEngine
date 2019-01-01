@@ -38,7 +38,7 @@ public class LSIExecutor {
                 ans.append(str).append(" ");
             }
         }
-        return ans.toString().length()>1 ? ans.toString() : speltSimilar.split(",")[0];
+        return ans.toString().length()>1 ? ans.toString() : word;
     }
 
     /**
