@@ -362,12 +362,6 @@ public class Searcher {
     }
 
 
-
-
-
-
-
-
     public String runSpellcheck(String words) {
         String ans = "";
         LSIExecutor lsi = new LSIExecutor();
@@ -385,23 +379,4 @@ public class Searcher {
     public void setQuary(String q){
         quary = q;
     }
-
-
-
-//    public String runSpellcheck() {
-//        String ans = "";
-//        LSIExecutor lsi = new LSIExecutor();
-//        String temp;
-//        for (String term: quary.split(" ")){
-//            if(term.equals("<!#%>"))
-//                break;
-//            temp = lsi.spellCheck(term);
-//            if(!temp.toLowerCase().equals(term))
-//                quary += " "+ temp;
-//        }
-//    }
-
-
-
-
 }
