@@ -758,6 +758,23 @@ public class View {
                 throw new Exception("path does not exist\n"+fld_corpusPath.getText());
 
             searcher = new Searcher(fld_searchQuary.getText(), fld_corpusPath.getText(), btn_stemmingBox.isSelected(), fld_outputPath.getText(), cb_semantics.isSelected(), selectedCitiesFilter,dictianary);
+
+
+            ////////////////////////////////////////////////////// move to seperate function ?
+            String spellChecked = searcher.runSpellcheck(fld_searchQuary.getText());
+            if(!spellChecked.equals(fld_searchQuary.getText())){
+                /// ask user(showAndWAit) if he ment "spellChecked"
+                        //if(yes) searcher.setQuyery(spellchecked)
+                            //(if ("no") do nothing)
+                            //if("cancel") - return)
+
+
+                System.out.println("first: <"+ fld_searchQuary.getText()+">");
+                System.out.println("fixed: <"+ spellChecked+">");
+
+            }
+            //////////////////////////////////////////////////////////
+
             queryResult = searcher.getSearchResault();
             showResults(queryResult);
 

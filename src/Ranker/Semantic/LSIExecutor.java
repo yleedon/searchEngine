@@ -26,7 +26,7 @@ public class LSIExecutor {
      * spell checking the given word
      *
      * @param word - the given word to spell check
-     * @return a spell corrected work
+     * @return a spell corrected sentence
      */
     public String spellCheck(String word) {
         String s = word.replaceAll(" ", "+");
@@ -38,7 +38,8 @@ public class LSIExecutor {
                 ans.append(str).append(" ");
             }
         }
-        return ans.toString().length()>1 ? ans.toString() : word;
+        String retVal = ans.toString().length()>1 ? ans.toString() : speltSimilar.split(" ")[0];
+        return retVal.length() == 0 ? word : retVal;
     }
 
     /**

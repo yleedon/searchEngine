@@ -382,6 +382,10 @@ public class Searcher {
         return ans.substring(0,ans.length()-1);
     }
 
+    public void setQuary(String q){
+        quary = q;
+    }
+
 
 
 //    public String runSpellcheck() {
@@ -398,16 +402,6 @@ public class Searcher {
 //    }
 
 
-//    ////////////////////////////////////////////////////// for view...
-//    String spellChecked = searcher.runSpellcheck(fld_searchQuary.getText());
-//            if(!spellChecked.equals(fld_searchQuary.getText())){
-//
-//
-//
-//        System.out.println("first: <"+ fld_searchQuary.getText()+">");
-//        System.out.println("fixed: <"+ spellChecked+">");
-//        return;
-//    }
-//    //////////////////////////////////////////////////////////
+
 
 }
