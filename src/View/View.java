@@ -801,23 +801,13 @@ public class View {
                 throw new Exception("path does not exist\n"+fld_corpusPath.getText());
 
             searcher = new Searcher(fld_searchQuary.getText(), fld_corpusPath.getText(), btn_stemmingBox.isSelected(), fld_outputPath.getText(), cb_semantics.isSelected(), selectedCitiesFilter,dictianary);
-
-
-            ////////////////////////////////////////////////////// move to seperate function ?
             String spellChecked = searcher.runSpellcheck(fld_searchQuary.getText());
+
             if(!spellChecked.equals(fld_searchQuary.getText())){
-                /// ask user(showAndWAit) if he meant "spellChecked"
-
-
-                if (!verifySpell(spellChecked)) {
+                  if (!verifySpell(spellChecked)) {
                     return;
                 }
-
-                System.out.println("first: <"+ fld_searchQuary.getText()+">");
-                System.out.println("fixed: <"+ spellChecked+">");
-
             }
-            //////////////////////////////////////////////////////////
 
             queryResult = searcher.getSearchResault();
             showResults(queryResult);
@@ -837,8 +827,8 @@ public class View {
      * @return - true if the user chose to continue, false if the user canceled the query
      */
     private boolean verifySpell(String spellCheckedQuery){
-        Label haveYouMeant = new Label("Did you mean: "+spellCheckedQuery + "?");
-        Label explanation = new Label("Pressing Yes will search the corrected query, No will search your query");
+        Label haveYouMeant = new Label("\n   We found A SpellCheck mistake,\n   Did you mean: "+spellCheckedQuery + "?");
+        Label explanation = new Label("   YES - change query.\n   NO - use original Query.\n   CANCEL - cancels the search.");
         final Stage dialog = new Stage();
         dialog.initModality(Modality.NONE);
         VBox dialogVbox = new VBox(20);
