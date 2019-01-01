@@ -265,20 +265,6 @@ public class Searcher {
         }
     }
 
-    /**
-     * spell checking the query and adds correction if necessary
-     */
-    private void runSpellcheck() {
-        LSIExecutor lsi = new LSIExecutor();
-        String temp;
-        for (String term: quary.split(" ")){
-            if(term.equals("<!#%>"))
-                break;
-            temp = lsi.spellCheck(term);
-            if(!temp.toLowerCase().equals(term))
-                quary += " "+ temp;
-        }
-    }
 
     /**
      * translates the filtered cities to the document ID that hold the cities
@@ -375,5 +361,53 @@ public class Searcher {
         return ans;
     }
 
+
+
+
+
+
+
+
+    public String runSpellcheck(String words) {
+        String ans = "";
+        LSIExecutor lsi = new LSIExecutor();
+        String temp;
+        for (String term: words.split(" ")){
+            temp = lsi.spellCheck(term);
+            if(term.toLowerCase().equals(temp) && !term.toLowerCase().equals(term))
+                ans += term + " ";
+            else
+                ans += temp+" ";
+        }
+        return ans.substring(0,ans.length()-1);
+    }
+
+
+
+//    public String runSpellcheck() {
+//        String ans = "";
+//        LSIExecutor lsi = new LSIExecutor();
+//        String temp;
+//        for (String term: quary.split(" ")){
+//            if(term.equals("<!#%>"))
+//                break;
+//            temp = lsi.spellCheck(term);
+//            if(!temp.toLowerCase().equals(term))
+//                quary += " "+ temp;
+//        }
+//    }
+
+
+//    ////////////////////////////////////////////////////// for view...
+//    String spellChecked = searcher.runSpellcheck(fld_searchQuary.getText());
+//            if(!spellChecked.equals(fld_searchQuary.getText())){
+//
+//
+//
+//        System.out.println("first: <"+ fld_searchQuary.getText()+">");
+//        System.out.println("fixed: <"+ spellChecked+">");
+//        return;
+//    }
+//    //////////////////////////////////////////////////////////
 
 }
