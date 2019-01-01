@@ -31,10 +31,10 @@
         </menus>
       </MenuBar>
     <CheckBox fx:id="btn_stemmingBox" layoutX="433.0" layoutY="514.0" mnemonicParsing="false" selected="true" text="use stemmer" />
-      <Button fx:id="btn_reset" layoutX="346.0" layoutY="550.0" mnemonicParsing="false" onAction="#reset" text="reset" />
-      <Button fx:id="btn_getDic" layoutX="551.0" layoutY="550.0" mnemonicParsing="false" onAction="#showDictianary" text="show dictionary" />
-      <Button fx:id="btn_loadDic" layoutX="553.0" layoutY="510.0" mnemonicParsing="false" onAction="#loadDicPressed" text="load dictionary" />
-      <Button layoutX="328.0" layoutY="510.0" mnemonicParsing="false" onAction="#startIndexing" text="start indexing" />
+      <Button fx:id="btn_reset" layoutX="346.0" layoutY="550.0" mnemonicParsing="false" onAction="#reset" style="-fx-background-color: #cf5458; -fx-border-radius: 3; -fx-border-color: black;" text="reset" />
+      <Button fx:id="btn_getDic" layoutX="551.0" layoutY="550.0" mnemonicParsing="false" onAction="#showDictianary" style="-fx-background-color: #a0cfcf; -fx-border-radius: 3; -fx-border-color: black;" text="show dictionary" />
+      <Button fx:id="btn_loadDic" layoutX="553.0" layoutY="510.0" mnemonicParsing="false" onAction="#loadDicPressed" style="-fx-background-color: #a0cfcf; -fx-border-radius: 3; -fx-border-color: black;" text="load dictionary" />
+      <Button layoutX="328.0" layoutY="510.0" mnemonicParsing="false" onAction="#startIndexing" style="-fx-background-color: #cf5458; -fx-border-radius: 3; -fx-border-color: black;" text="start indexing" />
       <MenuButton layoutX="153.0" layoutY="1.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" style="-fx-background-color: transparent;" text="Language Selection">
         <items>
           <MenuItem mnemonicParsing="false" text="English" />
@@ -45,8 +45,8 @@
       </MenuButton>
       <TextField fx:id="fld_outputPath" layoutX="194.0" layoutY="468.0" prefHeight="25.0" prefWidth="545.0" />
       <TextField fx:id="fld_corpusPath" layoutX="194.0" layoutY="431.0" prefHeight="25.0" prefWidth="545.0" />
-      <Button fx:id="btn_corpusBrowse" layoutX="750.0" layoutY="431.0" mnemonicParsing="false" onAction="#browse" text="browse" userData="1" />
-      <Button fx:id="btn_outPutPath" layoutX="750.0" layoutY="468.0" mnemonicParsing="false" onAction="#browse" text="browse" userData="2" />
+      <Button fx:id="btn_corpusBrowse" layoutX="750.0" layoutY="431.0" mnemonicParsing="false" onAction="#browse" style="-fx-background-color: #c3cf62; -fx-border-color: black; -fx-border-radius: 3;" text="browse" userData="1" />
+      <Button fx:id="btn_outPutPath" layoutX="750.0" layoutY="468.0" mnemonicParsing="false" onAction="#browse" style="-fx-background-color: #c3cf62; -fx-border-color: black; -fx-border-radius: 3;" text="browse" userData="2" />
       <Label layoutX="94.0" layoutY="431.0" prefHeight="25.0" prefWidth="80.0" text="corpus path" />
       <Label layoutX="94.0" layoutY="468.0" prefHeight="25.0" prefWidth="80.0" text="output path" />
       <Label fx:id="fld_plsWait" layoutX="49.0" layoutY="292.0" prefHeight="17.0" prefWidth="259.0" text="indexing in progress, please wait..." visible="false" />
@@ -63,16 +63,16 @@
             <Label text="enter query" />
          </children>
       </GridPane>
-      <Button fx:id="btn_search" layoutX="751.0" layoutY="389.0" mnemonicParsing="false" onAction="#searchPressed" text="search" />
+      <Button fx:id="btn_search" layoutX="751.0" layoutY="389.0" mnemonicParsing="false" onAction="#searchPressed" style="-fx-background-color: #18cf7d; -fx-border-color: black; -fx-border-radius: 3;" text="search" />
       <Button fx:id="btn_tst" layoutX="391.0" layoutY="197.0" mnemonicParsing="false" onAction="#buttonTestPressed" text="Test" />
       <CheckBox fx:id="cb_semantics" layoutX="187.0" layoutY="303.0" mnemonicParsing="false" text="use semantics" />
-      <Button fx:id="btn_cityFilter" layoutX="87.0" layoutY="287.0" mnemonicParsing="false" onAction="#onClickedCityFilter" text="City Filter" />
-      <Button fx:id="btn_queryInputFile" layoutX="694.0" layoutY="353.0" mnemonicParsing="false" onAction="#fileBrowser" text="browse query file" userData="3" />
+      <Button fx:id="btn_cityFilter" layoutX="87.0" layoutY="287.0" mnemonicParsing="false" onAction="#onClickedCityFilter" style="-fx-background-color: #a0cfcf; -fx-border-color: black; -fx-border-radius: 3;" text="City Filter" />
+      <Button fx:id="btn_queryInputFile" layoutX="694.0" layoutY="353.0" mnemonicParsing="false" onAction="#fileBrowser" style="-fx-background-color: #c3cf62; -fx-border-color: black; -fx-border-radius: 3;" text="browse query file" userData="3" />
       <TextField fx:id="fld_fileQueryPath" layoutX="197.0" layoutY="353.0" prefHeight="25.0" prefWidth="484.0" />
       <Label layoutX="87.0" layoutY="357.0" text="enter query file" />
-      <Button fx:id="btn_fileSearch" layoutX="709.0" layoutY="288.0" mnemonicParsing="false" onAction="#fileSearchPressed" text="file query search" />
+      <Button fx:id="btn_fileSearch" layoutX="709.0" layoutY="288.0" mnemonicParsing="false" onAction="#fileSearchPressed" style="-fx-background-color: #18cf7d; -fx-border-color: black; -fx-border-radius: 3;" text="file query search" />
       <TextField fx:id="fld_fileQueryOutput" layoutX="197.0" layoutY="320.0" prefHeight="25.0" prefWidth="484.0" />
       <Label layoutX="60.0" layoutY="324.0" text="enter query file output" />
-      <Button fx:id="btn_queryOutputBrows" layoutX="694.0" layoutY="320.0" mnemonicParsing="false" onAction="#browse" text="browse query output" userData="3" />
+      <Button fx:id="btn_queryOutputBrows" layoutX="694.0" layoutY="320.0" mnemonicParsing="false" onAction="#browse" style="-fx-background-color: #c3cf62; -fx-border-color: black; -fx-border-radius: 3;" text="browse query output" userData="3" />
   </children>
 </AnchorPane>
