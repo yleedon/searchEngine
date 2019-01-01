@@ -46,6 +46,7 @@ public class View {
     public TextField fld_fileQueryOutput;
     private boolean ctrlPressed=false;
     private String dicLoaededInfo;
+    private boolean bCancelQuery = false;
 
     //<editor-fold desc="part A">
 
@@ -363,8 +364,6 @@ public class View {
         }
     }
 
-
-
     /**
      * loads the config
      */
@@ -673,8 +672,6 @@ public class View {
         fld_searchQuary.requestFocus();
     }
 
-
-
     public void getConfigMainWindow(MouseEvent event){
         if(event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
             getConfig();
@@ -690,11 +687,6 @@ public class View {
     public void loadDicPressed(){
         loadDictionary(true);
     }
-
-
-
-
-
 
     public void fileSearchPressed(){
         if(dictianary == null || (dicLoaededInfo != null && !dicLoaededInfo.equals(fld_outputPath.getText()+btn_stemmingBox.isSelected()))){
@@ -763,11 +755,46 @@ public class View {
             ////////////////////////////////////////////////////// move to seperate function ?
             String spellChecked = searcher.runSpellcheck(fld_searchQuary.getText());
             if(!spellChecked.equals(fld_searchQuary.getText())){
-                /// ask user(showAndWAit) if he ment "spellChecked"
-                        //if(yes) searcher.setQuyery(spellchecked)
-                            //(if ("no") do nothing)
-                            //if("cancel") - return)
+                /// ask user(showAndWAit) if he meant "spellChecked"
+                Label haveYouMeant = new Label("Did you mean: "+spellChecked + "?");
+                Label explanation = new Label("Pressing Yes will search the corrected query, No will search your query");
+                final Stage dialog = new Stage();
+                dialog.initModality(Modality.NONE);
+                VBox dialogVbox = new VBox(20);
+                dialogVbox.getChildren().add(haveYouMeant);
+                dialogVbox.getChildren().add(explanation);
 
+                ButtonBar bb = new ButtonBar();
+//        gp_btns.getColumnConstraints().add(new ColumnConstraints(100));
+//        gp_btns.getColumnConstraints().add(new ColumnConstraints(100));
+                Button btn_cancel = new Button("Cancel");
+                Button btn_Yes = new Button("Yes");
+                Button btn_No = new Button("No");
+                btn_cancel.setOnAction(event -> {
+                    bCancelQuery = true;
+                    dialog.close();
+                });
+                btn_Yes.setOnAction(event -> {
+                    fld_searchQuary.setText(spellChecked);
+                    searcher.setQuary(spellChecked);
+                    dialog.close();
+                });
+                btn_No.setOnAction(event -> {
+                    dialog.close();
+                });
+
+                bb.getButtons().addAll(btn_Yes, btn_No, btn_cancel);
+                dialogVbox.getChildren().add(bb);
+
+                Scene dialogScene = new Scene(dialogVbox, 550, 150);
+                dialog.setScene(dialogScene);
+                dialog.setTitle("Spelling confirmation:");
+                dialog.showAndWait();
+
+                if (bCancelQuery) {
+                    bCancelQuery = false;
+                    return;
+                }
 
                 System.out.println("first: <"+ fld_searchQuary.getText()+">");
                 System.out.println("fixed: <"+ spellChecked+">");
