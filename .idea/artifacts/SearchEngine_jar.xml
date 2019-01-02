@@ -3,6 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/SearchEngine_jar</output-path>
     <root id="archive" name="SearchEngine.jar">
       <element id="module-output" name="SearchEngine" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/quick-json-1.0.2.3.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/restcountries.jar" path-in-jar="/" />
     </root>
   </artifact>
