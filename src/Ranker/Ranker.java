@@ -266,7 +266,7 @@ public class Ranker {
     private double BM25(ArrayList<TermDocData> docTerms) {
         double rank = 0;
         int cwq, cwd, dLen, df;
-        double b = 0.3, k = 1.5;
+        double b = 0.25, k = 1.6;
         for (TermDocData tdd : docTerms) {
             cwq = quaryMap.get(tdd.getTerm()).getKey();
             cwd = tdd.getFrequency();
@@ -274,9 +274,9 @@ public class Ranker {
             df = dictianary.get(tdd.getTerm()).numOfDocs;
             rank += ((cwq * (k + 1) * cwd) / (cwd + k * (1 - b + b * (dLen / avrageTermCount)))) * Math.log((numOfDocsInCorpus + 1) / df);
 //            System.out.println(tdd.getDocId() +"  "+ tdd.getTerm());
-            rank += tdd.getRelativePlace()/8; // += (0-1]
+            rank += tdd.getRelativePlace()/9; // += (0-1]
             if(tdd.isInTitle())
-                rank = rank*1.5;
+                rank = rank*1.4;
             rank = Math.floor(rank*10000)/10000;
         }
 
