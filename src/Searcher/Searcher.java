@@ -361,7 +361,12 @@ public class Searcher {
         return ans;
     }
 
-
+    /**
+     * this function is given a query, goes over each word and checks for spelling mistakes,
+     * if found, replaces the word for the correctly spelled word
+     * @param words - the query
+     * @return - the query with corrected spelling
+     */
     public String runSpellcheck(String words) {
         String ans = "";
         LSIExecutor lsi = new LSIExecutor();
@@ -376,6 +381,10 @@ public class Searcher {
         return ans.substring(0,ans.length()-1);
     }
 
+    /**
+     * sets the query
+     * @param q - the new query
+     */
     public void setQuary(String q){
         quary = q;
     }
